@@ -5,12 +5,13 @@ import itertools, nltk, string, re, os, docx
 #If you've never setup nltk previously, execute the following line
 #nltk.download()
 
-corpus_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/Co11/" #location where all corpus .docx files are stored
-output_path =   "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/output/" #location you will output all CSV files
+corpus_path = "C:/temp/NU/453/Co11/" #location where all corpus .docx files are stored
+output_path =   "C:/temp/NU/453/" #location you will output all CSV files
 
 #Preprocessing, opportunity to replace words or phrases with ECs
-#  DO NOT add "president" --> "presidentTrump" here, or any all instances
+#  DO NOT add "president" --> "presidentTrump" here, otherwise all instances
 #  of "president obama" would be converted to "presidentTrump obama"
+#  this should be used for fixed phrases ONLY
 phrase_dict = {"Trans-Pacific Partnership": "TPP",\
           "North American Free Trade Agreement":"NAFTA",\
           "World Trade Organization":"WTO",\
@@ -18,7 +19,8 @@ phrase_dict = {"Trans-Pacific Partnership": "TPP",\
           #the "of" below only serves to force a split of "special counsel robert mueller"
           "special counsel":"specialCounsel of",\
           "lost jobs":"jobLosses",\
-          "job losses":"jobLosses"
+          "job losses":"jobLosses",\
+          "chief of staff":"chiefOfStaff"
           }
 
 #This will be swapped out after processing is complete, now you're safe to
@@ -29,6 +31,7 @@ ec_dict = {'trump':'presidentDonaldTrump',\
                "u.s.":"UnitedStates",\
                "mr. trump":"presidentDonaldTrump",\
                "mr trump":"presidentDonaldTrump",\
+               "mr. trumps":"presidentDonaldTrump",\
                "president trump":"presidentDonaldTrump",\
                "President Donald Trump":"presidentDonaldTrump",\
                "Donald Trump":"presidentDonaldTrump",\
@@ -46,6 +49,9 @@ ec_dict = {'trump':'presidentDonaldTrump',\
                "mueller":"robertMueller",\
                "robert mueller":"robertMueller",\
                "counsel robert mueller":"robertMueller",\
+               "eu":"europeanUnion",\
+               "european union":"europeanUnion",\
+               "white house press secretary sarah huckabee sanders":"sarahHuckabeeSanders"
                
                }
 #the parser converts all entries to lower case, so we should do the same
@@ -54,8 +60,11 @@ ec_dict = {key.lower(): value for key, value in ec_dict.items()}
 
 #add all words you want to filter into filter_words
 filter_words = set()
-filter_words.update(['year', 'december','week', 'month', 'approach','people'])
-filter_words.update(['others', 'contrast','friday','change','response','time','possibility'])
+filter_words.update(['year', 'week', 'month', 'day', 'hour', 'minute', 'time','past','morning','afternoon', 'evening', 'night'])
+filter_words.update(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'])
+filter_words.update(['january','february', 'march', 'april','may','june','july','august','september','october','november','december'])
+filter_words.update(['others', 'contrast','approach','change','response','people','possibility'])
+filter_words.update(['recommendation', 'side','control','fact','win','attempt','amid','something','e.g'])
 
 
 #===========================================================
@@ -191,18 +200,28 @@ for term in masterdf_terms.index:
     masterdf_terms.set_value(term,'tf_idf', masterdf_terms.loc[term]['tf'] * masterdf_terms.loc[term]['idf'] )
 del term, term_count, num_dsi
 
-masterdf_terms.to_csv(output_path+'master.csv')
+#masterdf_terms.to_csv(output_path+'master.csv')
 
 #calculate tf_idf for INDIVIDUAL DSI
 for i in range(0, len(corpus_term_counts)):
     for term in corpus_term_counts[i].index:
         corpus_term_counts[i].set_value(term,'tf',masterdf_terms.loc[term]['tf'])
         corpus_term_counts[i].set_value(term,'idf',masterdf_terms.loc[term]['idf'])
+        #todo: fix idf calculation for each individual DSI
         corpus_term_counts[i].set_value(term,'tf_idf',masterdf_terms.loc[term]['tf_idf'])
 del i,term#, countdf_terms
 
 
-#write out all of the individual DSI to its own CSV
+#create the matrix of terms across each DSI
+for i in range(0, len(corpus_term_counts)):
+    for term in corpus_term_counts[i].index:
+        masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['t_count'][term])
+del i,term
+
+#write the master matrix out to a CSV file
+masterdf_terms.to_csv(output_path+'master.csv')
+
+#write out all of the individual DSI to their own CSV
 for i in range(0, len(corpus_term_counts)):
     corpus_term_counts[i].to_csv(output_path + file_list[i][0:6] + '.csv')
     #todo: the above [0:6] will start overwriting DSI once we hit #100
