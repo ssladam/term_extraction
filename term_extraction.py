@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+#a lot of credit goes to:
+#    http://bdewilde.github.io/blog/2014/09/23/intro-to-automatic-keyphrase-extraction/
 import pandas as pd
 import numpy as np
 import itertools, nltk, re, os, docx, unicodedata
@@ -141,12 +143,19 @@ def extract_candidate_chunks(text, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*
     tagged_sents = nltk.pos_tag_sents(nltk.word_tokenize(sent) for sent in nltk.sent_tokenize(strip_text))
     all_chunks = list(itertools.chain.from_iterable(nltk.chunk.tree2conlltags(chunker.parse(tagged_sent))
                                                     for tagged_sent in tagged_sents))
+
+    # candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word) for word, pos, chunk in group).lower()
+    #     for key, group in itertools.groupby(all_chunks, lambda_unpack(lambda word, pos, chunk: chunk != 'O')) if key]
     candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word) for word, pos, chunk in group).lower()
-        for key, group in itertools.groupby(all_chunks, lambda_unpack(lambda word, pos, chunk: chunk != 'O')) if key]
+        for key, group in itertools.groupby(all_chunks, lambda word__pos__chunk: word__pos__chunk[2] != 'O') if key]
     
     #We had left standard punctuation to aid in sentence chunking. Now delete all intra-word punctuation. "f.b.i. --> "fbi"
+    # for idx in range(len(candidates)):
+    #     candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', candidates[idx])
+    #lemmatization isn't working fully, missing some entries? Very wasteful, but until we fix
+    #  this bug, just double up and re-do the lemma while we're iterating over the full list again anyhow...
     for idx in range(len(candidates)):
-        candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', candidates[idx])
+        candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', nltk.stem.WordNetLemmatizer().lemmatize(candidates[idx]))
 
     return [cand.lstrip() for cand in candidates if cand not in stop_words]
 
@@ -219,25 +228,18 @@ corpus_term_counts = []
 for i in range(0, len(file_list)):
     corpus_phrases[i]['dsi'] = file_list[i][0:6]
     master = pd.concat([master, corpus_phrases[i]])
-    #countdf_terms = corpus_phrases[i].terms.value_counts()
     corpus_term_counts.append(pd.DataFrame(corpus_phrases[i].terms.value_counts()))
     corpus_term_counts[i].columns = (['t_count'])
     corpus_term_counts[i].loc[:,'tf'] = 0.0
-    #corpus_term_counts[i].loc[:,'idf'] = 0.0
-    #corpus_term_counts[i].loc[:,'tf_idf'] = 0.0
-del i#, countdf_terms
+del i
 
 #calculate term frequency for INDIVIDUAL DSI
 for i in range(0, len(corpus_term_counts)):
     dsi_num_terms = corpus_term_counts[i].t_count.sum()
     for term in corpus_term_counts[i].index:
         term_count = corpus_term_counts[i].loc[term].t_count
-        #corpus_term_counts[i].set_value(term,'tf',masterdf_terms.loc[term]['tf'])
         corpus_term_counts[i].set_value(term,'tf',term_count / dsi_num_terms)
-        #corpus_term_counts[i].set_value(term,'idf',masterdf_terms.loc[term]['idf'])
-        #todo: fix idf calculation for each individual DSI
-        #corpus_term_counts[i].set_value(term,'tf_idf',masterdf_terms.loc[term]['tf_idf'])
-del i,term, dsi_num_terms, term_count#, countdf_terms
+del i,term, dsi_num_terms, term_count
 
 master = master.reset_index(drop=True)
 
