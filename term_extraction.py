@@ -5,8 +5,13 @@ import itertools, nltk, re, os, docx, unicodedata
 #If you've never setup nltk previously, execute the following line
 #nltk.download()
 
-corpus_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/CS2/" #location where all corpus .docx files are stored
-output_path =   "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/output/" #location you will output all CSV files
+#todo: currently use first 6 letters of DOCX to determine id. Expecting "DSI-06" to be the name
+#   Currently hard-coded to read [0:6]. This will break once DSI passes 100.
+#   DSI-100 will overwrite DSI-10. Add logic to get full DSI name. Or just skip
+#   naming by the file, and simply assign your own number by order read in
+
+corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
+output_path =   "C:/temp/NU/453/output/" #location you will output all CSV files
 
 #Preprocessing, opportunity to replace words or phrases with ECs
 #  DO NOT add "president" --> "presidentTrump" here, otherwise all instances
@@ -21,13 +26,15 @@ phrase_dict = {"Trans-Pacific Partnership": "TPP",\
             "chief of staff":"chiefOfStaff",\
             "E&E News":"EandENews",\
             "S&P 500":"SandP500",\
-            "memorandum donald trump":"memorandum which donald trump",\
             "Immigration and Nationality Act":"immigrationAndNationalityAct",\
             "Club For Growth and Heritage":"clubForGrowthAndHeritage",\
             "Freedom Caucus":"freedomCaucus",\
             "Office of Personnel Management ":"officeOfPersonnel Management",\
             "Office of Management and Budget":"officeOfManagementAndBudget",\
-            #Okay, I cheat just a bit by pre-filtering some terms that would be tricky to remove otherwise
+            #Here is my first hack-y cheat. To avoid phrase clumping, insert a determiner to force phrase-split
+            #   the below will force the code to split this into "memorandum" and "donald trump", instead of a single term
+            "memorandum donald trump":"memorandum which donald trump",\
+            #My 2nd hack-y cheat: pre-filtering some terms that would be tricky to remove otherwise
             #   these terms become "nested" with other terms, easier to just axe them here
             "[sic]":"",\
             "percent":"",\
@@ -36,7 +43,7 @@ phrase_dict = {"Trans-Pacific Partnership": "TPP",\
           }
 
 #This will be swapped out after processing is complete, now you're safe to
-#  swap out individual words for their EC equivalent
+#  swap out individual words for their EC equivalent.
 ec_dict = {'trump':'presidentDonaldTrump',\
                'president':'presidentDonaldTrump',\
                "us":"unitedStates",\
@@ -100,9 +107,9 @@ filter_words.update(['january','february', 'march', 'april','may','june','july',
 filter_words.update(['jan','feb', 'mar', 'apr','jun','jul','aug','sep','oct','nov','dec'])
 filter_words.update(['others', 'contrast','approach','change','response','people','possibility'])
 filter_words.update(['recommendation', 'side','control','fact','win','attempt','amid','something','e.g','isnt','ive','hes','im','ill'])
-filter_words.update(['rky','dc','dny','rfla','rid', 'try','weve','pas','co.','km','sens','rokla','am','cnn'])
+filter_words.update(['rky','dc','dny','rfla','rid', 'try','weve','pas','co','km','sens','rokla','am','cnn'])
 filter_words.update(['a','b','c','d','e','f','g','h'])
-filter_words.update(['']) #this was added, because the % symbol returns a valid single token, and is then stripped
+filter_words.update(['']) #this was added, because the % symbol returns as a valid single token, and is then stripped
 filter_words.update(['zero','one','two','three','four','five','six','seven','eight','nine'])
 #filter_words.update(set(nltk.corpus.stopwords.words('english'))
 #I intentionally didn't add STOP_WORDS to this list, otherwise it would filter mis-categorizations
@@ -121,6 +128,7 @@ def lambda_unpack(f):
 def extract_candidate_chunks(text, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*>+}'):
     #strip_text = re.sub(r"[^\-\,\.\?\!\'\(\)\w\d'\s]+",'',text) #remove unicode characters
     #strip_text = re.sub(r"[^\'\!\"\#\$\&\\\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\\\]\^\_\`\{\|\}\~\'\w\d'\s]+",'',text) #removes unicode punctuation 
+    #Note: I no longer strip all unicode characters. unicodedata helpfully does a "best near match" with ascii
     strip_text = unicodedata.normalize('NFKD', text).encode('ascii','ignore').decode('utf-8')
     #Note: now I leave all punctuation to aid with sentence tokenization
     stop_words = set(nltk.corpus.stopwords.words('english'))
@@ -215,9 +223,21 @@ for i in range(0, len(file_list)):
     corpus_term_counts.append(pd.DataFrame(corpus_phrases[i].terms.value_counts()))
     corpus_term_counts[i].columns = (['t_count'])
     corpus_term_counts[i].loc[:,'tf'] = 0.0
-    corpus_term_counts[i].loc[:,'idf'] = 0.0
-    corpus_term_counts[i].loc[:,'tf_idf'] = 0.0
+    #corpus_term_counts[i].loc[:,'idf'] = 0.0
+    #corpus_term_counts[i].loc[:,'tf_idf'] = 0.0
 del i#, countdf_terms
+
+#calculate term frequency for INDIVIDUAL DSI
+for i in range(0, len(corpus_term_counts)):
+    dsi_num_terms = corpus_term_counts[i].t_count.sum()
+    for term in corpus_term_counts[i].index:
+        term_count = corpus_term_counts[i].loc[term].t_count
+        #corpus_term_counts[i].set_value(term,'tf',masterdf_terms.loc[term]['tf'])
+        corpus_term_counts[i].set_value(term,'tf',term_count / dsi_num_terms)
+        #corpus_term_counts[i].set_value(term,'idf',masterdf_terms.loc[term]['idf'])
+        #todo: fix idf calculation for each individual DSI
+        #corpus_term_counts[i].set_value(term,'tf_idf',masterdf_terms.loc[term]['tf_idf'])
+del i,term, dsi_num_terms, term_count#, countdf_terms
 
 master = master.reset_index(drop=True)
 
@@ -247,22 +267,13 @@ for term in masterdf_terms.index:
     masterdf_terms.set_value(term,'tf_idf', masterdf_terms.loc[term]['tf'] * masterdf_terms.loc[term]['idf'] )
 del term, term_count, num_dsi
 
-#masterdf_terms.to_csv(output_path+'master.csv')
-
-#calculate tf_idf for INDIVIDUAL DSI
-for i in range(0, len(corpus_term_counts)):
-    for term in corpus_term_counts[i].index:
-        corpus_term_counts[i].set_value(term,'tf',masterdf_terms.loc[term]['tf'])
-        corpus_term_counts[i].set_value(term,'idf',masterdf_terms.loc[term]['idf'])
-        #todo: fix idf calculation for each individual DSI
-        corpus_term_counts[i].set_value(term,'tf_idf',masterdf_terms.loc[term]['tf_idf'])
-del i,term#, countdf_terms
 
 
 #create the matrix of terms across each DSI
 for i in range(0, len(corpus_term_counts)):
     for term in corpus_term_counts[i].index:
-        masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['t_count'][term])
+        #masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['t_count'][term])
+        masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['tf'][term])
 del i,term
 
 #write the master matrix out to a CSV file
