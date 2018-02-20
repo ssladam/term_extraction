@@ -16,6 +16,10 @@ import itertools, nltk, re, os, docx, unicodedata
 #   DSI-100 will overwrite DSI-10. Add logic to get full DSI name. Or just skip
 #   naming by the file, and simply assign your own number by order read in
 
+#WARNING: no error checking! When reading in DOCX it sweeps up all files in the folder, as just one example.
+#   If you consider using this in a shared capacity, with people not familiar with Python, you probably want
+#   to improve error-handling. Check to confirm directories exist, confirm input is valid, etc.
+
 corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
 output_path = "C:/temp/NU/453/output/" #location you will output all CSV files
 pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
@@ -121,10 +125,10 @@ filter_words.update(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'sa
 filter_words.update(['january','february', 'march', 'april','may','june','july','august','september','october','november','december'])
 filter_words.update(['jan','feb', 'mar', 'apr','jun','jul','aug','sep','oct','nov','dec'])
 filter_words.update(['others', 'contrast','approach','change','response','people','possibility'])
-filter_words.update(['recommendation', 'side','control','fact','win','attempt','amid','something','e.g','isnt','ive','hes','im','ill'])
+filter_words.update(['recommendation', 'side','control','fact','win','attempt','amid','something','eg','isnt','ive','hes','im','ill'])
 filter_words.update(['rky','dc','dny','rfla','rid', 'try','weve','pas','co','km','sens','rokla','am','cnn'])
 filter_words.update(['a','b','c','d','e','f','g','h'])
-filter_words.update(['']) #this was added, because the % symbol returns as a valid single token, and is then stripped
+filter_words.update(['']) #this was added since the % symbol returns as a valid single token, and is then stripped
 filter_words.update(['zero','one','two','three','four','five','six','seven','eight','nine'])
 
 #pickle.dump(filter_words, open(pickle_path + 'filter_words.p', 'wb'))
@@ -148,24 +152,28 @@ def extract_candidate_chunks(text, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*
     stop_words |= filter_words
     
     # tokenize, POS-tag, and chunk using regular expressions
-    #todo: currently the grammar chunker incorrectly strings possessives, "trump's plan" --> "trumps plan"
-    #   ideally, that should be two tokens, "trump" and "plan"
+    #todo: currently the grammar chunker noun-strings strings possessives, "trump's plan" --> "trumps plan"
+    #   ideally, that should be two tokens, "trump" and "plan". Without this change you get a lot of
+    #   "floater" terms unlikley to pair up. For example, if Trump was always used in a possessive, like
+    #   "donald trump's trade plan", or "donald trump's rhetoric", then you'd never match with the term for just "trump".
+    #   In an ideal solution, you'd keep ALL three, "donald trump" and "trade plan", and "donald trumps trade plan"
+    #   in that way you'd correctly associate with "donald trump", as well as a loose association with an article on
+    #   obama's "trade plan", and then a very strong link with any article also discusing "donald trumps trade plan".
     chunker = nltk.chunk.regexp.RegexpParser(grammar)
     tagged_sents = nltk.pos_tag_sents(nltk.word_tokenize(sent) for sent in nltk.sent_tokenize(strip_text))
     all_chunks = list(itertools.chain.from_iterable(nltk.chunk.tree2conlltags(chunker.parse(tagged_sent))
                                                     for tagged_sent in tagged_sents))
 
-    # candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word) for word, pos, chunk in group).lower()
-    #     for key, group in itertools.groupby(all_chunks, lambda_unpack(lambda word, pos, chunk: chunk != 'O')) if key]
     candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word.lower().strip()) for word, pos, chunk in group)
         for key, group in itertools.groupby(all_chunks, lambda_unpack(lambda word, pos, chunk: chunk != 'O')) if key]
     
     #We had left standard punctuation to aid in sentence chunking. Now delete all intra-word punctuation. "f.b.i. --> "fbi"
     for idx in range(len(candidates)):
         candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', candidates[idx])
+    #Did not use string.punctuation, since we need to escape the [brackets] for re.sub
     
-    #strip again, because filtering punctuation above may re-introduce floating spaces, "% people" --> " people"
     return [cand.strip() for cand in candidates if cand not in stop_words]
+    #strip again, because filtering punctuation above may re-introduce floating spaces, "% people" --> " people"
 
 #==========Take a single long string of text and convert it into terms / phrases========
 def parse_article(dsi_text, phrase_dict, ec_dict, grammar=r'KT: {(<NN.*>+)? <NN.*>+}'):
@@ -174,6 +182,8 @@ def parse_article(dsi_text, phrase_dict, ec_dict, grammar=r'KT: {(<NN.*>+)? <NN.
     insensitive_phrase = ""
     #Before processing, let's capture combinatory-word-phrases to avoid incorrect splitting
     #   e.g., "Cash for guns" --> "cashForGuns", to prevent "cash" and "guns" indivudually
+    #   Currently very wasteful iteration, done for readability. If you build a large corpus and phrase dictionaries
+    #   You'd be well serviced to optimize this implementation.
     for sentence in dsi_sentences:
         for phrase, ec in phrase_dict.items():
             if phrase.lower() in sentence.lower():
@@ -202,18 +212,18 @@ file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(os.path.join(c
 for f in file_list:
     document = docx.Document(corpus_path+f)
     dsi_text = ""
-    #Luckily, metadata is in a table, and the paragraphs functions will skip it
+    #Luckily, PRED453 DOCX template has metadata in a table, and the paragraphs functions will skip it
     for p in document.paragraphs:
         dsi_text += ' ' + p.text
     corpus.append(dsi_text)
 del f, p, document, dsi_text
-#corpus now contains all raw text of all DSI, each article as a solid string.
+#corpus now contains all raw text of all DSIs, each article as a solid string.
 
 
 #Next, let's parse each article into grammar chunks, phrases, and terms
 
 #Use the following to include adjectives and preposition / conjunction chunks
-#    e.g., "cash for guns" rather than split, "cash", "guns"
+#    e.g., automatically retain "cash for guns" rather than split, "cash", "guns"
 #    e.g., "dire days on Wall Street", rather than "dire days", "Wall Street"
 grammar_conjunctions = r'KT: {(<JJ>* <NN.*>+ <IN>)? <JJ>* <NN.*>+}'
 #Use the following to include adjective modifiers
@@ -249,6 +259,7 @@ for i in range(0, len(corpus_term_counts)):
         corpus_term_counts[i].set_value(term,'tf',term_count / dsi_num_terms)
 del i,term, dsi_num_terms, term_count
 
+#The index is a mish-mash of each individual DSI. Rebuild it. (Not really necessary, just being pedantic)
 master = master.reset_index(drop=True)
 
 #count number TOTAL times a term occurs in whole corpus
@@ -293,5 +304,5 @@ masterdf_terms.to_csv(output_path+'master.csv')
 for i in range(0, len(corpus_term_counts)):
     corpus_term_counts[i].to_csv(output_path + file_list[i][0:6] + '.csv')
     #todo: the above [0:6] will start overwriting DSI once we hit #100
-    #     [DSI-12], would be overwritten by [DSI-12]1, for example
+    #     e.g., [DSI-12], would be overwritten by DSI-120 when it's pruned to 6 chars
 del i
