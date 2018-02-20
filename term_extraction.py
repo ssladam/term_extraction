@@ -4,6 +4,10 @@
 import pandas as pd
 import numpy as np
 import itertools, nltk, re, os, docx, unicodedata
+#Uncomment the following line if you will use pickle to load phrase / EC / filter lists from pickle,
+#   rather than creating within this code.
+#import pickle
+
 #If you've never setup nltk previously, execute the following line
 #nltk.download()
 
@@ -13,7 +17,8 @@ import itertools, nltk, re, os, docx, unicodedata
 #   naming by the file, and simply assign your own number by order read in
 
 corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
-output_path =   "C:/temp/NU/453/output/" #location you will output all CSV files
+output_path = "C:/temp/NU/453/output/" #location you will output all CSV files
+pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
 #Preprocessing, opportunity to replace words or phrases with ECs
 #  DO NOT add "president" --> "presidentTrump" here, otherwise all instances
@@ -43,6 +48,10 @@ phrase_dict = {"Trans-Pacific Partnership": "TPP",\
             "percentage":"",\
             
           }
+
+#pickle.dump(phrase_dict, open(pickle_path + 'phrase_dict.p', 'wb'))
+#phrase_dict = pickle.load(open(pickle_path + 'phrase_dict.p', 'rb'))
+
 
 #This will be swapped out after processing is complete, now you're safe to
 #  swap out individual words for their EC equivalent.
@@ -96,6 +105,10 @@ ec_dict = {'trump':'presidentDonaldTrump',\
 
                
                }
+
+#pickle.dump(ec_dict, open(pickle_path + 'ec_dict.p', 'wb'))
+#ec_dict = pickle.load(open(pickle_path + 'ec_dict.p', 'rb'))
+
 #the parser converts all entries to lower case, so we should do the same
 ec_dict = {key.lower(): value for key, value in ec_dict.items()}
 
@@ -113,11 +126,9 @@ filter_words.update(['rky','dc','dny','rfla','rid', 'try','weve','pas','co','km'
 filter_words.update(['a','b','c','d','e','f','g','h'])
 filter_words.update(['']) #this was added, because the % symbol returns as a valid single token, and is then stripped
 filter_words.update(['zero','one','two','three','four','five','six','seven','eight','nine'])
-#filter_words.update(set(nltk.corpus.stopwords.words('english'))
-#I intentionally didn't add STOP_WORDS to this list, otherwise it would filter mis-categorizations
-#   For example, "S&P 500" became "S", and "P", and 500 was lost. Only add this line when confident you've
-#   cleaned the articles
 
+#pickle.dump(filter_words, open(pickle_path + 'filter_words.p', 'wb'))
+#filter_words = pickle.load(open(pickle_path + 'filter_words.p', 'rb'))
 
 
 #===========================================================
@@ -146,18 +157,15 @@ def extract_candidate_chunks(text, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*
 
     # candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word) for word, pos, chunk in group).lower()
     #     for key, group in itertools.groupby(all_chunks, lambda_unpack(lambda word, pos, chunk: chunk != 'O')) if key]
-    candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word) for word, pos, chunk in group).lower()
-        for key, group in itertools.groupby(all_chunks, lambda word__pos__chunk: word__pos__chunk[2] != 'O') if key]
+    candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word.lower().strip()) for word, pos, chunk in group)
+        for key, group in itertools.groupby(all_chunks, lambda_unpack(lambda word, pos, chunk: chunk != 'O')) if key]
     
     #We had left standard punctuation to aid in sentence chunking. Now delete all intra-word punctuation. "f.b.i. --> "fbi"
-    # for idx in range(len(candidates)):
-    #     candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', candidates[idx])
-    #lemmatization isn't working fully, missing some entries? Very wasteful, but until we fix
-    #  this bug, just double up and re-do the lemma while we're iterating over the full list again anyhow...
     for idx in range(len(candidates)):
-        candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', nltk.stem.WordNetLemmatizer().lemmatize(candidates[idx]))
-
-    return [cand.lstrip() for cand in candidates if cand not in stop_words]
+        candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', candidates[idx])
+    
+    #strip again, because filtering punctuation above may re-introduce floating spaces, "% people" --> " people"
+    return [cand.strip() for cand in candidates if cand not in stop_words]
 
 #==========Take a single long string of text and convert it into terms / phrases========
 def parse_article(dsi_text, phrase_dict, ec_dict, grammar=r'KT: {(<NN.*>+)? <NN.*>+}'):
