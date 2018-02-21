@@ -3,11 +3,7 @@
 #    http://bdewilde.github.io/blog/2014/09/23/intro-to-automatic-keyphrase-extraction/
 import pandas as pd
 import numpy as np
-import itertools, nltk, re, os, docx, unicodedata
-#Uncomment the following line if you will use pickle to load phrase / EC / filter lists from pickle,
-#   rather than creating within this code.
-#import pickle
-
+import itertools, nltk, re, os, docx, unicodedata, pickle
 #If you've never setup nltk previously, execute the following line
 #nltk.download()
 
@@ -16,123 +12,22 @@ import itertools, nltk, re, os, docx, unicodedata
 #   DSI-100 will overwrite DSI-10. Add logic to get full DSI name. Or just skip
 #   naming by the file, and simply assign your own number by order read in
 
-#WARNING: no error checking! When reading in DOCX it sweeps up all files in the folder, as just one example.
-#   If you consider using this in a shared capacity, with people not familiar with Python, you probably want
-#   to improve error-handling. Check to confirm directories exist, confirm input is valid, etc.
+def main():
+    corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
+    output_path = "C:/temp/NU/453/output/" #location you will output all CSV files
+    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
-corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
-output_path = "C:/temp/NU/453/output/" #location you will output all CSV files
-pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
-
-#Preprocessing, opportunity to replace words or phrases with ECs
-#  DO NOT add "president" --> "presidentTrump" here, otherwise all instances
-#  of "president obama" would be converted to "presidentTrump obama"
-#  this should be used for fixed phrases ONLY
-phrase_dict = {"Trans-Pacific Partnership": "TPP",\
-            "North American Free Trade Agreement":"NAFTA",\
-            "World Trade Organization":"WTO",\
-            "fire and fury":"fireAndFury",\
-            "lost jobs":"jobLosses",\
-            "job losses":"jobLosses",\
-            "chief of staff":"chiefOfStaff",\
-            "E&E News":"EandENews",\
-            "S&P 500":"SandP500",\
-            "Immigration and Nationality Act":"immigrationAndNationalityAct",\
-            "Club For Growth and Heritage":"clubForGrowthAndHeritage",\
-            "Freedom Caucus":"freedomCaucus",\
-            "Office of Personnel Management ":"officeOfPersonnel Management",\
-            "Office of Management and Budget":"officeOfManagementAndBudget",\
-            #Here is my first hack-y cheat. To avoid phrase clumping, insert a determiner to force phrase-split
-            #   the below will force the code to split this into "memorandum" and "donald trump", instead of a single term
-            "memorandum donald trump":"memorandum which donald trump",\
-            #My 2nd hack-y cheat: pre-filtering some terms that would be tricky to remove otherwise
-            #   these terms become "nested" with other terms, easier to just axe them here
-            "[sic]":"",\
-            "percent":"",\
-            "percentage":"",\
-            
-          }
-
-#pickle.dump(phrase_dict, open(pickle_path + 'phrase_dict.p', 'wb'))
-#phrase_dict = pickle.load(open(pickle_path + 'phrase_dict.p', 'rb'))
-
-
-#This will be swapped out after processing is complete, now you're safe to
-#  swap out individual words for their EC equivalent.
-ec_dict = {'trump':'presidentDonaldTrump',\
-               'president':'presidentDonaldTrump',\
-               "us":"unitedStates",\
-               "usa":"unitedStates",\
-               "united states":"unitedStates",\
-               "mr trump":"presidentDonaldTrump",\
-               "mr trumps":"presidentDonaldTrump",\
-               "president trump":"presidentDonaldTrump",\
-               "president trumps":"presidentDonaldTrump",\
-               "President Donald Trump":"presidentDonaldTrump",\
-               "Donald Trump":"presidentDonaldTrump",\
-               "president-elect donald trump":"presidentElectDonaldTrump",\
-               "presidentelect donald trumps":"presidentElectDonaldTrump",\
-               "presidentelect donald trump":"presidentElectDonaldTrump",\
-               "presidentelect donald j trump":"presidentElectDonaldTrump",\
-               "presidentelects":"presidentElectDonaldTrump",\
-               "presidentelect":"presidentElectDonaldTrump",\
-               "Melania Trump":"melaniaTrump",\
-               "trumps":"presidentDonaldTrump",\
-               "us president donald trump":"presidentDonaldTrump",\
-               "fbi director james comey":"jamesComey",\
-               "comey":"jamesComey",\
-               "mr rosss":"wilburRoss",\
-               "mr ross":"wilburRoss",\
-               "commerce secretary wilbur ross":"wilburRoss",\
-               "ross":"wilburRoss",\
-               "sen dianne feinstein":"dianneFienstein",\
-               "feinstein":"dianneFienstein",\
-               "mueller":"robertMueller",\
-               "robert mueller":"robertMueller",\
-               "counsel robert mueller":"robertMueller",\
-               "special counsel":"robertMueller",\
-               "eu":"europeanUnion",\
-               "european union":"europeanUnion",\
-               "white house press secretary sarah huckabee sanders":"sarahHuckabeeSanders",\
-               "trump administration":"trumpAdministration",\
-               "united nations":"unitedNations",\
-               "un":"unitedNations",\
-               "ina":"immigrationAndNationalityAct",\
-               "south korea":"southKorea",\
-               "south koreas":"southKorea",\
-               "ocare":"obamacare",\
-               "russias":"russia",\
-               "tariffs":"tariff",\
-               "us tariff":"tariff",\
-               "percent tariff":"tariff",\
-               "tariff hike":"tariff"
-
-               
-               }
-
-#pickle.dump(ec_dict, open(pickle_path + 'ec_dict.p', 'wb'))
-#ec_dict = pickle.load(open(pickle_path + 'ec_dict.p', 'rb'))
-
-#the parser converts all entries to lower case, so we should do the same
-ec_dict = {key.lower(): value for key, value in ec_dict.items()}
-
-
-#add all words you want to filter into filter_words, this also occurs POST PROCESSING, so now if you filter
-#  the term "friday" it will drop that singular term, but WOULD NOT filter "friday night" since it doesn't match
-filter_words = set()
-filter_words.update(['year', 'week', 'month', 'day', 'hour', 'minute', 'time','past','morning','afternoon', 'evening', 'night'])
-filter_words.update(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday','today','yesterday','tomorrow'])
-filter_words.update(['january','february', 'march', 'april','may','june','july','august','september','october','november','december'])
-filter_words.update(['jan','feb', 'mar', 'apr','jun','jul','aug','sep','oct','nov','dec'])
-filter_words.update(['others', 'contrast','approach','change','response','people','possibility'])
-filter_words.update(['recommendation', 'side','control','fact','win','attempt','amid','something','eg','isnt','ive','hes','im','ill'])
-filter_words.update(['rky','dc','dny','rfla','rid', 'try','weve','pas','co','km','sens','rokla','am','cnn'])
-filter_words.update(['a','b','c','d','e','f','g','h'])
-filter_words.update(['']) #this was added since the % symbol returns as a valid single token, and is then stripped
-filter_words.update(['zero','one','two','three','four','five','six','seven','eight','nine'])
-
-#pickle.dump(filter_words, open(pickle_path + 'filter_words.p', 'wb'))
-#filter_words = pickle.load(open(pickle_path + 'filter_words.p', 'rb'))
+    #use phrase_dict.py to create your phrase dictionary
+    try:
+        phrase_dict = pickle.load(open(pickle_path + 'phrase_dict.p', 'rb'))
+        ec_dict = pickle.load(open(pickle_path + 'ec_dict.p', 'rb'))
+        filter_words = pickle.load(open(pickle_path + 'filter_words.p', 'rb'))
+        concept_dict = pickle.load(open(pickle_path + 'concept_dict.p', 'rb'))
+    except IOError:
+        print('Error opening dictionary file, confirm directory and pickle files exist')
+        return
+    
+    make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict)
 
 
 #===========================================================
@@ -176,7 +71,7 @@ def extract_candidate_chunks(text, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*
     #strip again, because filtering punctuation above may re-introduce floating spaces, "% people" --> " people"
 
 #==========Take a single long string of text and convert it into terms / phrases========
-def parse_article(dsi_text, phrase_dict, ec_dict, grammar=r'KT: {(<NN.*>+)? <NN.*>+}'):
+def parse_article(dsi_text, phrase_dict, ec_dict, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*>+}'):
     dsi_sentences = nltk.sent_tokenize(dsi_text)
     ec_text = ""
     insensitive_phrase = ""
@@ -202,107 +97,137 @@ def parse_article(dsi_text, phrase_dict, ec_dict, grammar=r'KT: {(<NN.*>+)? <NN.
     return pd.DataFrame(chunked_series, columns=['terms'])
 
 #===========================================================
-#               Main program
+#               True main program
 #===========================================================
 
-corpus = []
-file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(os.path.join(corpus_path, f))]
+def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict):
 
-#Let's open all DSI, and append the text of each to a list
-for f in file_list:
-    document = docx.Document(corpus_path+f)
-    dsi_text = ""
-    #Luckily, PRED453 DOCX template has metadata in a table, and the paragraphs functions will skip it
-    for p in document.paragraphs:
-        dsi_text += ' ' + p.text
-    corpus.append(dsi_text)
-del f, p, document, dsi_text
-#corpus now contains all raw text of all DSIs, each article as a solid string.
-
-
-#Next, let's parse each article into grammar chunks, phrases, and terms
-
-#Use the following to include adjectives and preposition / conjunction chunks
-#    e.g., automatically retain "cash for guns" rather than split, "cash", "guns"
-#    e.g., "dire days on Wall Street", rather than "dire days", "Wall Street"
-grammar_conjunctions = r'KT: {(<JJ>* <NN.*>+ <IN>)? <JJ>* <NN.*>+}'
-#Use the following to include adjective modifiers
-#    e.g., "blue car" rather than just "car"
-grammar_adjectives = r'KT: {(<JJ>* <NN.*> <NN.*>+)? <JJ>* <NN.*>+}'
-#Only chunk noun-linked sections
-#    e.g., "bird house", or "emergency road flare"
-grammar_nouns = r'KT: {(<NN.*>+)? <NN.*>+}'
-
-#convert each string-of-text into a list comprised of DataFrame-of-terms
-corpus_phrases = []
-for dsi in corpus:
-    corpus_phrases.append(parse_article(dsi, phrase_dict, ec_dict, grammar_nouns))
-del dsi
-
-#gather all terms to build our "master" list of terms
-#create a new list of all dsi, and "pivot" on terms for total counts
-master = pd.DataFrame()
-corpus_term_counts = []
-for i in range(0, len(file_list)):
-    corpus_phrases[i]['dsi'] = file_list[i][0:6]
-    master = pd.concat([master, corpus_phrases[i]])
-    corpus_term_counts.append(pd.DataFrame(corpus_phrases[i].terms.value_counts()))
-    corpus_term_counts[i].columns = (['t_count'])
-    corpus_term_counts[i].loc[:,'tf'] = 0.0
-del i
-
-#calculate term frequency for INDIVIDUAL DSI
-for i in range(0, len(corpus_term_counts)):
-    dsi_num_terms = corpus_term_counts[i].t_count.sum()
-    for term in corpus_term_counts[i].index:
-        term_count = corpus_term_counts[i].loc[term].t_count
-        corpus_term_counts[i].set_value(term,'tf',term_count / dsi_num_terms)
-del i,term, dsi_num_terms, term_count
-
-#The index is a mish-mash of each individual DSI. Rebuild it. (Not really necessary, just being pedantic)
-master = master.reset_index(drop=True)
-
-#count number TOTAL times a term occurs in whole corpus
-master_terms = master.terms.value_counts()
-
-term_loc_series = master.groupby(['terms','dsi']).size()
-
-masterdf_terms = pd.DataFrame(master_terms)
-masterdf_terms.columns=(['t_count'])
-masterdf_terms['d_count'] = 0
-terms_in_corpus = sum(masterdf_terms['t_count'])
-masterdf_terms.loc[:,'tf'] = 0.0
-masterdf_terms.loc[:,'idf'] = 0.0
-masterdf_terms.loc[:,'tf_idf'] = 0.0
-#calcualte tf_idf statistics on the FULL SET
-for term in masterdf_terms.index:
-    #count the number times term occurs in a DSI
-    masterdf_terms.set_value(term,'d_count',len(term_loc_series[term]))
-    #calculate tf = Term_Feq_Count / Total_Terms_In_Cohort
-    term_count = masterdf_terms.loc[term]['t_count']
-    masterdf_terms.set_value(term,'tf',term_count / terms_in_corpus)
-    #calculate idf = LOG10(#DSI / d_count)
-    num_dsi = len(corpus_phrases)
-    masterdf_terms.set_value(term,'idf',np.log10(num_dsi / masterdf_terms.loc[term]['d_count'] ))
-    #calculate tf*idf
-    masterdf_terms.set_value(term,'tf_idf', masterdf_terms.loc[term]['tf'] * masterdf_terms.loc[term]['idf'] )
-del term, term_count, num_dsi
-
-
-
-#create the matrix of terms across each DSI
-for i in range(0, len(corpus_term_counts)):
-    for term in corpus_term_counts[i].index:
-        #masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['t_count'][term])
-        masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['tf'][term])
-del i,term
-
-#write the master matrix out to a CSV file
-masterdf_terms.to_csv(output_path+'master.csv')
-
-#write out all of the individual DSI to their own CSV
-for i in range(0, len(corpus_term_counts)):
-    corpus_term_counts[i].to_csv(output_path + file_list[i][0:6] + '.csv')
-    #todo: the above [0:6] will start overwriting DSI once we hit #100
-    #     e.g., [DSI-12], would be overwritten by DSI-120 when it's pruned to 6 chars
-del i
+    corpus = []
+    file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(os.path.join(corpus_path, f))]
+    
+    #Let's open all DSI, and append the text of each to a list
+    try:
+        for f in file_list:
+            document = docx.Document(corpus_path+f)
+            dsi_text = ""
+            #Luckily, PRED453 DOCX template has metadata in a table, and the paragraphs functions will skip it
+            for p in document.paragraphs:
+                dsi_text += ' ' + p.text
+            corpus.append(dsi_text)
+        del f, p, document, dsi_text
+    except IOError:
+        print('Error reading corpus DSI docx files')
+        return
+    #corpus now contains all raw text of all DSIs, each article as a solid string.
+    
+    #Next, let's parse each article into grammar chunks, phrases, and terms
+    
+    #Use the following to include adjectives and preposition / conjunction chunks
+    #    e.g., automatically retain "cash for guns" rather than split, "cash", "guns"
+    #    e.g., "dire days on Wall Street", rather than "dire days", "Wall Street"
+    grammar_conjunctions = r'KT: {(<JJ>* <NN.*>+ <IN>)? <JJ>* <NN.*>+}'
+    #Use the following to include adjective modifiers
+    #    e.g., "blue car" rather than just "car"
+    grammar_adjectives = r'KT: {(<JJ>* <NN.*> <NN.*>+)? <JJ>* <NN.*>+}'
+    #Only chunk noun-linked sections, this is the default option if you don't specify
+    #    e.g., "bird house", or "emergency road flare"
+    grammar_nouns = r'KT: {(<NN.*>+)? <NN.*>+}'
+    
+    #convert each string-of-text into a list comprised of DataFrame-of-terms
+    corpus_phrases = []
+    for dsi in corpus:
+        corpus_phrases.append(parse_article(dsi, phrase_dict, ec_dict, filter_words, grammar_nouns))
+    del dsi
+    
+    #gather all terms to build our "master" list of terms
+    #create a new list of all dsi, and "pivot" on terms for total counts
+    master = pd.DataFrame()
+    corpus_term_counts = []
+    for i in range(0, len(file_list)):
+        corpus_phrases[i]['dsi'] = file_list[i][0:6]
+        master = pd.concat([master, corpus_phrases[i]])
+        corpus_term_counts.append(pd.DataFrame(corpus_phrases[i].terms.value_counts()))
+        corpus_term_counts[i].columns = (['t_count'])
+        corpus_term_counts[i].loc[:,'tf'] = 0.0
+    del i
+    
+    #calculate term frequency for INDIVIDUAL DSI
+    for i in range(0, len(corpus_term_counts)):
+        dsi_num_terms = corpus_term_counts[i].t_count.sum()
+        for term in corpus_term_counts[i].index:
+            term_count = corpus_term_counts[i].loc[term].t_count
+            corpus_term_counts[i].set_value(term,'tf',term_count / dsi_num_terms)
+    del i,term, dsi_num_terms, term_count
+    
+    #The index is a mish-mash of each individual DSI. Rebuild it. (Not really necessary, just being pedantic)
+    master = master.reset_index(drop=True)
+    
+    #count number TOTAL times a term occurs in whole corpus
+    master_terms = master.terms.value_counts()
+    
+    term_loc_series = master.groupby(['terms','dsi']).size()
+    
+    masterdf_terms = pd.DataFrame(master_terms)
+    masterdf_terms.columns=(['t_count'])
+    masterdf_terms['concept'] = 'UNKNOWN'
+    masterdf_terms['d_count'] = 0
+    masterdf_terms.loc[:,'tf'] = 0.0
+    masterdf_terms.loc[:,'idf'] = 0.0
+    masterdf_terms.loc[:,'tf_idf'] = 0.0
+    
+    terms_in_corpus = sum(masterdf_terms['t_count'])
+    
+    #assign each term to it's concept class, if known
+    for key, value in concept_dict.items():
+        #must confirm the key actually exists as a term, or else it'd be shoe-horned in with blank row values
+        if key in masterdf_terms.index:
+            masterdf_terms.set_value(key,'concept', value)
+    
+    
+    #calcualte tf_idf statistics on the FULL SET
+    for term in masterdf_terms.index:
+        #count the number times term occurs in a DSI
+        masterdf_terms.set_value(term,'d_count',len(term_loc_series[term]))
+        #calculate tf = Term_Feq_Count / Total_Terms_In_Cohort
+        term_count = masterdf_terms.loc[term]['t_count']
+        masterdf_terms.set_value(term,'tf',term_count / terms_in_corpus)
+        #calculate idf = LOG10(#DSI / d_count)
+        num_dsi = len(corpus_phrases)
+        masterdf_terms.set_value(term,'idf',np.log10(num_dsi / masterdf_terms.loc[term]['d_count'] ))
+        #calculate tf*idf
+        masterdf_terms.set_value(term,'tf_idf', masterdf_terms.loc[term]['tf'] * masterdf_terms.loc[term]['idf'] )
+    del term, term_count, num_dsi
+    
+    
+    
+    #create the matrix of terms across each DSI
+    for i in range(0, len(corpus_term_counts)):
+        for term in corpus_term_counts[i].index:
+            #masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['t_count'][term])
+            masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['tf'][term])
+    del i,term
+    
+    
+    #First we pivot by concept, and sum all columns
+    masterdf_concepts = masterdf_terms.groupby(['concept']).sum()
+    #document count shouldn't be sum'd, we should max to find real doc count, fix those values.
+    #   There is probably a better way to do this, but I'm bad with pivot logic!
+    for concept in masterdf_concepts.index:
+        #Ignore first 5 columns to only count # of items in the DSI's
+        masterdf_concepts.set_value(concept, 'd_count', masterdf_concepts.loc[concept][5:].count())
+    del concept
+    
+    
+    #write the master matrix out to a CSV file
+    masterdf_terms.to_csv(output_path+'master.csv')
+    masterdf_concepts.to_csv(output_path+'master_concepts.csv')
+    
+    #write out all of the individual DSI to their own CSV
+    for i in range(0, len(corpus_term_counts)):
+        corpus_term_counts[i].to_csv(output_path + file_list[i][0:6] + '.csv')
+        #todo: the above [0:6] will start overwriting DSI once we hit #100
+        #     e.g., [DSI-12], would be overwritten by DSI-120 when it's pruned to 6 chars
+    del i
+    
+if __name__ == '__main__':
+    main()
