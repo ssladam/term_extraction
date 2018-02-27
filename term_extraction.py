@@ -27,7 +27,7 @@ def main():
         print('Error opening dictionary file, confirm directory and pickle files exist')
         return
     
-    make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict)
+    return make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict)
 
 
 #===========================================================
@@ -178,11 +178,18 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     terms_in_corpus = sum(masterdf_terms['t_count'])
     
     #assign each term to it's concept class, if known
+    #indexSr = pd.Series(masterdf_terms.index)
+    indexSr = pd.Series(masterdf_terms.index).str.lower()
     for key, value in concept_dict.items():
         #must confirm the key actually exists as a term, or else it'd be shoe-horned in with blank row values
-        if key in masterdf_terms.index:
-            masterdf_terms.set_value(key,'concept', value)
-    
+        
+        #todo: major bug! "match" will return true if the BEGINNING matches, such that a search to
+        #  match "hillary" will match with "hillaryClinton". Need to find way to match EXACT string
+        #  I want to avoid doing it with another 'for' loop, which would be an easy fix
+        if(indexSr.str.match(key,case=False).any()):
+            try: masterdf_terms.at[masterdf_terms.index[indexSr[indexSr==key].index[0]], 'concept'] = value
+            except: print("error, key matched in search, but not in term index: \""+key+"\"")
+    del indexSr
     
     #calcualte tf_idf statistics on the FULL SET
     for term in masterdf_terms.index:
@@ -229,5 +236,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         #     e.g., [DSI-12], would be overwritten by DSI-120 when it's pruned to 6 chars
     del i
     
+    return (masterdf_terms, masterdf_concepts)
+    
 if __name__ == '__main__':
-    main()
+    (terms, concepts) = main()
