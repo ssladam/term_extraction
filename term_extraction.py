@@ -17,7 +17,7 @@ def main():
     output_path = "C:/temp/NU/453/output/" #location you will output all CSV files
     pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
-    #use phrase_dict.py to create your phrase dictionary
+    #use phrase_dict.py, ec_dict.py, concept_dict.py, and filter_words.py to create dictionaries
     try:
         phrase_dict = pickle.load(open(pickle_path + 'phrase_dict.p', 'rb'))
         ec_dict = pickle.load(open(pickle_path + 'ec_dict.p', 'rb'))
@@ -113,6 +113,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
             #Luckily, PRED453 DOCX template has metadata in a table, and the paragraphs functions will skip it
             for p in document.paragraphs:
                 dsi_text += ' ' + p.text
+                #You may want to add a '.' to the space above. Section title tend to not have punctuation. It could create false sentences.
             corpus.append(dsi_text)
         del f, p, document, dsi_text
     except IOError:
@@ -137,6 +138,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     corpus_phrases = []
     for dsi in corpus:
         corpus_phrases.append(parse_article(dsi, phrase_dict, ec_dict, filter_words, grammar_nouns))
+        #replace above 'grammar_nouns' with your preferred chunker
     del dsi
     
     #gather all terms to build our "master" list of terms
@@ -184,7 +186,9 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         #must confirm the key actually exists as a term, or else it'd be shoe-horned in with blank row values
         
         #todo: major bug! "match" will return true if the BEGINNING matches, such that a search to
-        #  match "hillary" will match with "hillaryClinton". Need to find way to match EXACT string
+        #  match "hillary" will return TRUE if the set contains "hillaryClinton". Need to find way
+        #  to match EXACT string, since above would kick an exception to write "hillary" if that
+        #  exact key does not exist, even though "hillaryClinton" returned TRUE
         #  I want to avoid doing it with another 'for' loop, which would be an easy fix
         if(indexSr.str.match(key,case=False).any()):
             try: masterdf_terms.at[masterdf_terms.index[indexSr[indexSr==key].index[0]], 'concept'] = value
@@ -234,8 +238,10 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         corpus_term_counts[i].to_csv(output_path + file_list[i][0:6] + '.csv')
         #todo: the above [0:6] will start overwriting DSI once we hit #100
         #     e.g., [DSI-12], would be overwritten by DSI-120 when it's pruned to 6 chars
+        #     hack-fix: rename all past DSI as "DSI-027", then change 6 --> 7 (in all locations!)
     del i
     
+    #return the primary dataframes to allow exploration in the var browser
     return (masterdf_terms, masterdf_concepts)
     
 if __name__ == '__main__':
