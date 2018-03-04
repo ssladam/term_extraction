@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
-#a lot of credit goes to:
+#a lot of credit goes to these fine gents:
 #    http://bdewilde.github.io/blog/2014/09/23/intro-to-automatic-keyphrase-extraction/
+#    http://brandonrose.org/clustering
+
 import pandas as pd
 import numpy as np
 import itertools, nltk, re, os, docx, unicodedata, pickle
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+from sklearn.manifold import MDS
+from scipy.cluster.hierarchy import ward, dendrogram
+
 #If you've never setup nltk previously, execute the following line
 #nltk.download()
 
@@ -12,10 +20,15 @@ import itertools, nltk, re, os, docx, unicodedata, pickle
 #   DSI-100 will overwrite DSI-10. Add logic to get full DSI name. Or just skip
 #   naming by the file, and simply assign your own number by order read in
 
+#how many clusters do you want?
+num_clusters = 14
+#how many of the top-terms within each cluster do you want to see?
+num_terms_in_cluster = 30
+
 def main():
-    corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
-    output_path = "C:/temp/NU/453/output/" #location you will output all CSV files
-    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
+    corpus_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/CS2/" #location where all corpus .docx files are stored
+    output_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/output/" #location you will output all files
+    pickle_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/pickle/" #where do you want to read-in the phrase / EC / filters, etc.
 
     #use phrase_dict.py, ec_dict.py, concept_dict.py, and filter_words.py to create dictionaries
     try:
@@ -95,6 +108,145 @@ def parse_article(dsi_text, phrase_dict, ec_dict, filter_words, grammar=r'KT: {(
     chunked_series.replace(to_replace=ec_dict, inplace=True)
     
     return pd.DataFrame(chunked_series, columns=['terms'])
+
+#===========================================================
+#               Helper function to cluster terms, concepts
+#===========================================================
+def magic_cluster(tfidf_matrix, output_path, out_name, num_clusters=5, num_terms_in_cluster=20):
+    #todo: add logic to dynamically select optimal number of clusters
+    #note: num_terms_in_cluster is only the number of terms to be REPORTED, the actual
+    #   number of terms is the full collection of all terms
+    
+    #convert our term tf_idf into a proper matrix (get rid of extraneous columns, and transpose)    
+    #were we given the terms matrix to cluster, or the concept matrix?
+    if 'concept' in tfidf_matrix.columns:
+        tfidf_matrix.drop(['t_count','concept','d_count','tf','idf','tf_idf'], axis=1, inplace=True)
+    else: tfidf_matrix.drop(['t_count','d_count','tf','idf','tf_idf'], axis=1, inplace=True)
+    tfidf_matrix.fillna(0, inplace=True)
+    tfidf_matrix = tfidf_matrix.transpose()
+    
+    #Calculate cosine similarity of all terms to each other...
+    dist = 1 - cosine_similarity(tfidf_matrix)
+    
+    #determine k-means clustering
+    #num_clusters = 5
+    km = KMeans(n_clusters=num_clusters)
+    km.fit(tfidf_matrix)
+    clusters = km.labels_.tolist()
+    vocab_frame = pd.DataFrame(tfidf_matrix.columns)
+    
+    tfidf_matrix['cluster'] = clusters
+    tfidf_matrix['cluster'].value_counts() #how many DSI belong to each cluster?
+    
+    #what are the top terms from each of the clusters?
+
+    cluster_terms = {}
+    cluster_names = {}
+    text_file = open(output_path + out_name + '_clusters.txt', "w")
+    print("Top terms per cluster:\n")
+    text_file.write("Top terms per cluster:\n")
+    #sort cluster centers by proximity to centroid
+    order_centroids = km.cluster_centers_.argsort()[:, ::-1] 
+    for i in range(num_clusters):
+        terms_in_cluster = ''
+        dsi_in_cluster = ''
+        print("Cluster %d words:" % i)   
+        text_file.write("Cluster %d words:\n" % i)   
+        for ind in order_centroids[i, :num_terms_in_cluster]:
+            terms_in_cluster = terms_in_cluster + vocab_frame.iloc[ind][0] + ", "
+        print(terms_in_cluster[:-2]) #don't print the trailing ', '
+        text_file.write(terms_in_cluster[:-2]) #don't print the trailing ', '
+        cluster_terms[i] = terms_in_cluster[:-2]
+        cluster_names[i] = cluster_terms[i].split(', ')[:4] #only use the first 4 terms to "name" the cluster
+        print() #add whitespace
+        text_file.write('\n\n')
+        for dsi in tfidf_matrix[tfidf_matrix['cluster']==i].index:
+            dsi_in_cluster = dsi_in_cluster + dsi + ", "
+        print("DSI in cluster %d:" % i)
+        text_file.write("DSI in cluster %d:\n" % i)
+        print(dsi_in_cluster[:-2]) #don't print the trailing ', '
+        text_file.write(dsi_in_cluster[:-2]) #don't print the trailing ', '
+        print('\n\n')
+        text_file.write('\n\n')
+    text_file.close()
+    del i, terms_in_cluster, dsi_in_cluster, ind, order_centroids, text_file
+    
+    
+    MDS()
+    # convert two components as we're plotting points in a two-dimensional plane
+    # "precomputed" because we provide a distance matrix
+    # we will also specify `random_state` so the plot is reproducible.
+    mds = MDS(n_components=2, dissimilarity="precomputed", random_state=1)
+    pos = mds.fit_transform(dist)  # shape (n_components, n_samples)
+    xs, ys = pos[:, 0], pos[:, 1]
+    
+    #un-comment below to manually set up colors per clusters using a dict
+    #   also, find "cluster_colors" below, and un-comment that line to enable it
+    #cluster_colors = {0: '#1b9e77', 1: '#d95f02', 2: '#7570b3', 3: '#e7298a', 4: '#66a61e'}
+    #un-comment the below section if you want to manually name the clusters
+    #   Be certain the dictionary is the same length as your declared number of clusters
+    # cluster_names = {0: 'Immigration and border control', 
+    #                 1: 'American governmental policy', 
+    #                 2: 'Russian interference', 
+    #                 3: 'International trade', 
+    #                 4: 'Tax reform'}
+    
+    #create data frame that has the result of the MDS plus the cluster numbers and titles
+    mappedDF = pd.DataFrame(dict(x=xs, y=ys, label=clusters, title=list(tfidf_matrix.index))) 
+    #group by cluster
+    groups = mappedDF.groupby('label')
+    # set up plot
+    fig, ax = plt.subplots(figsize=(16, 12)) # set size
+    ax.margins(0.05) # Optional, just adds 5% padding to the autoscaling
+    #iterate through groups to layer the plot
+    for name, group in groups:
+        ax.plot(group.x, group.y, marker='o', linestyle='', ms=12, 
+                label=cluster_names[name],
+                #color=cluster_colors[name], 
+                mec='none')
+        ax.set_aspect('auto')
+        ax.tick_params(\
+            axis= 'x',          # changes apply to the x-axis
+            which='both',      # both major and minor ticks are affected
+            bottom='off',      # ticks along the bottom edge are off
+            top='off',         # ticks along the top edge are off
+            labelbottom='off')
+        ax.tick_params(\
+            axis= 'y',         # changes apply to the y-axis
+            which='both',      # both major and minor ticks are affected
+            left='off',      # ticks along the bottom edge are off
+            top='off',         # ticks along the top edge are off
+            labelleft='off')
+    lgd = ax.legend(numpoints=1, bbox_to_anchor=(.5, -.3), loc=8, borderaxespad=0.)
+    #lgd = ax.legend(numpoints=1,  loc=0)
+    #add label in x,y position with the label as the DSI#
+    for i in range(len(mappedDF)):
+        ax.text(mappedDF.ix[i]['x'], mappedDF.ix[i]['y'], mappedDF.ix[i]['title'], size=8)  
+    plt.title('DSI K-Means cluster assignment: ' + out_name)
+    plt.margins(0.05, 0.1)
+    #plt.show() #show the plot
+    plt.savefig(output_path + out_name + '_kmeans.png', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=72)
+    plt.close('all')
+    
+    #the 2D map is done, now prepare a gram to visualize how clustering splits
+    #   Note, this is NOT the same cluster as pictured above. This is ward clustering,
+    #   versus above uses kMeans
+    linkage_matrix = ward(dist) #define the linkage_matrix using ward clustering pre-computed distances
+    fig, ax = plt.subplots(figsize=(15, 30)) # set size
+    ax = dendrogram(linkage_matrix, orientation="right", labels=list(tfidf_matrix.index));
+    
+    plt.tick_params(\
+        axis= 'x',          # changes apply to the x-axis
+        which='both',      # both major and minor ticks are affected
+        bottom='off',      # ticks along the bottom edge are off
+        top='off',         # ticks along the top edge are off
+        labelbottom='off')
+    plt.yticks(fontsize=14)
+    #plt.tight_layout() #show plot with tight layout
+    plt.title('DSI Ward clustering dendrogram: ' + out_name)
+    #plt.show()
+    plt.savefig(output_path + out_name + '_dendrogram.png', bbox_inches='tight', dpi=72)
+    plt.close('all')
 
 #===========================================================
 #               True main program
@@ -192,7 +344,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         #  I want to avoid doing it with another 'for' loop, which would be an easy fix
         if(indexSr.str.match(key,case=False).any()):
             try: masterdf_terms.at[masterdf_terms.index[indexSr[indexSr==key].index[0]], 'concept'] = value
-            except: print("error, key matched in search, but not in term index: \""+key+"\"")
+            except: print("error: key matched in concept search, but does not exist in term index: \""+key+"\"")
     del indexSr
     
     #calcualte tf_idf statistics on the FULL SET
@@ -241,8 +393,15 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         #     hack-fix: rename all past DSI as "DSI-027", then change 6 --> 7 (in all locations!)
     del i
     
+    #perform clustering....
+    magic_cluster(masterdf_terms, output_path, 'terms', num_clusters, num_terms_in_cluster)
+    #now cluster on concepts, instead of ECs
+    magic_cluster(masterdf_concepts, output_path, 'concepts', num_clusters, num_terms_in_cluster)
+    
     #return the primary dataframes to allow exploration in the var browser
-    return (masterdf_terms, masterdf_concepts)
+    return (masterdf_terms, masterdf_concepts, corpus_phrases)
     
 if __name__ == '__main__':
-    (terms, concepts) = main()
+    (terms, concepts, dsi_text) = main()
+
+
