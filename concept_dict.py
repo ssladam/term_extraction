@@ -1,7 +1,9 @@
 import pickle
-pickle_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/pickle/" #where do you want to read / write the phrase list / filters, etc.
+pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
 concept_dict = {
+
+#===================Begin pasted section from excel generator=============
 "bloodbath":"violentCrime",\
 "congresss approval":"energy",\
 "congresss budget process":"budget",\
@@ -11,7 +13,7 @@ concept_dict = {
 "south sudan":"immigration",\
 "sudan":"travelBan",\
 "agriculture":"budget",\
-"agriculture something":"domestic policy",\
+"agriculture something":"domesticPolicy",\
 "corn":"trade",\
 "farmer":"foreignPolicy",\
 "benefitcost ratio":"americanBusiness",\
@@ -98,12 +100,12 @@ concept_dict = {
 "bali":"asianNations",\
 "taiwan":"asianNations",\
 "taiwan amid":"asianNations",\
-"chinas president xi jinping":"asianPolitician",\
-"chinese official":"asianPolitician",\
-"duterte":"asianPolitician",\
-"foreign minister yun byungse":"asianPolitician",\
-"rodrigo duterte":"asianPolitician",\
-"shinzo abe":"asianPolitician",\
+"chinas president xi jinping":"asianNations",\
+"chinese official":"asianNations",\
+"duterte":"asianNations",\
+"foreign minister yun byungse":"asianNations",\
+"rodrigo duterte":"asianNations",\
+"shinzo abe":"asianNations",\
 "force":"foreignPolicy",\
 "chris warren":"energy",\
 "nfl":"racialProvocation",\
@@ -357,7 +359,6 @@ concept_dict = {
 "antius credential":"conflict",\
 "argument":"conflict",\
 "backlash":"conflict",\
-"backlash online":"conflict",\
 "bald threat":"conflict",\
 "bigotry strike":"conflict",\
 "blackmail":"conflict",\
@@ -515,8 +516,6 @@ concept_dict = {
 "governor responsibility":"democrat",\
 "jack markell":"democrat",\
 "jerry brown":"democrat",\
-"nancy":"democrat",\
-"nancy pelosi":"democrat",\
 "opposition agenda":"democrat",\
 "armageddon":"naturalDisaster",\
 "catastrophe":"naturalDisaster",\
@@ -795,7 +794,7 @@ concept_dict = {
 "drilling plan":"environmental",\
 "drilling zone":"environmental",\
 "earth":"environmental",\
-"emission":"environmental",\
+"emission":"climateChange",\
 "emission limit":"environmental",\
 "emissions reduction target priority":"environmental",\
 "energy clean technology solar":"environmental",\
@@ -1192,14 +1191,14 @@ concept_dict = {
 "border fencing":"immigration",\
 "border measure":"immigration",\
 "border patrol agent":"immigration",\
-"border security budget document":"immigration",\
-"border security issue":"immigration",\
+"border security budget document":"borderSecurity",\
+"border security issue":"borderSecurity",\
 "border security spokesman":"immigration",\
 "border study institute":"immigration",\
 "border tax proposal":"immigration",\
 "border wall funding":"immigration",\
 "border wall money":"immigration",\
-"border wall prototype":"immigration",\
+"border wall prototype":"borderWall",\
 "borderless world":"immigration",\
 "burden sharing":"immigration",\
 "catos brannon":"immigration",\
@@ -1441,7 +1440,7 @@ concept_dict = {
 "sykes":"media",\
 "tabloid newspaper didnt publish":"media",\
 "television today":"media",\
-"video":"media",\
+"video":"communication",\
 "wall street journal":"media",\
 "washington post":"media",\
 "week news":"media",\
@@ -1751,7 +1750,7 @@ concept_dict = {
 "gopheld house seat":"republican",\
 "house republican":"republican",\
 "john boehner":"republican",\
-"paul ryan":"republican",\
+"paul ryan":"government",\
 "republican":"republican",\
 "republican":"republican",\
 "sen dean heller":"republican",\
@@ -1834,7 +1833,7 @@ concept_dict = {
 "u intelligence":"russiaElectionHacking",\
 "affidavit":"russiaElectionHacking",\
 "agent":"russiaElectionHacking",\
-"collusion":"russiaElectionHacking",\
+"collusion":"controversy",\
 "cyberthreats":"russiaElectionHacking",\
 "dershowitz":"russiaElectionHacking",\
 "disclosure":"russiaElectionHacking",\
@@ -1903,7 +1902,7 @@ concept_dict = {
 "trading volume":"northSouthKorea",\
 "actions speak louder than words realm":"communication",\
 "antonin scalia":"supremeCourtJudge",\
-"appointee":"supremecourtjudge",\
+"appointee":"supremeCourtJudge",\
 "chamber rule":"supremeCourtJudge",\
 "confirmation vote":"supremeCourtJudge",\
 "filibuster":"supremeCourtJudge",\
@@ -1928,7 +1927,7 @@ concept_dict = {
 "justice stephen breyer":"supremeCourtJudge",\
 "kennedy":"supremeCourtJudge",\
 "mr trump supreme court nominee":"supremeCourtJudge",\
-"nominee":"supremecourtjudge",\
+"nominee":"supremeCourtJudge",\
 "scalia vacancy":"supremeCourtJudge",\
 "scaramuccis appointment":"supremeCourtJudge",\
 "scaramuccis view":"supremeCourtJudge",\
@@ -2049,7 +2048,7 @@ concept_dict = {
 "export rule":"trade",\
 "ford motor co":"trade",\
 "fords decision":"trade",\
-"gdp":"trade",\
+"gdp":"economy",\
 "global affair":"trade",\
 "good deficit":"trade",\
 "government official":"trade",\
@@ -2170,7 +2169,7 @@ concept_dict = {
 "aide":"trumpAdministration",\
 "aide briefed":"trumpAdministration",\
 "aide meeting":"trumpAdministration",\
-"attorney general":"trumpAdministration",\
+"attorney general":"government",\
 "cabinet":"trumpAdministration",\
 "cabinet member":"trumpAdministration",\
 "cabinet official":"trumpAdministration",\
@@ -2289,6 +2288,7 @@ concept_dict = {
 "policy bank":"government",\
 "appeal":"supremeCourt",\
 "court":"supremeCourt",\
+"courtSystem":"travelBan",\
 "judge":"supremeCourt",\
 "ruling":"supremeCourt",\
 "alabama us senate":"government",\
@@ -2350,22 +2350,22 @@ concept_dict = {
 "eric cantor":"usPolitician",\
 "eric schneiderman":"usPolitician",\
 "former clinton administration treasury secretary lawrence summers":"usPolitician",\
-"governor":"usPolitician",\
+"governor":"government",\
 "heath shuler":"usPolitician",\
 "john mccain":"usPolitician",\
 "lt gov":"usPolitician",\
 "Marco Rubio":"usPolitician",\
 "marcoRubio":"usPolitician",\
 "marcoRubio":"usPolitician",\
-"mayor":"usPolitician",\
+"mayor":"government",\
 "mcconnell":"usPolitician",\
 "michael flynn":"usPolitician",\
 "mick mulvaney":"usPolitician",\
 "mike lee":"usPolitician",\
 "mitch mcconnell":"usPolitician",\
-"nancyPelosi":"usPolitician",\
+"nancyPelosi":"democrat",\
 "panetta":"usPolitician",\
-"politician":"usPolitician",\
+"politician":"government",\
 "reince priebus":"usPolitician",\
 "representative":"usPolitician",\
 "rex tillerson":"usPolitician",\
@@ -2413,18 +2413,17 @@ concept_dict = {
 "estate tax":"taxes",\
 "wealth":"taxes",\
 "residence":"government",\
-"ron johnson":"healthcare",\
-"government":"government",\
-"anthony kennedy":"supremecourtjudge",\
-"chuck schumer":"democrat",\
-"courtSystem":"travelBan",\
-"president":"presidentDonaldTrump",\
+
+
+#===============end pasted section=================================
 
 
 }
 
 #index keys are case sensitive, let's use all lower() to ensure success in match
 concept_dict = {key.lower(): value for key, value in concept_dict.items()}
-#todo: build case-insensitive matching
+#Note: I keep values as-is, to improve readability (even if it creates matching headaches for index look-ups)
+
+#todo: build case-insensitive matching, and replace all .lower() calls
 
 pickle.dump(concept_dict, open(pickle_path + 'concept_dict.p', 'wb'))
