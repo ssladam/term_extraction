@@ -322,8 +322,8 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     term_loc_series = master.groupby(['terms','dsi']).size()
     
     masterdf_terms = pd.DataFrame(master_terms)
-    masterdf_terms.columns=(['t_count'])
     masterdf_terms['concept'] = 'UNKNOWN'
+    masterdf_terms.columns=(['t_count'])
     masterdf_terms['d_count'] = 0
     masterdf_terms.loc[:,'tf'] = 0.0
     masterdf_terms.loc[:,'idf'] = 0.0
