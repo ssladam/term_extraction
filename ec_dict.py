@@ -2,7 +2,7 @@
 #  swap out individual words for their EC equivalent.
 
 import pickle
-pickle_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/pickle/" #where do you want to read / write the phrase list / filters, etc.
+pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
 ec_dict = {
                'trump':'presidentDonaldTrump',\
@@ -16,6 +16,7 @@ ec_dict = {
                "president trump":"presidentDonaldTrump",\
                "president trumps":"presidentDonaldTrump",\
                "President Donald Trump":"presidentDonaldTrump",\
+               "donald j trump":"presidentDonaldTrump",\
                "Donald Trump":"presidentDonaldTrump",\
                "president-elect donald trump":"presidentElectDonaldTrump",\
                "presidentelect donald trumps":"presidentElectDonaldTrump",\
@@ -53,166 +54,7 @@ ec_dict = {
                "us tariff":"tariff",\
                "percent tariff":"tariff",\
                "tariff hike":"tariff",\
-               
-               "trump":"presidentDonaldTrump",\
-"emergency action perry":"rickPerry",\
-"energy commissioner miguel arias canete":"ariasCanete",\
-"energy secretary rick perry":"rickPerry",\
-"environmental protection agency headquarters":"usEnvironmentalProtectionAgency",\
-"environmental protection agency tuesday":"usEnvironmentalProtectionAgency",\
-"epa grant":"usEnvironmentalProtectionAgency",\
-"epa rule":"usEnvironmentalProtectionAgency",\
-"epa transition team":"usEnvironmentalProtectionAgency",\
-"epas clean power plan":"usEnvironmentalProtectionAgency",\
-"erdogan":"recepErdogan",\
-"erdogans":"recepErdogan",\
-"fbi director comey":"jamesComey",\
-"flemingss experience":"terryFlemings",\
-"florida governor rick scott":"rickScott",\
-"florida sen marco rubio":"marcoRubio",\
-"former president bill clinton":"billClinton",\
-"fort myers airport":"fortMeyers",\
-"fort myers area":"fortMeyers",\
-"heller":"deanHeller",\
-"hillary":"hillaryClinton",\
-"house appropriation":"houseAppropriationCommittee",\
-"house appropriation committee chairman hal rogers":"houseAppropriationCommittee",\
-"house democrat friday morning":"democrat",\
-"house democratic caucus chairman":"democrat",\
-"house majority whip steve scalise":"steveScalise",\
-"hyundai motor":"hyundai motor co",\
-"hyundai research institute":"hyundai motor co",\
-"james b comey":"fbiDirector",\
-"james comey":"fbiDirector",\
-"laggard united state":"unitedStates",\
-"language trump":"presidentDonaldTrump",\
-"law enforcement community":"lawEnforcement",\
-"law enforcement official":"lawEnforcement",\
-"leader kim jong un":"northKorea",\
-"liberal hate him":"hate",\
-"limit refugee":"refugee",\
-"lockheed":"lockheed martin",\
-"lt gen h r mcmaster":"general mcmaster",\
-"macri":"mauricio macri",\
-"macro advisor":"macroeconomics advisor",\
-"magazine cover":"magazine",\
-"malloy":"dannel malloy",\
-"market behavior":"stock market",\
-"market news":"stock market",\
-"market share":"stock market",\
-"mcconnell hasnt":"mitch mcconnell",\
-"mcconnells job":"mitch mcconnell",\
-"mcmaster":"general mcmaster",\
-"mean trump":"presidentDonaldTrump",\
-"measure trump":"presidentDonaldTrump",\
-"medicaid block grant":"medicaid",\
-"medicaid funding level":"medicaid",\
-"media bias":"media",\
-"media outlet":"media",\
-"media site":"media",\
-"meeting mr comey":"jamesComey",\
-"memoranda obama":"barackObama",\
-"methane emission":"methane",\
-"michael t flynn":"michael flynn",\
-"middle eastern country":"middle east",\
-"middle eastern peace":"middle east",\
-"military armistice commission":"military",\
-"military option":"military",\
-"missile defense system":"missile",\
-"missile launch":"missile",\
-"missile site":"missile",\
-"missile submarine":"missile",\
-"mnuchin":"steven mnuchin",\
-"mnuchins":"steven mnuchin",\
-"monday night trump":"presidentDonaldTrump",\
-"monica lewinsky":"billClinton",\
-"moody chief economist mark zandi":"mark zandi",\
-"mortgage guarantor fannie mae":"fannie mae",\
-"move mr trump":"presidentDonaldTrump",\
-"mr farage":"nigel farage",\
-"mr kims":"kim jonghoon",\
-"mr kushners team":"jared kushner",\
-"mr mattis":"jim mattiss",\
-"mr mattiss assertion":"jim mattiss",\
-"mr muellers investigation":"robert mueller",\
-"mr navarros":"peter navarro",\
-"mr obama":"barackObama",\
-"mr pence":"mikePence",\
-"nancy":"nancyPelosi",\
-"nancy pelosi":"nancyPelosi",\
-"president barack obamas health care initiative":"obamacare",\
-"president bill clinton":"billClinton",\
-"president donald trump administration":"trumpAdministration",\
-"president donald trump wall":"borderWall",\
-"president robert s mueller iii":"robert mueller",\
-"president trump call":"presidentDonaldTrump",\
-"president trump decision":"presidentDonaldTrump",\
-"president xi jinping":"xi jinping",\
-"president xi jinpings help":"xi jinping",\
-"presidential adviser kellyanne conway":"kellyanne conway",\
-"program trump":"presidentDonaldTrump",\
-"promise obama":"barackObama",\
-"prosecution interview":"prosecution",\
-"puerto rico capital city":"puerto rico",\
-"pundit ann coulter":"ann coulter",\
-"putin cool":"vladimir putin",\
-"rachel maddow tuesday night":"rachel maddow",\
-"radio talk show host":"radio show",\
-"range missile":"missile",\
-"realdonaldtrump interesting":"presidentDonaldTrump",\
-"realdonaldtrump just":"presidentDonaldTrump",\
-"recep erdogan":"recepErdogan",\
-"regulation enforcement":"regulation",\
-"regulation policy":"regulation",\
-"remember trump":"presidentDonaldTrump",\
-"renegotiations":"renegotiation",\
-"renew daca":"daca",\
-"repeal obamacare":"obamacare",\
-"replace obamacare act":"obamacare",\
-"report cnbc":"cnbc",\
-"republican district":"republican",\
-"republican house speaker paul ryan":"paul ryan",\
-"republican leader":"republican",\
-"republican majority":"republican",\
-"republican matchup":"republican",\
-"republican national committee chairman trump":"presidentDonaldTrump",\
-"republican national committee spokesman sean spicer":"sean spicer",\
-"republican official":"republican",\
-"republican orthodoxy":"republican",\
-"republican party":"republican",\
-"republican philanthropist betsy devos":"betsy devos",\
-"republican president":"presidentDonaldTrump",\
-"republican presidentelect":"presidentDonaldTrump",\
-"republican rick scott":"rickScott",\
-"republican trump":"presidentDonaldTrump",\
-"republican voter":"republican",\
-"residence time":"residency",\
-"residency status":"residency",\
-"retaliation trump":"presidentDonaldTrump",\
-"rex w tillerson":"rex tillerson",\
-"rhode island democratic leadership":"democrat",\
-"right activist":"republican",\
-"right concern":"republican",\
-"right investigation":"republican",\
-"right organization":"republican",\
-"robarts":"james robart",\
-"ronald reagan pentagon buildup":"ronald reagan",\
-"ronald reagan playbook":"ronald reagan",\
-"ronald reagan white house":"ronald reagan",\
-"rosenberg":"chuck rosenberg",\
-"rubio":"marcoRubio",\
-"ruffin":"phill ruffin",\
-"ruffins complaint":"phill ruffin",\
-"russia hoax":"russiaElectionHacking",\
-"russia policy":"russiaElectionHacking",\
-"russia story":"russiaElectionHacking",\
-"russian involvement":"russiaElectionHacking",\
-"russiatrump collusion story":"russiaElectionHacking",\
-"russia ambassador":"russiaElectionHacking",\
-"ruth bader ginsburg":"justice ruth bader ginsburg",\
-"ryans":"paul ryan",\
-"ryans dream":"paul ryan",\
-
+#====================Begin pasted from excel generator=====================
 "cruz":"ted cruz",\
 "dean heller":"deanHeller",\
 "deferred action":"daca",\
@@ -277,7 +119,6 @@ ec_dict = {
 "job growth":"jobs",\
 "job offer":"jobs",\
 "joblosses":"jobs",\
-"job":"jobs",\
 "johnson":"ron johnson",\
 "kennedy":"anthony kennedy",\
 "kim regime":"kim jongun",\
@@ -675,6 +516,14 @@ ec_dict = {
 "activist base":"activist",\
 "allegation business":"allegation",\
 "allegation trump":"allegation",\
+"job":"jobs",\
+"president barack obamas nominee":"barackObama",\
+"backlash online":"backlash",\
+"nancy":"nancyPelosi",\
+"nancy pelosi":"nancyPelosi",\
+
+               
+#================end pasted section====================               
                
                }
 #the parser converts all entries to lower case, so we should do the same
