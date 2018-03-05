@@ -21,14 +21,14 @@ from scipy.cluster.hierarchy import ward, dendrogram
 #   naming by the file, and simply assign your own number by order read in
 
 #how many clusters do you want?
-num_clusters = 14
+num_clusters = 9
 #how many of the top-terms within each cluster do you want to see?
 num_terms_in_cluster = 30
 
 def main():
-    corpus_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/CS2/" #location where all corpus .docx files are stored
-    output_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/output/" #location you will output all files
-    pickle_path = "C:/Users/adams/OneDrive/Documents/Northwestern/453 - Text/pickle/" #where do you want to read-in the phrase / EC / filters, etc.
+    corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
+    output_path = "C:/temp/NU/453/output/" #location you will output all files
+    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read-in the phrase / EC / filters, etc.
 
     #use phrase_dict.py, ec_dict.py, concept_dict.py, and filter_words.py to create dictionaries
     try:
@@ -36,11 +36,12 @@ def main():
         ec_dict = pickle.load(open(pickle_path + 'ec_dict.p', 'rb'))
         filter_words = pickle.load(open(pickle_path + 'filter_words.p', 'rb'))
         concept_dict = pickle.load(open(pickle_path + 'concept_dict.p', 'rb'))
+        weight_dict = pickle.load(open(pickle_path + 'weight_dict.p', 'rb'))
     except IOError:
         print('Error opening dictionary file, confirm directory and pickle files exist')
         return
     
-    return make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict)
+    return make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict, weight_dict)
 
 
 #===========================================================
@@ -112,15 +113,16 @@ def parse_article(dsi_text, phrase_dict, ec_dict, filter_words, grammar=r'KT: {(
 #===========================================================
 #               Helper function to cluster terms, concepts
 #===========================================================
-def magic_cluster(tfidf_matrix, output_path, out_name, num_clusters=5, num_terms_in_cluster=20):
+def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms_in_cluster=20):
     #todo: add logic to dynamically select optimal number of clusters
     #note: num_terms_in_cluster is only the number of terms to be REPORTED, the actual
     #   number of terms is the full collection of all terms
     
     #convert our term tf_idf into a proper matrix (get rid of extraneous columns, and transpose)    
     #were we given the terms matrix to cluster, or the concept matrix?
+    tfidf_matrix = input_matrix.copy()
     if 'concept' in tfidf_matrix.columns:
-        tfidf_matrix.drop(['t_count','concept','d_count','tf','idf','tf_idf'], axis=1, inplace=True)
+        tfidf_matrix.drop(['t_count','concept','d_count','tf','idf','tf_idf','weight'], axis=1, inplace=True)
     else: tfidf_matrix.drop(['t_count','d_count','tf','idf','tf_idf'], axis=1, inplace=True)
     tfidf_matrix.fillna(0, inplace=True)
     tfidf_matrix = tfidf_matrix.transpose()
@@ -143,30 +145,30 @@ def magic_cluster(tfidf_matrix, output_path, out_name, num_clusters=5, num_terms
     cluster_terms = {}
     cluster_names = {}
     text_file = open(output_path + out_name + '_clusters.txt', "w")
-    print("Top terms per cluster:\n")
+    #print("Top terms per cluster:\n")
     text_file.write("Top terms per cluster:\n")
     #sort cluster centers by proximity to centroid
     order_centroids = km.cluster_centers_.argsort()[:, ::-1] 
     for i in range(num_clusters):
         terms_in_cluster = ''
         dsi_in_cluster = ''
-        print("Cluster %d words:" % i)   
+        #print("Cluster %d words:" % i)   
         text_file.write("Cluster %d words:\n" % i)   
         for ind in order_centroids[i, :num_terms_in_cluster]:
             terms_in_cluster = terms_in_cluster + vocab_frame.iloc[ind][0] + ", "
-        print(terms_in_cluster[:-2]) #don't print the trailing ', '
+        #print(terms_in_cluster[:-2]) #don't print the trailing ', '
         text_file.write(terms_in_cluster[:-2]) #don't print the trailing ', '
         cluster_terms[i] = terms_in_cluster[:-2]
         cluster_names[i] = cluster_terms[i].split(', ')[:4] #only use the first 4 terms to "name" the cluster
-        print() #add whitespace
+        #print() #add whitespace
         text_file.write('\n\n')
         for dsi in tfidf_matrix[tfidf_matrix['cluster']==i].index:
             dsi_in_cluster = dsi_in_cluster + dsi + ", "
-        print("DSI in cluster %d:" % i)
+        #print("DSI in cluster %d:" % i)
         text_file.write("DSI in cluster %d:\n" % i)
-        print(dsi_in_cluster[:-2]) #don't print the trailing ', '
+        #print(dsi_in_cluster[:-2]) #don't print the trailing ', '
         text_file.write(dsi_in_cluster[:-2]) #don't print the trailing ', '
-        print('\n\n')
+        #print('\n\n')
         text_file.write('\n\n')
     text_file.close()
     del i, terms_in_cluster, dsi_in_cluster, ind, order_centroids, text_file
@@ -252,7 +254,7 @@ def magic_cluster(tfidf_matrix, output_path, out_name, num_clusters=5, num_terms
 #               True main program
 #===========================================================
 
-def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict):
+def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict, weight_dict):
 
     corpus = []
     file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(os.path.join(corpus_path, f))]
@@ -328,6 +330,9 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     masterdf_terms.loc[:,'tf'] = 0.0
     masterdf_terms.loc[:,'idf'] = 0.0
     masterdf_terms.loc[:,'tf_idf'] = 0.0
+    masterdf_terms.loc[:,'weight'] = 1.0
+    
+    non_matrix_cols = ['t_count', 'concept', 'd_count', 'tf', 'idf', 'tf_idf', 'weight']
     
     terms_in_corpus = sum(masterdf_terms['t_count'])
     
@@ -366,17 +371,32 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     #create the matrix of terms across each DSI
     for i in range(0, len(corpus_term_counts)):
         for term in corpus_term_counts[i].index:
-            #masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['t_count'][term])
             masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['tf'][term])
     del i,term
     
     
-    #First we pivot by concept, and sum all columns
+    #Any custom weighting to be applied?
+
+    matrix_cols = list(set(masterdf_terms.columns) - set(non_matrix_cols))
+    for term, val in weight_dict.items():
+        try:
+            if term in masterdf_terms.index:
+                masterdf_terms.loc[term,'weight'] = val
+                for col in matrix_cols:
+                    masterdf_terms.loc[term,col] = masterdf_terms.loc[term,col] * val
+            else: print('failed to assign weighting, key not found in index:\"'+term+'\"')
+        except: print('failed to assign weighting:\"'+term+'\"')
+    del term, val, col
+    
+    #Now build concept matrix. First we pivot by concept, and sum all columns
     masterdf_concepts = masterdf_terms.groupby(['concept']).sum()
+    #weighting was for terms... it's automatically rolled into component concepts
+    #  Let's delete the column, since "sum of weightings" doesn't have useful meaning.
+    masterdf_concepts.drop('weight', axis=1, inplace=True)
     #document count shouldn't be sum'd, we should max to find real doc count, fix those values.
     #   There is probably a better way to do this, but I'm bad with pivot logic!
     for concept in masterdf_concepts.index:
-        #Ignore first 5 columns to only count # of items in the DSI's
+        #Ignore first 6 columns to only count # of items in the DSI's
         masterdf_concepts.set_value(concept, 'd_count', masterdf_concepts.loc[concept][5:].count())
     del concept
     
