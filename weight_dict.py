@@ -10,11 +10,9 @@
 
 #Todo: Create another "weighted_concept_dict" to allow weighting CONCEPTS, indpendent of ECs
 
-#import pickle
-#if __name__ == '__main__':
-#    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
-
-weight_dict = {
+def get_weights():
+    weight_dict = {
+    #===============Begin pasted section=========================
 "presidentDonaldTrump":0.1,\
 "conflict":0.1,\
 "economy":0.1,\
@@ -26,5 +24,6 @@ weight_dict = {
 "nafta":2,\
 "healthcare":2,\
 
-}
-#pickle.dump(weight_dict, open(pickle_path + 'weight_dict.p', 'wb'))
+    #===============End pasted section=========================
+    }
+    return weight_dict
