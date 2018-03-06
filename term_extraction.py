@@ -5,18 +5,21 @@
 
 import pandas as pd
 import numpy as np
-import itertools, nltk, re, os, docx, unicodedata
+import matplotlib.pyplot as plt
+import itertools, nltk, re, os, docx, unicodedata, importlib
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-plt.ioff()
 from sklearn.manifold import MDS
 from scipy.cluster.hierarchy import ward, dendrogram
+plt.ioff() #if you keep getting a blank pop-up figure window, run this manually in the console
+
+#If you've never setup nltk previously, execute the following line
+#nltk.download()
 
 continue_exec = True #Do not change
 
 #========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
-num_term_clusters = 14 #how many clusters do you want for terms?
+num_term_clusters = 12 #how many clusters do you want for terms?
 num_concept_clusters = 9 #how many clusters for concepts?
 num_terms_in_cluster = 40 #how many of the top-terms within each cluster do you want to report?
 corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
@@ -24,37 +27,36 @@ output_path = "C:/temp/NU/453/output/" #location you will output all files
 script_path = "C:/temp/NU/453/" #location where you have saved the collection of python files
 #========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
 
-
-#if you've previously executed the code, it won't re-import the dictionaries
-#   if you made changes to the dictionaries, then restart the kernel to reload
-
-#todo: change these dictionaries into formal modules, so that importlib.reload()
-#   can be used to refresh the import, and set the variables
-
-
 try:
     os.chdir(script_path)
-    from filter_words import filter_words
-    from phrase_dict import phrase_dict
-    from ec_dict import ec_dict
-    from concept_dict import concept_dict
-    from weight_dict import weight_dict
+    import phrase_dict, filter_words, ec_dict, concept_dict, weight_dict
+    #Even though we just loaded the modules, if you update the dictionaries, they won't be
+    #  re-imported the 2nd time you run this code, since they're already in memory.
+    #  Let's force a reload, to ensure that our dictionaries are up to date!
+    importlib.reload(phrase_dict)
+    importlib.reload(filter_words)
+    importlib.reload(ec_dict)
+    importlib.reload(concept_dict)
+    importlib.reload(weight_dict)
+    
 except:
     continue_exec=False
     print('Unable to load dictionary files. Ensure all supporting files exist.')
 
-#If you've never setup nltk previously, execute the following line
-#nltk.download()
-
-#todo: currently use first 6 letters of DOCX to determine id. Expecting "DSI-06" to be the name
+#todo: currently use first 6 letters of DOCX to determine id. E.g.: "DSI-06" expected id
 #   Currently hard-coded to read [0:6]. This will break once DSI passes 100.
 #   DSI-100 will overwrite DSI-10. Add logic to get full DSI name. Or just skip
-#   naming by the file, and simply assign your own number by order read in
+#   naming by the file, and simply assign your own number by order read in.
 
 def main():
-    
+    phrases = phrase_dict.get_phrases()
+    ecs = ec_dict.get_ecs()
+    filters = filter_words.get_filter()
+    concepts = concept_dict.get_concepts()
+    weights = weight_dict.get_weights()
+    #todo: currently, weights only applies to terms. Add another weighting dict for concepts
     if continue_exec:
-        return make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict, weight_dict)
+        return make_magic_happen(corpus_path, output_path, phrases, ecs, filters, concepts, weights)
     else: print("Fault detected, halting execution")
 
 
@@ -112,7 +114,9 @@ def parse_article(dsi_text, phrase_dict, ec_dict, filter_words, grammar=r'KT: {(
             if phrase.lower() in sentence.lower():
                 #case insenstive matching, so that "CAsh For GUNS" will equal "cash for guns"
                 insensitive_phrase = re.compile(re.escape(phrase), re.IGNORECASE)
-                sentence = insensitive_phrase.sub(ec, sentence)         
+                sentence = insensitive_phrase.sub(ec, sentence)
+        #Consider adding punctuation in the linkage? Will help section headers (which typically
+        #   do not have punctuation) separate from the following sentence
         ec_text += ' ' + sentence
     del sentence, phrase, ec, insensitive_phrase
     #Now that EC swapping is complete, let's chunk the terms
@@ -133,8 +137,8 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     #   number of terms is the full collection of all terms
     
     #convert our term tf_idf into a proper matrix (get rid of extraneous columns, and transpose)    
-    #were we given the terms matrix to cluster, or the concept matrix?
     tfidf_matrix = input_matrix.copy()
+    #were we given the terms matrix to cluster, or the concept matrix?
     if 'concept' in tfidf_matrix.columns:
         tfidf_matrix.drop(['t_count','concept','d_count','tf','idf','tf_idf','weight'], axis=1, inplace=True)
     else: tfidf_matrix.drop(['t_count','d_count','tf','idf','tf_idf'], axis=1, inplace=True)
@@ -173,7 +177,7 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
         text_file.write(terms_in_cluster[:-2]) #don't print the trailing ', '
         cluster_terms[i] = terms_in_cluster[:-2]
         cluster_names[i] = cluster_terms[i].split(', ')[:4] #only use the first 4 terms to "name" the cluster
-        #print() #add whitespace
+        #print()
         text_file.write('\n\n')
         for dsi in tfidf_matrix[tfidf_matrix['cluster']==i].index:
             dsi_in_cluster = dsi_in_cluster + dsi + ", "
@@ -189,8 +193,8 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     
     MDS()
     # convert two components as we're plotting points in a two-dimensional plane
-    # "precomputed" because we provide a distance matrix
-    # we will also specify `random_state` so the plot is reproducible.
+    #   "precomputed" because we provide a distance matrix
+    #   we will also specify `random_state` so the plot is reproducible.
     mds = MDS(n_components=2, dissimilarity="precomputed", random_state=1)
     pos = mds.fit_transform(dist)  # shape (n_components, n_samples)
     xs, ys = pos[:, 0], pos[:, 1]
@@ -241,11 +245,9 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     plt.margins(0.05, 0.1)
     #plt.show() #show the plot
     plt.savefig(output_path + out_name + '_kmeans.png', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=72)
-    plt.close('all')
+    plt.close('all') #even though we don't show the plot, you need to explicitly close to free the memory
     
-    #the 2D map is done, now prepare a gram to visualize how clustering splits
-    #   Note, this is NOT the same cluster as pictured above. This is ward clustering,
-    #   versus above uses kMeans
+    #the 2D map is done, now prepare a dendrogram to visualize how clustering splits
     linkage_matrix = ward(dist) #define the linkage_matrix using ward clustering pre-computed distances
     fig, ax = plt.subplots(figsize=(15, 30)) # set size
     ax = dendrogram(linkage_matrix, orientation="right", labels=list(tfidf_matrix.index));
@@ -260,14 +262,13 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     plt.title('DSI Ward clustering dendrogram: ' + out_name)
     #plt.show()
     plt.savefig(output_path + out_name + '_dendrogram.png', bbox_inches='tight', dpi=72)
-    plt.close('all')
+    plt.close('all') #clear plot from memory
 
 #===========================================================
 #               True main program
 #===========================================================
 
 def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict, weight_dict):
-
     corpus = []
     file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(os.path.join(corpus_path, f))]
     
@@ -285,9 +286,8 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     except IOError:
         print('Error reading corpus DSI docx files')
         return
-    #corpus now contains all raw text of all DSIs, each article as a solid string.
-    
-    #Next, let's parse each article into grammar chunks, phrases, and terms
+    #corpus[] now contains all raw text of all DSIs, each article as a solid string.
+    #   Next, let's parse each article into grammar chunks, phrases, and terms
     
     #Use the following to include adjectives and preposition / conjunction chunks
     #    e.g., automatically retain "cash for guns" rather than split, "cash", "guns"
@@ -308,7 +308,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     del dsi
     
     #gather all terms to build our "master" list of terms
-    #create a new list of all dsi, and "pivot" on terms for total counts
+    #create a new list of all dsi, and pivot on terms for total counts
     master = pd.DataFrame()
     corpus_term_counts = []
     for i in range(0, len(file_list)):
@@ -348,7 +348,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     
     terms_in_corpus = sum(masterdf_terms['t_count'])
     
-    #assign each term to it's concept class, if known
+    #assign each term to its concept class, if known
     #indexSr = pd.Series(masterdf_terms.index)
     indexSr = pd.Series(masterdf_terms.index).str.lower()
     for key, value in concept_dict.items():
@@ -361,7 +361,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         #  I want to avoid doing it with another 'for' loop, which would be an easy fix
         if(indexSr.str.match(key,case=False).any()):
             try: masterdf_terms.at[masterdf_terms.index[indexSr[indexSr==key].index[0]], 'concept'] = value
-            except: print("error: key matched in concept search, but does not exist in term index: \""+key+"\"")
+            except: print("Key matched in concept search, but does not exist in term index: \""+key+"\"")
     del indexSr
     
     #calcualte tf_idf statistics on the FULL SET
@@ -378,20 +378,17 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         masterdf_terms.set_value(term,'tf_idf', masterdf_terms.loc[term]['tf'] * masterdf_terms.loc[term]['idf'] )
     del term, term_count, num_dsi
     
-    
-    
     #create the matrix of terms across each DSI
     for i in range(0, len(corpus_term_counts)):
         for term in corpus_term_counts[i].index:
             masterdf_terms.set_value(term,file_list[i][0:6],corpus_term_counts[i]['tf'][term])
     del i,term
     
-    
     #Any custom weighting to be applied?
-
     matrix_cols = list(set(masterdf_terms.columns) - set(non_matrix_cols))
     for term, val in weight_dict.items():
         try:
+            #todo: Fails case-sensitive matching. Fix this.
             if term in masterdf_terms.index:
                 masterdf_terms.loc[term,'weight'] = val
                 for col in matrix_cols:
@@ -430,7 +427,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     #now cluster on concepts, instead of ECs
     magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster)
     
-    #return the primary dataframes to allow exploration in the var browser
+    #return the primary variables to allow exploration in the var browser
     return (masterdf_terms, masterdf_concepts, corpus_phrases)
 
 #===========================================================
@@ -438,7 +435,8 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
 #===========================================================   
 if __name__ == '__main__':
     try:
-        (terms, concepts, dsi_text) = main()
+        #Let's return the primary variables, to allow exploration in the variable browser
+        (terms_matrix, concepts_matrix, dsi_text) = main()
     except: print('Unable to continue execution')
 
 
