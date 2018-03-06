@@ -3,8 +3,9 @@
 #  of "president obama" would be converted to "presidentTrump obama"
 #  this should be used for fixed phrases ONLY
 
-import pickle
-pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
+#import pickle
+#if __name__ == '__main__':
+#    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
 phrase_dict = {
 
@@ -33,4 +34,4 @@ phrase_dict = {
             
           }
 
-pickle.dump(phrase_dict, open(pickle_path + 'phrase_dict.p', 'wb'))
+#pickle.dump(phrase_dict, open(pickle_path + 'phrase_dict.p', 'wb'))
