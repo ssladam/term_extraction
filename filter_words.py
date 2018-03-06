@@ -1,9 +1,10 @@
 #add all words you want to filter into filter_words, this also occurs POST PROCESSING, so now if you filter
 #  the term "friday" it will drop that singular term, but WOULD NOT filter "friday night" since it doesn't match
 
-import pickle
+#import pickle
 filter_words = set()
-pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
+#if __name__ == '__main__':
+#    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
 filter_words.update(['year', 'week', 'month', 'day', 'hour', 'minute', 'time','past','morning','afternoon', 'evening', 'night'])
 filter_words.update(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday','today','yesterday','tomorrow'])
@@ -2560,10 +2561,20 @@ filter_words.update(["donald trump jr"])
 filter_words.update(["eric trump foundation"])
 filter_words.update(["family"])
 filter_words.update(["lady melania trump"])
+filter_words.update(["senate"])
+filter_words.update(["georgeBush"])
+filter_words.update(["billClinton"])
+filter_words.update(["melaniaTrump"])
+filter_words.update(["player"])
+filter_words.update(["secretary"])
+filter_words.update(["condition online"])
+filter_words.update(["advocacy"])
+filter_words.update(["delegate"])
+filter_words.update(["census ibm"])
 
 
 
 
 #======================End pasted section==============================
 
-pickle.dump(filter_words, open(pickle_path + 'filter_words.p', 'wb'))
+#pickle.dump(filter_words, open(pickle_path + 'filter_words.p', 'wb'))
