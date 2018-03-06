@@ -3,12 +3,10 @@
 #  of "president obama" would be converted to "presidentTrump obama"
 #  this should be used for fixed phrases ONLY
 
-#import pickle
-#if __name__ == '__main__':
-#    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
-phrase_dict = {
-
+def get_phrases():
+    #phrase_dict = {
+    return {
             "Trans-Pacific Partnership": "TPP",\
             "North American Free Trade Agreement":"NAFTA",\
             "World Trade Organization":"WTO",\
@@ -21,8 +19,9 @@ phrase_dict = {
             "Immigration and Nationality Act":"immigrationAndNationalityAct",\
             "Club For Growth and Heritage":"clubForGrowthAndHeritage",\
             "Freedom Caucus":"freedomCaucus",\
-            "Office of Personnel Management ":"officeOfPersonnel Management",\
+            "Office of Personnel Management ":"officeOfPersonnelManagement",\
             "Office of Management and Budget":"officeOfManagementAndBudget",\
+            "Office of Special Counsel":"officeOfSpecialCounsel",\
             #Here is my first hack-y cheat. To avoid phrase clumping, insert a determiner to force phrase-split
             #   the below will force the code to split this into "memorandum" and "donald trump", instead of a single term
             "memorandum donald trump":"memorandum which donald trump",\
@@ -31,7 +30,4 @@ phrase_dict = {
             "[sic]":"",\
             "percent":"",\
             "percentage":"",\
-            
-          }
-
-#pickle.dump(phrase_dict, open(pickle_path + 'phrase_dict.p', 'wb'))
+            }
