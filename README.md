@@ -8,4 +8,4 @@ Before running term_extraction.py, you *must* edit the global variables corpus_p
 
 You also have the option to customize the number of clusters to be formed, as well as the number of terms you want to be reported for each cluster.
 
-
+Use the excel file to aid in quickly creating / updating the various dictionaries to help categorize terms, set ECs, etc.
