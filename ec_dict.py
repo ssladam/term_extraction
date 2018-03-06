@@ -1,11 +1,9 @@
 #This will be swapped out after processing is complete, now you're safe to
 #  swap out individual words for their EC equivalent.
 
-#import pickle
-#if __name__ == '__main__':
-#    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
-
-ec_dict = {
+def get_ecs():
+    ec_dict = {
+    #return {
                'trump':'presidentDonaldTrump',\
                'president':'presidentDonaldTrump',\
                "us":"unitedStates",\
@@ -524,12 +522,10 @@ ec_dict = {
 "nancy pelosi":"nancyPelosi",\
 "school choice argue":"school choice",\
 "school choice policy":"school choice",\
-
-               
+          
 #================end pasted section====================               
                
                }
 #the parser converts all entries to lower case, so we should do the same
-ec_dict = {key.lower(): value for key, value in ec_dict.items()}
-
-#pickle.dump(ec_dict, open(pickle_path + 'ec_dict.p', 'wb'))
+    ec_dict = {key.lower(): value for key, value in ec_dict.items()}
+    return ec_dict
