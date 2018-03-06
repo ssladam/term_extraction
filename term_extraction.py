@@ -15,7 +15,8 @@ from scipy.cluster.hierarchy import ward, dendrogram
 continue_exec = True #Do not change
 
 #========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
-num_clusters = 9 #how many clusters do you want?
+num_term_clusters = 14 #how many clusters do you want for terms?
+num_concept_clusters = 9 #how many clusters for concepts?
 num_terms_in_cluster = 40 #how many of the top-terms within each cluster do you want to report?
 corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
 output_path = "C:/temp/NU/453/output/" #location you will output all files
@@ -414,9 +415,9 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     del i
     
     #perform clustering....
-    magic_cluster(masterdf_terms, output_path, 'terms', num_clusters, num_terms_in_cluster)
+    magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster)
     #now cluster on concepts, instead of ECs
-    magic_cluster(masterdf_concepts, output_path, 'concepts', num_clusters, num_terms_in_cluster)
+    magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster)
     
     #return the primary dataframes to allow exploration in the var browser
     return (masterdf_terms, masterdf_concepts, corpus_phrases)
