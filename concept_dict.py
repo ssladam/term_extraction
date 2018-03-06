@@ -1,21 +1,10 @@
-import pickle
-pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
+#import pickle
+#if __name__ == '__main__':
+#    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read / write the phrase list / filters, etc.
 
 concept_dict = {
 
 #===================Begin pasted section from excel generator=============
-"bloodbath":"violentCrime",\
-"congresss approval":"energy",\
-"congresss budget process":"budget",\
-"africa":"racialProvocation",\
-"libya":"travelBan",\
-"somalia":"travelBan",\
-"south sudan":"immigration",\
-"sudan":"travelBan",\
-"agriculture":"budget",\
-"agriculture something":"domesticPolicy",\
-"corn":"trade",\
-"farmer":"foreignPolicy",\
 "benefitcost ratio":"americanBusiness",\
 "business leader":"americanBusiness",\
 "business tax rate":"americanBusiness",\
@@ -41,6 +30,12 @@ concept_dict = {
 "spending crisis":"americanBusiness",\
 "spending tap":"americanBusiness",\
 "startups":"americanBusiness",\
+"anthony scaramucci":"americanBusiness",\
+"carl c icahn":"americanBusiness",\
+"casino magnate phil ruffin":"americanBusiness",\
+"ceo mark zuckerberg":"americanBusiness",\
+"christopher steele":"americanBusiness",\
+"david koch":"americanBusiness",\
 "aluminum case":"arms",\
 "america defense":"arms",\
 "ammunition":"arms",\
@@ -97,6 +92,8 @@ concept_dict = {
 "weapon program":"arms",\
 "weapon sale":"arms",\
 "weapons":"arms",\
+"deliberation":"arms",\
+"comment period":"arms",\
 "bali":"asianNations",\
 "taiwan":"asianNations",\
 "taiwan amid":"asianNations",\
@@ -106,11 +103,10 @@ concept_dict = {
 "foreign minister yun byungse":"asianNations",\
 "rodrigo duterte":"asianNations",\
 "shinzo abe":"asianNations",\
-"force":"foreignPolicy",\
-"chris warren":"energy",\
-"nfl":"racialProvocation",\
-"ambivalence":"trait",\
-"michael wolff":"media",\
+"east asia":"asianNations",\
+"india":"asianNations",\
+"mumbai":"asianNations",\
+"japan":"asianNations",\
 "barack obama":"barackObama",\
 "barack obamas government":"barackObama",\
 "barack obamas presidency":"barackObama",\
@@ -132,6 +128,8 @@ concept_dict = {
 "obamas veto":"barackObama",\
 "president barack obama":"barackObama",\
 "president obama":"barackObama",\
+"joe biden":"barackObama",\
+"susan e rice":"barackObama",\
 "barrier":"borderSecurity",\
 "border":"borderSecurity",\
 "border protection":"borderSecurity",\
@@ -145,6 +143,8 @@ concept_dict = {
 "southern border":"borderSecurity",\
 "u.s.-mexico border":"borderSecurity",\
 "usmexico border":"borderSecurity",\
+"border security budget document":"borderSecurity",\
+"border security issue":"borderSecurity",\
 "appropriation committee":"borderWall",\
 "border barrier":"borderWall",\
 "border wall":"borderWall",\
@@ -180,6 +180,11 @@ concept_dict = {
 "steel purchase":"borderWall",\
 "wall":"borderWall",\
 "wall":"borderWall",\
+"big bend":"borderWall",\
+"rio grande valley":"borderWall",\
+"border wall prototype":"borderWall",\
+"congresss budget process":"budget",\
+"agriculture":"budget",\
 "amendment":"budget",\
 "america first":"budget",\
 "appropriation":"budget",\
@@ -264,6 +269,18 @@ concept_dict = {
 "toyota motor corp":"business",\
 "us corporation":"business",\
 "whirlpool":"business",\
+"commerce":"business",\
+"cuba":"centralAmericanNations",\
+"havana":"centralAmericanNations",\
+"little havana":"centralAmericanNations",\
+"manuel artime theater":"centralAmericanNations",\
+"mr obamas cuba policy":"centralAmericanNations",\
+"security service":"centralAmericanNations",\
+"travel":"centralAmericanNations",\
+"haiti":"centralAmericanNations",\
+"sofla community":"centralAmericanNations",\
+"mexico":"centralAmericanNations",\
+"puerto rico":"centralAmericanNations",\
 "advantage china":"china",\
 "beijing":"china",\
 "china":"china",\
@@ -279,6 +296,7 @@ concept_dict = {
 "uschina relationship":"china",\
 "uschina strategic":"china",\
 "xi jinping":"china",\
+"crouching tiger":"china",\
 "al gore":"climateChange",\
 "america void":"climateChange",\
 "climate":"climateChange",\
@@ -311,15 +329,8 @@ concept_dict = {
 "us delegation":"climateChange",\
 "warming":"climateChange",\
 "withdrawal":"climateChange",\
-"coal industry":"energy",\
-"air conditioning":"naturalDisaster",\
-"commerce":"business",\
-"commerce department":"secretary",\
-"commerce department highlight sheet":"secretary",\
-"commerce department inspector general":"secretary",\
-"commerce secretary":"secretary",\
-"investor wilbur ross":"secretary",\
-"wilburRoss":"secretary",\
+"emission":"climateChange",\
+"decree":"climatechange",\
 "bipartisanship":"communication",\
 "body language":"communication",\
 "briefer side":"communication",\
@@ -348,6 +359,11 @@ concept_dict = {
 "white house email":"communication",\
 "white house official announcement":"communication",\
 "white house press":"communication",\
+"video":"communication",\
+"agreement mr trump":"communication",\
+"dealmaker":"communication",\
+"envoy":"communication",\
+"actions speak louder than words realm":"communication",\
 "activist":"conflict",\
 "adversary":"conflict",\
 "agitator":"conflict",\
@@ -426,7 +442,6 @@ concept_dict = {
 "us misunderstanding":"conflict",\
 "violation":"conflict",\
 "watchdog group":"conflict",\
-"congress":"government",\
 "allegation":"controversy",\
 "cnn identifies sajwani":"controversy",\
 "collusion":"controversy",\
@@ -460,32 +475,33 @@ concept_dict = {
 "vulgar word choice":"controversy",\
 "wikileaks":"controversy",\
 "witch hunt":"controversy",\
-"appeal court":"supremeCourt",\
-"appeal court judge":"supremeCourt",\
-"circuit decision":"supremeCourt",\
-"circuit ruling":"supremeCourt",\
-"columbia circuit":"supremeCourt",\
-"court decision":"supremeCourt",\
-"court nominee":"supremeCourt",\
-"court ruling":"supremeCourt",\
-"criminal defense attorney alan dershowitz":"supremeCourt",\
-"dc court":"supremeCourt",\
-"defense attorney":"supremeCourt",\
-"diane sykes":"supremeCourt",\
-"end filibuster":"supremeCourt",\
-"federalist society":"supremeCourt",\
-"hearing":"supremeCourt",\
-"jurist":"supremeCourt",\
-"jury":"supremeCourt",\
-"law firm":"supremeCourt",\
-"lowercourt pick":"supremeCourt",\
-"cuba":"centralAmericanNations",\
-"havana":"centralAmericanNations",\
-"little havana":"centralAmericanNations",\
-"manuel artime theater":"centralAmericanNations",\
-"mr obamas cuba policy":"centralAmericanNations",\
-"security service":"centralAmericanNations",\
-"travel":"centralAmericanNations",\
+"acosta":"controversy",\
+"circulation":"controversy",\
+"cox medium institute":"controversy",\
+"fake news mainstream medium":"controversy",\
+"fake news medium":"controversy",\
+"fake news network":"controversy",\
+"godwins law":"controversy",\
+"nazi comparison":"controversy",\
+"refugee":"controversy",\
+"refuge":"controversy",\
+"refugee policy":"controversy",\
+"collusion":"controversy",\
+"affair":"controversy",\
+"anticorruption group":"controversy",\
+"business trump":"controversy",\
+"clapper laid bare":"controversy",\
+"disgrace":"controversy",\
+"disparagement":"controversy",\
+"encounter":"controversy",\
+"fitness column":"controversy",\
+"investigator":"controversy",\
+"lawyer mr trump":"controversy",\
+"leak":"controversy",\
+"money laundering":"controversy",\
+"ms clifford":"controversy",\
+"secret":"controversy",\
+"testimony":"controversy",\
 "american progress":"daca",\
 "cap":"daca",\
 "central america":"daca",\
@@ -517,38 +533,9 @@ concept_dict = {
 "jack markell":"democrat",\
 "jerry brown":"democrat",\
 "opposition agenda":"democrat",\
-"armageddon":"naturalDisaster",\
-"catastrophe":"naturalDisaster",\
-"cellphone service":"naturalDisaster",\
-"debris":"naturalDisaster",\
-"debris block road":"naturalDisaster",\
-"disaster":"naturalDisaster",\
-"disaster":"naturalDisaster",\
-"disaster relief funding":"naturalDisaster",\
-"disaster relief official":"naturalDisaster",\
-"disaster zone":"naturalDisaster",\
-"earthquake":"naturalDisaster",\
-"federal emergency management agency":"naturalDisaster",\
-"fema":"naturalDisaster",\
-"flooding":"naturalDisaster",\
-"fort myers":"naturalDisaster",\
-"fortMeyers":"naturalDisaster",\
-"genocide":"naturalDisaster",\
-"harvey":"naturalDisaster",\
-"hurricane":"naturalDisaster",\
-"hurricane harvey":"naturalDisaster",\
-"hurricane irma":"naturalDisaster",\
-"maria":"naturalDisaster",\
-"monster storm":"naturalDisaster",\
-"oil spill":"naturalDisaster",\
-"recovery crew":"naturalDisaster",\
-"recovery effort":"naturalDisaster",\
-"relief effort":"naturalDisaster",\
-"stopgap measure":"naturalDisaster",\
-"storm":"naturalDisaster",\
-"storm":"naturalDisaster",\
-"trump katrina":"naturalDisaster",\
-"u virgin island":"naturalDisaster",\
+"nancyPelosi":"democrat",\
+"chuck schumer":"democrat",\
+"agriculture something":"domesticPolicy",\
 "aclu":"domesticPolicy",\
 "affordable care act isnt exploding":"domesticPolicy",\
 "cost restoring community safety act":"domesticPolicy",\
@@ -575,7 +562,7 @@ concept_dict = {
 "redirects education dollar repeal":"domesticPolicy",\
 "repeal bill":"domesticPolicy",\
 "republican bill":"domesticPolicy",\
-"realdonaldtrump":"presidentDonaldTrump",\
+"law enforcement":"domesticPolicy",\
 "europeanUnion":"economy",\
 "globalization":"economy",\
 "american household income":"economy",\
@@ -678,6 +665,7 @@ concept_dict = {
 "wealth effect":"economy",\
 "welfare":"economy",\
 "work force":"economy",\
+"gdp":"economy",\
 "asan institute":"education",\
 "associate professor":"education",\
 "bob fleisher":"education",\
@@ -710,8 +698,9 @@ concept_dict = {
 "usc":"education",\
 "victoria university":"education",\
 "yonsei university graduate school":"education",\
-"child care":"jobs",\
-"childcare":"jobs",\
+"congresss approval":"energy",\
+"chris warren":"energy",\
+"coal industry":"energy",\
 "advocacy organization":"energy",\
 "alliance":"energy",\
 "america energy problem":"energy",\
@@ -763,12 +752,40 @@ concept_dict = {
 "subsidy":"energy",\
 "wind":"energy",\
 "wind power":"energy",\
-"anthony scaramucci":"americanBusiness",\
-"carl c icahn":"americanBusiness",\
-"casino magnate phil ruffin":"americanBusiness",\
-"ceo mark zuckerberg":"americanBusiness",\
-"christopher steele":"americanBusiness",\
-"david koch":"americanBusiness",\
+"fuel capability":"energy",\
+"fuel industry stooge":"energy",\
+"fuel production":"energy",\
+"fuel source":"energy",\
+"fuel technology company":"energy",\
+"gasoline price":"energy",\
+"appalachian":"energy",\
+"atlantic":"energy",\
+"atlantic ocean":"energy",\
+"gas company":"energy",\
+"gas exploration":"energy",\
+"gas leasing program":"energy",\
+"gas power plant":"energy",\
+"fuel supply":"energy",\
+"alberta oil":"energy",\
+"crude oil":"energy",\
+"drilling":"energy",\
+"fracking":"energy",\
+"gas production":"energy",\
+"keystone xl pipeline":"energy",\
+"oil":"energy",\
+"oil company":"energy",\
+"oil drillers":"energy",\
+"oil drilling":"energy",\
+"oil drilling oil drilling":"energy",\
+"oil industry":"energy",\
+"oil pipeline":"energy",\
+"oil price":"energy",\
+"oil reserve":"energy",\
+"pipeline":"energy",\
+"standing rock sioux tribe":"energy",\
+"year outer continental shelf oil":"energy",\
+"solar":"energy",\
+"suniva":"energy",\
 "albertas oil":"environmental",\
 "biological diversity":"environmental",\
 "brian segee":"environmental",\
@@ -794,7 +811,6 @@ concept_dict = {
 "drilling plan":"environmental",\
 "drilling zone":"environmental",\
 "earth":"environmental",\
-"emission":"climateChange",\
 "emission limit":"environmental",\
 "emissions reduction target priority":"environmental",\
 "energy clean technology solar":"environmental",\
@@ -813,6 +829,9 @@ concept_dict = {
 "us wind power industry":"environmental",\
 "wastewater":"environmental",\
 "water quality":"environmental",\
+"damage settlement":"environmental",\
+"senator maggie hassan":"environmental",\
+"sierra club":"environmental",\
 "activist group nextgen climate":"environmentalPolicy",\
 "activist tom steyer":"environmentalPolicy",\
 "america water":"environmentalPolicy",\
@@ -900,23 +919,18 @@ concept_dict = {
 "crimea":"europeanNation",\
 "chancellor angela merkel":"europeanNation",\
 "dmitry peskov":"europeanNation",\
-"action may be taken":"russiaElectionHacking",\
-"audience wider":"foreignPolicy",\
-"breach":"northsouthkorea",\
+"angela merkel":"europeanNation",\
+"naples":"europeanNation",\
+"kalugin":"europeanNation",\
+"moscow":"europeanNation",\
+"putin":"europeanNation",\
+"russia":"europeanNation",\
+"russian":"europeanNation",\
+"soviet republic":"europeanNation",\
+"soviet union":"europeanNation",\
+"aleksey pushkov":"europeanNation",\
+"discussion grows":"fakeNews",\
 "comey firing":"fbi",\
-"cornyn spoke":"immigration",\
-"debate begin tuesday":"supremecourtjudge",\
-"december meeting":"russiaelectionHacking",\
-"decree":"climatechange",\
-"deliberation":"arms",\
-"acosta":"controversy",\
-"circulation":"controversy",\
-"cox medium institute":"controversy",\
-"fake news mainstream medium":"controversy",\
-"fake news medium":"controversy",\
-"fake news network":"controversy",\
-"godwins law":"controversy",\
-"nazi comparison":"controversy",\
 "fbi":"fbi",\
 "fbi director":"fbi",\
 "fbiDirector":"fbi",\
@@ -929,7 +943,6 @@ concept_dict = {
 "office of special counsel":"fbi",\
 "robert mueller":"fbi",\
 "robertMueller":"fbi",\
-"7th circuit":"supremeCourt",\
 "abc":"finance",\
 "administration budget":"finance",\
 "administration budget isnt":"finance",\
@@ -977,6 +990,9 @@ concept_dict = {
 "wealthy":"finance",\
 "world bank":"finance",\
 "year budget resolution":"finance",\
+"farmer":"foreignPolicy",\
+"force":"foreignPolicy",\
+"audience wider":"foreignPolicy",\
 "accord":"foreignPolicy",\
 "ally japan":"foreignPolicy",\
 "american president":"foreignPolicy",\
@@ -1052,20 +1068,7 @@ concept_dict = {
 "us relationship":"foreignPolicy",\
 "us special envoy":"foreignPolicy",\
 "world affair":"foreignPolicy",\
-"shopturnedcapitol hill power broker":"trumpOpposition",\
-"fuel capability":"energy",\
-"fuel industry stooge":"energy",\
-"fuel production":"energy",\
-"fuel source":"energy",\
-"fuel technology company":"energy",\
-"gasoline price":"energy",\
-"appalachian":"energy",\
-"atlantic":"energy",\
-"atlantic ocean":"energy",\
-"big bend":"borderWall",\
-"east asia":"asianNations",\
-"rio grande valley":"borderWall",\
-"angela merkel":"europeanNation",\
+"congress":"government",\
 "attorney general":"government",\
 "authoritarianism":"government",\
 "defense minister":"government",\
@@ -1099,19 +1102,43 @@ concept_dict = {
 "control center":"government",\
 "donald trump resistance":"government",\
 "pentagon":"government",\
-"house leader":"trumpAdministration",\
-"white house aide":"trumpAdministration",\
-"white house budget director":"trumpAdministration",\
-"white house chiefofstaff":"trumpAdministration",\
-"white house communication director":"trumpAdministration",\
-"white house communication staff":"trumpAdministration",\
-"white house ethic lawyer":"trumpAdministration",\
-"white house insider":"trumpAdministration",\
-"white house intern":"trumpAdministration",\
-"white house job":"trumpAdministration",\
-"white house spokeswoman":"trumpAdministration",\
-"haiti":"centralAmericanNations",\
-"sofla community":"centralAmericanNations",\
+"florida republicans":"government",\
+"hill member":"government",\
+"house appropriation committee":"government",\
+"houseAppropriationCommittee":"government",\
+"redstate senator":"government",\
+"renegade republican":"government",\
+"tea party":"government",\
+"trump ally":"government",\
+"paul ryan":"government",\
+"attorney general":"government",\
+"policy bank":"government",\
+"alabama us senate":"government",\
+"american federalist system":"government",\
+"appropriations committee":"government",\
+"california democrats":"government",\
+"chicago council":"government",\
+"cia":"government",\
+"civic committee":"government",\
+"commerce department official":"government",\
+"commerce departments inspector general":"government",\
+"communication director":"government",\
+"congressional budget office":"government",\
+"congressional hispanic caucus":"government",\
+"conservation voters":"government",\
+"department authority":"government",\
+"justice department":"government",\
+"u official":"government",\
+"us census bureau":"government",\
+"us embassy":"government",\
+"us house":"government",\
+"us official":"government",\
+"us state department":"government",\
+"governor":"government",\
+"mayor":"government",\
+"politician":"government",\
+"residence":"government",\
+"government":"government",\
 "affordable care act":"healthcare",\
 "ahca":"healthcare",\
 "american health care act":"healthcare",\
@@ -1170,281 +1197,6 @@ concept_dict = {
 "obamacare":"healthcare",\
 "republican ahca bill":"healthcare",\
 "republican health care bill":"healthcare",\
-"anticlinton":"hillaryClinton",\
-"clinton":"hillaryClinton",\
-"clinton administration":"hillaryClinton",\
-"clinton campaign":"hillaryClinton",\
-"clinton extremist agenda":"hillaryClinton",\
-"clinton plan":"hillaryClinton",\
-"clinton voter":"hillaryClinton",\
-"clintons extremist agenda":"hillaryClinton",\
-"crooked hillary":"hillaryClinton",\
-"crooked hillary clinton":"hillaryClinton",\
-"hillary":"hillaryClinton",\
-"hillary clinton":"hillaryClinton",\
-"hillaryClinton":"hillaryClinton",\
-"leon panetta":"hillaryClinton",\
-"nominee hillary clinton":"hillaryClinton",\
-"alien":"immigration",\
-"arrest":"immigration",\
-"border fence":"immigration",\
-"border fencing":"immigration",\
-"border measure":"immigration",\
-"border patrol agent":"immigration",\
-"border security budget document":"borderSecurity",\
-"border security issue":"borderSecurity",\
-"border security spokesman":"immigration",\
-"border study institute":"immigration",\
-"border tax proposal":"immigration",\
-"border wall funding":"immigration",\
-"border wall money":"immigration",\
-"border wall prototype":"borderWall",\
-"borderless world":"immigration",\
-"burden sharing":"immigration",\
-"catos brannon":"immigration",\
-"cbp proposal":"immigration",\
-"citizen":"immigration",\
-"cuban":"immigration",\
-"cuban americans":"immigration",\
-"cuban exile community":"immigration",\
-"cubanamericans":"immigration",\
-"customs enforcement":"immigration",\
-"daca cover":"immigration",\
-"daca permit":"immigration",\
-"database":"immigration",\
-"deportation":"immigration",\
-"deportation":"immigration",\
-"deportation proceeding":"immigration",\
-"dire strait":"immigration",\
-"diversity visa lottery":"immigration",\
-"doublelayer fencing":"immigration",\
-"dream":"immigration",\
-"dreamer":"immigration",\
-"drop":"immigration",\
-"efren c olivares":"immigration",\
-"end illegal immigration act":"immigration",\
-"end illegal immigration act fully funds":"immigration",\
-"end illegal immigration act fullyfunds":"immigration",\
-"examine visa program":"immigration",\
-"expiration deadline":"immigration",\
-"felony conviction":"immigration",\
-"guatemala":"immigration",\
-"hawaii attorney general":"immigration",\
-"honduran":"immigration",\
-"ice":"immigration",\
-"ice agent":"immigration",\
-"ice removal authority":"immigration",\
-"imbalance":"immigration",\
-"immigrant":"immigration",\
-"immigrant legal resource center":"immigration",\
-"immigrant work":"immigration",\
-"immigration":"immigration",\
-"immigration attorney":"immigration",\
-"immigration authority":"immigration",\
-"immigration barrier":"immigration",\
-"immigration deal":"immigration",\
-"immigration enforcer":"immigration",\
-"immigration hardliner":"immigration",\
-"immigration law":"immigration",\
-"immigration officer":"immigration",\
-"immigration order":"immigration",\
-"immigration policy":"immigration",\
-"immigration reform package":"immigration",\
-"immigration reform proposal":"immigration",\
-"immigration system":"immigration",\
-"immigration tends":"immigration",\
-"immigrationAndNationalityAct":"immigration",\
-"isi threat":"immigration",\
-"islamic revolution":"immigration",\
-"islamic state militant":"immigration",\
-"leon rodriguez":"immigration",\
-"muslim ban":"immigration",\
-"muslim ban a registry":"immigration",\
-"muslim country":"immigration",\
-"muslim immigrant":"immigration",\
-"muslim leader":"immigration",\
-"muslim living":"immigration",\
-"muslim population":"immigration",\
-"national immigration law center":"immigration",\
-"national security entryexit program":"immigration",\
-"national security policy":"immigration",\
-"naureen shah":"immigration",\
-"new america foundation":"immigration",\
-"nicaragua":"immigration",\
-"nicaraguan":"immigration",\
-"nseers program":"immigration",\
-"proimmigration policy":"immigration",\
-"residency":"immigration",\
-"sanctuary city":"immigration",\
-"something majority leader mitch mcconnell":"immigration",\
-"spokesman jason miller":"immigration",\
-"supreme court decision":"immigration",\
-"suspends immigration":"immigration",\
-"terrorist":"immigration",\
-"usborn":"immigration",\
-"uscis":"immigration",\
-"visa lottery system":"immigration",\
-"visa program":"immigration",\
-"work authorization":"immigration",\
-"india":"asianNations",\
-"mumbai":"asianNations",\
-"hamidreza taraghi":"middleEasternNations",\
-"hassan rouhani":"middleEasternNations",\
-"iran":"middleEasternNations",\
-"iran agreement":"middleEasternNations",\
-"iran deal":"middleEasternNations",\
-"iran economy":"middleEasternNations",\
-"iran foreign ministry":"middleEasternNations",\
-"iran islamic establishment":"middleEasternNations",\
-"iran president":"middleEasternNations",\
-"suicide":"nuclear",\
-"naples":"europeanNation",\
-"japan":"asianNations",\
-"coalmining job":"jobs",\
-"countrywere":"jobs",\
-"dependability":"jobs",\
-"distribute largesse":"jobs",\
-"fiat chrysler automobile nv":"jobs",\
-"fleming experience":"jobs",\
-"furnace production job":"jobs",\
-"government oversight":"jobs",\
-"incentive package":"jobs",\
-"indiana official":"jobs",\
-"indiana plant":"jobs",\
-"indiana town":"jobs",\
-"job":"jobs",\
-"job creation agenda":"jobs",\
-"job cut":"jobs",\
-"job generator":"jobs",\
-"job loss":"jobs",\
-"job number":"jobs",\
-"job opportunity":"jobs",\
-"job outflow":"jobs",\
-"job retention":"jobs",\
-"national labor relation board":"jobs",\
-"plant job":"jobs",\
-"plentiful job":"jobs",\
-"terryFlemings":"jobs",\
-"united technology":"jobs",\
-"us job":"jobs",\
-"wage":"jobs",\
-"worker":"jobs",\
-"korea":"northSouthKorea",\
-"law enforcement":"domesticPolicy",\
-"lawEnforcement":"trumpBusiness",\
-"abc good morning america":"media",\
-"abcs good morning america":"media",\
-"ad":"media",\
-"advertisement":"media",\
-"advertiser":"media",\
-"afternoon broadcast fox news shep smith":"media",\
-"ann coulter":"media",\
-"assertion":"media",\
-"associated press":"media",\
-"author michael wolff":"media",\
-"author mike godwin":"media",\
-"axios":"media",\
-"bbc":"media",\
-"bestseller list":"media",\
-"bill kristol":"media",\
-"blair":"media",\
-"bloomberg":"media",\
-"bloomberg news":"media",\
-"book tour":"media",\
-"breitbart news":"media",\
-"broadcast":"media",\
-"bruce bennett":"media",\
-"burton":"media",\
-"buzzfeed":"media",\
-"cable news":"media",\
-"cable news network":"media",\
-"californiaberkeley":"media",\
-"cbs":"media",\
-"charles sykes":"media",\
-"christiane amanpour":"media",\
-"cnbc":"media",\
-"cnn analyst":"media",\
-"cnn reporter jim acosta":"media",\
-"cnn review":"media",\
-"cnns":"media",\
-"cnns report":"media",\
-"correspondent":"media",\
-"coverage":"media",\
-"david sanger":"media",\
-"dc insider":"media",\
-"director christopher wray":"media",\
-"disclosure form":"media",\
-"drutman":"media",\
-"eandenews":"media",\
-"economist mark zandi":"media",\
-"edward luce":"media",\
-"facebook":"media",\
-"fcc":"media",\
-"financial times":"media",\
-"fivethirtyeight":"media",\
-"flake spokesman jason samuels":"media",\
-"fox news":"media",\
-"fox news executive bill shine":"media",\
-"fox news sunday":"media",\
-"fraud":"media",\
-"grady newsource":"media",\
-"gwenda blair":"media",\
-"hannity":"media",\
-"headline":"media",\
-"headline trump":"media",\
-"internet meme":"media",\
-"jim scuitto":"media",\
-"journalism":"media",\
-"journalist":"media",\
-"lester holt":"media",\
-"magazine":"media",\
-"marketing":"media",\
-"mcclatchy news website":"media",\
-"media":"media",\
-"medium outlet":"media",\
-"medium site":"media",\
-"msnbc":"media",\
-"msnbc channel":"media",\
-"msnbc tv host mika brzezinski":"media",\
-"national enquirer":"media",\
-"nbc":"media",\
-"nbc news":"media",\
-"nbc news analyst":"media",\
-"news":"media",\
-"news briefing":"media",\
-"news conference":"media",\
-"news coverage":"media",\
-"news item":"media",\
-"news outlet":"media",\
-"news property":"media",\
-"news release":"media",\
-"news report":"media",\
-"news story":"media",\
-"newspaper":"media",\
-"politico":"media",\
-"politico report":"media",\
-"politifact":"media",\
-"press":"media",\
-"press conference":"media",\
-"press coverage":"media",\
-"press report":"media",\
-"rachel maddow":"media",\
-"radio show":"media",\
-"reality star":"media",\
-"reality tv star":"media",\
-"reporter":"media",\
-"reporting":"media",\
-"reuters":"media",\
-"ria news agency":"media",\
-"sean hannity":"media",\
-"sykes":"media",\
-"tabloid newspaper didnt publish":"media",\
-"television today":"media",\
-"video":"communication",\
-"wall street journal":"media",\
-"washington post":"media",\
-"week news":"media",\
-"wmaq":"media",\
 "alzheimer":"healthcare",\
 "american medical association":"healthcare",\
 "cancer":"healthcare",\
@@ -1452,967 +1204,6 @@ concept_dict = {
 "doctor":"healthcare",\
 "dr joseph mason":"healthcare",\
 "drug":"healthcare",\
-"hospital":"healthcare",\
-"medicine":"healthcare",\
-"misdiagnosis":"healthcare",\
-"mexico":"centralAmericanNations",\
-"bahrain":"middleEasternNations",\
-"dubai":"middleEasternNations",\
-"iraq":"middleEasternNations",\
-"israel":"middleEasternNations",\
-"middle east":"middleEasternNations",\
-"saudi arabia":"middleEasternNations",\
-"syria":"middleEasternNations",\
-"yemen":"middleEasternNations",\
-"kuwait":"middleEasternNations",\
-"abbasi":"middleEasternNations",\
-"ali larijani":"middleEasternNations",\
-"ayatollah sadegh amolilarijani":"middleEasternNations",\
-"mahmoud ahmadinejad":"middleEasternNations",\
-"mohammad javad zarif":"middleEasternNations",\
-"recepErdogan":"middleEasternNations",\
-"recepErdogan":"middleEasternNations",\
-"emirati business partner hussain sajwani":"middleEasternNations",\
-"emirati businessman":"middleEasternNations",\
-"air force":"military",\
-"army":"military",\
-"atlantic reserve":"military",\
-"brave soldier":"military",\
-"counterstrike":"military",\
-"destroyer":"military",\
-"drone":"military",\
-"government spending":"military",\
-"land force":"military",\
-"marine":"military",\
-"militant":"military",\
-"military":"military",\
-"senate armed service committee":"military",\
-"troop readiness":"military",\
-"u troop":"military",\
-"veteran":"military",\
-"warship":"military",\
-"afghanistan all muslim majority nation":"religion",\
-"afghanistanall muslimmajority nation":"religion",\
-"muslim":"religion",\
-"fta":"trade",\
-"fta outright":"trade",\
-"nafta":"trade",\
-"nafta pact":"trade",\
-"pullout will undermine us":"trade",\
-"americas defense":"nationalSecurity",\
-"defense program":"nationalSecurity",\
-"foreign terrorist entry into":"nationalSecurity",\
-"homeland security discretion":"nationalSecurity",\
-"homeland security travel ban":"nationalSecurity",\
-"publicsafety threat":"nationalSecurity",\
-"security concern":"nationalSecurity",\
-"threat mount":"nationalSecurity",\
-"trump national security council":"nationalSecurity",\
-"us defense security cooperation agency":"nationalSecurity",\
-"gas company":"energy",\
-"gas exploration":"energy",\
-"gas leasing program":"energy",\
-"gas power plant":"energy",\
-"turkey":"middleEasternNations",\
-"agreement mr trump":"communication",\
-"dealmaker":"communication",\
-"envoy":"communication",\
-"actionsspeaklouderthanwords":"northSouthKorea",\
-"assumption":"northSouthKorea",\
-"bomb":"northSouthKorea",\
-"consistency":"northSouthKorea",\
-"defense jim mattis":"northSouthKorea",\
-"delury":"northSouthKorea",\
-"deterrence capability":"northSouthKorea",\
-"dozen u official":"northSouthKorea",\
-"enemy relationship":"northSouthKorea",\
-"george f kennan":"northSouthKorea",\
-"guam":"northSouthKorea",\
-"icbm":"northSouthKorea",\
-"inhabitant":"northSouthKorea",\
-"joint security area":"northSouthKorea",\
-"jong un sit":"northSouthKorea",\
-"kim":"northSouthKorea",\
-"kim jong un":"northSouthKorea",\
-"kim jong un":"northSouthKorea",\
-"kim jonghoon":"northSouthKorea",\
-"kim jongun":"northSouthKorea",\
-"missile":"northSouthKorea",\
-"national assembly":"northSouthKorea",\
-"north ability":"northSouthKorea",\
-"north korea":"northSouthKorea",\
-"north korea expert":"northSouthKorea",\
-"north korea launch site":"northSouthKorea",\
-"north korea leader":"northSouthKorea",\
-"north korea menace":"northSouthKorea",\
-"north korea missile":"northSouthKorea",\
-"north korea missile launch":"northSouthKorea",\
-"north korea policy":"northSouthKorea",\
-"north korea problem":"northSouthKorea",\
-"north korea situation":"northSouthKorea",\
-"northKorea":"northSouthKorea",\
-"oped":"northSouthKorea",\
-"otto warmbier":"northSouthKorea",\
-"peninsula issue":"northSouthKorea",\
-"pentagon strategist":"northSouthKorea",\
-"people army":"northSouthKorea",\
-"preventive war":"northSouthKorea",\
-"pyongyang":"northSouthKorea",\
-"pyongyang":"northSouthKorea",\
-"regime":"northSouthKorea",\
-"security council":"northSouthKorea",\
-"security problem":"northSouthKorea",\
-"situation room discussion":"northSouthKorea",\
-"statesman":"northSouthKorea",\
-"stephen k bannon":"northSouthKorea",\
-"stopping north korea":"northSouthKorea",\
-"strike":"northSouthKorea",\
-"thaad":"northSouthKorea",\
-"thaad system":"northSouthKorea",\
-"u policy towards north korea":"northSouthKorea",\
-"bureaucracy":"nuclear",\
-"new start treaty":"nuclear",\
-"nuclear nonproliferation treaty":"nuclear",\
-"nuke":"nuclear",\
-"tehran":"nuclear",\
-"uranium":"nuclear",\
-"denuclearization":"nuclear",\
-"lightbridge corp":"nuclear",\
-"warhead stockpile":"nuclear",\
-"fuel supply":"energy",\
-"joe biden":"barackObama",\
-"susan e rice":"barackObama",\
-"damage settlement":"environmental",\
-"senator maggie hassan":"environmental",\
-"sierra club":"environmental",\
-"alberta oil":"energy",\
-"crude oil":"energy",\
-"drilling":"energy",\
-"fracking":"energy",\
-"gas production":"energy",\
-"keystone xl pipeline":"energy",\
-"oil":"energy",\
-"oil company":"energy",\
-"oil drillers":"energy",\
-"oil drilling":"energy",\
-"oil drilling oil drilling":"energy",\
-"oil industry":"energy",\
-"oil pipeline":"energy",\
-"oil price":"energy",\
-"oil reserve":"energy",\
-"pipeline":"energy",\
-"standing rock sioux tribe":"energy",\
-"year outer continental shelf oil":"energy",\
-"commander":"military",\
-"law enforcement agency":"lawEnforcement",\
-"police":"lawEnforcement",\
-"trooper jay cullen":"lawEnforcement",\
-"virginia state trooper":"lawEnforcement",\
-"deregulation":"policy",\
-"developing policy":"policy",\
-"gop bill":"policy",\
-"heritage foundation":"policy",\
-"legislature":"policy",\
-"lobbyist":"policy",\
-"negotiator":"policy",\
-"policy":"policy",\
-"policy":"policy",\
-"policy objective":"policy",\
-"president order":"policy",\
-"regulation":"policy",\
-"regulation":"policy",\
-"repeal":"policy",\
-"united state exit":"policy",\
-"us policy":"policy",\
-"florida republicans":"government",\
-"hill member":"government",\
-"house appropriation committee":"government",\
-"houseAppropriationCommittee":"government",\
-"redstate senator":"government",\
-"renegade republican":"government",\
-"tea party":"government",\
-"trump ally":"government",\
-"fundraising operation":"presidentialCampaign",\
-"donald j trump":"presidentDonaldTrump",\
-"executive order":"presidentdonaldTrump",\
-"executive power":"presidentDonaldTrump",\
-"incoming president":"presidentDonaldTrump",\
-"presidentDonaldTrump":"presidentDonaldTrump",\
-"presidentDonaldTrump":"presidentDonaldTrump",\
-"presidentElectDonaldTrump":"presidentdonaldTrump",\
-"secret service":"presidentDonaldTrump",\
-"secret service detail":"presidentDonaldTrump",\
-"trump presidency":"presidentDonaldTrump",\
-"campaign adviser":"presidentialCampaign",\
-"campaign arm":"presidentialCampaign",\
-"campaign chairman":"presidentialCampaign",\
-"campaign dollar":"presidentialCampaign",\
-"campaign manager":"presidentialCampaign",\
-"campaign memoir":"presidentialCampaign",\
-"campaign official":"presidentialCampaign",\
-"campaign pledge trump":"presidentialCampaign",\
-"campaign position":"presidentialCampaign",\
-"campaign promise":"presidentialCampaign",\
-"campaign speech":"presidentialCampaign",\
-"campaign talk":"presidentialCampaign",\
-"campaign target":"presidentialCampaign",\
-"candidacy":"presidentialCampaign",\
-"candidate hillary clinton":"presidentialCampaign",\
-"contribution thousand":"presidentialCampaign",\
-"convince voter":"presidentialCampaign",\
-"core trump supporter":"presidentialCampaign",\
-"election campaign":"presidentialCampaign",\
-"election campaign mr trump":"presidentialCampaign",\
-"election campaign promise":"presidentialCampaign",\
-"election contest":"presidentialCampaign",\
-"election operation":"presidentialCampaign",\
-"election result":"presidentialCampaign",\
-"election voter":"presidentialCampaign",\
-"election win":"presidentialCampaign",\
-"electoral college":"presidentialCampaign",\
-"fundraising activity":"presidentialCampaign",\
-"latino heavy electorate":"presidentialCampaign",\
-"make america great again":"presidentialCampaign",\
-"postelection rally":"presidentialCampaign",\
-"president campaign promise":"presidentialCampaign",\
-"president campaign sticker":"presidentialCampaign",\
-"reelection bid":"presidentialCampaign",\
-"trump campaign infrastructure tax":"presidentialCampaign",\
-"trump target audience":"presidentialCampaign",\
-"candidate":"presidentialElection",\
-"election":"presidentialElection",\
-"election day":"presidentialElection",\
-"gallup":"presidentialElection",\
-"gallup poll":"presidentialElection",\
-"inauguration":"presidentialElection",\
-"presidentialElection":"presidentialElection",\
-"primary":"presidentialElection",\
-"reelection race":"presidentialElection",\
-"republicanleaning mountain town":"presidentialElection",\
-"rnc":"presidentialElection",\
-"trump election":"presidentialElection",\
-"trump state":"presidentialElection",\
-"trump supporters1":"presidentialElection",\
-"trump win":"presidentialElection",\
-"us election":"presidentialElection",\
-"vote":"presidentialElection",\
-"voter":"presidentialElection",\
-"puerto rico":"centralAmericanNations",\
-"bigotry":"racialProvocation",\
-"bitch":"racialProvocation",\
-"bond":"racialProvocation",\
-"charlottesville":"racialProvocation",\
-"civil right":"racialProvocation",\
-"condemnation":"racialProvocation",\
-"curry":"racialProvocation",\
-"death fill":"racialProvocation",\
-"discrimination":"racialProvocation",\
-"disrespect":"racialProvocation",\
-"fallen americans":"racialProvocation",\
-"first amendment":"racialProvocation",\
-"kkk":"racialProvocation",\
-"martin luther king jr day weekend":"racialProvocation",\
-"minority turnout":"racialProvocation",\
-"minority voter":"racialProvocation",\
-"racism":"racialProvocation",\
-"racist":"racialProvocation",\
-"supremacist":"racialProvocation",\
-"refugee":"controversy",\
-"refuge":"controversy",\
-"refugee policy":"controversy",\
-"almighty god":"religion",\
-"minister":"religion",\
-"pope":"religion",\
-"religion":"religion",\
-"hindu temple":"religion",\
-"alabama sen jeff session":"republican",\
-"alaska lisa murkowski":"republican",\
-"attorney general jeff session":"republican",\
-"chuck grassley":"republican",\
-"deanHeller":"republican",\
-"economic adviser chairman kevin hassett":"republican",\
-"florida republican":"republican",\
-"gop":"republican",\
-"gop candidate":"republican",\
-"gop coalition":"republican",\
-"gop conference meeting":"republican",\
-"gop congress":"republican",\
-"gop control":"republican",\
-"gop conundrum":"republican",\
-"gop credit":"republican",\
-"gop fortune":"republican",\
-"gop hand":"republican",\
-"gop holdout":"republican",\
-"gop priority":"republican",\
-"gop proposal":"republican",\
-"gop rhetoric":"republican",\
-"gop takeover":"republican",\
-"gopheld house seat":"republican",\
-"house republican":"republican",\
-"john boehner":"republican",\
-"paul ryan":"government",\
-"republican":"republican",\
-"republican":"republican",\
-"sen dean heller":"republican",\
-"sen marco rubio":"republican",\
-"sen ted cruz":"republican",\
-"senate gop":"republican",\
-"senate majority leader mitch mcconnell land":"republican",\
-"speaker paul ryan":"republican",\
-"speaker ryan":"republican",\
-"state rex w tillerson":"republican",\
-"ted cruz":"republican",\
-"kalugin":"europeanNation",\
-"moscow":"europeanNation",\
-"putin":"europeanNation",\
-"russia":"europeanNation",\
-"russian":"europeanNation",\
-"soviet republic":"europeanNation",\
-"soviet union":"europeanNation",\
-"assange":"russiaElectionHacking",\
-"computer server":"russiaElectionHacking",\
-"cyber attack":"russiaElectionHacking",\
-"delay":"russiaElectionHacking",\
-"document dump":"russiaElectionHacking",\
-"election interference":"russiaElectionHacking",\
-"election issue":"russiaElectionHacking",\
-"espionage":"russiaElectionHacking",\
-"evidence russia":"russiaElectionHacking",\
-"facebook ad":"russiaElectionHacking",\
-"fbi investigator":"russiaElectionHacking",\
-"foreign affairs committee":"russiaElectionHacking",\
-"friday sanction":"russiaElectionHacking",\
-"fsb diplomatic spat":"russiaElectionHacking",\
-"gamesmanship":"russiaElectionHacking",\
-"glenn simpson":"russiaElectionHacking",\
-"government operative":"russiaElectionHacking",\
-"grassley beforehand":"russiaElectionHacking",\
-"hack":"russiaElectionHacking",\
-"hacking":"russiaelectionHacking",\
-"hacking allegation":"russiaElectionHacking",\
-"hacking tool":"russiaElectionHacking",\
-"house intelligence committee":"russiaElectionHacking",\
-"imprisonment":"russiaElectionHacking",\
-"indictment":"russiaElectionHacking",\
-"influence campaign":"russiaElectionHacking",\
-"intelligence":"russiaElectionHacking",\
-"intelligence community finding":"russiaElectionHacking",\
-"intelligence community work":"russiaElectionHacking",\
-"intelligence officer":"russiaElectionHacking",\
-"intelligence official":"russiaElectionHacking",\
-"intelligence report":"russiaElectionHacking",\
-"intelligence service":"russiaElectionHacking",\
-"intelligence service mi6":"russiaElectionHacking",\
-"interview president donald trump":"russiaElectionHacking",\
-"john kirby":"russiaelectionHacking",\
-"julian assange":"russiaElectionHacking",\
-"justice department investigation":"russiaElectionHacking",\
-"justice department veteran":"russiaElectionHacking",\
-"kgb man":"russiaElectionHacking",\
-"kremlin":"russiaElectionHacking",\
-"kremlin involvement":"russiaElectionHacking",\
-"kremlin spokesman dmitr peskov":"russiaElectionHacking",\
-"kremlin spokesman dmitry peskov":"russiaElectionHacking",\
-"kremlin website":"russiaElectionHacking",\
-"kulagin":"russiaElectionHacking",\
-"moscowdirected hacking":"russiaElectionHacking",\
-"mueller russia probe washington anticipating":"russiaElectionHacking",\
-"national security official":"russiaElectionHacking",\
-"new leak":"russiaElectionHacking",\
-"obstruction":"russiaElectionHacking",\
-"oval office meeting":"russiaElectionHacking",\
-"oval office time":"russiaElectionHacking",\
-"peskov":"russiaElectionHacking",\
-"robert dallek":"russiaElectionHacking",\
-"russia probe":"russiaElectionHacking",\
-"russiaElectionHacking":"russiaElectionHacking",\
-"senator john mccain":"russiaElectionHacking",\
-"senator lindsey graham":"russiaElectionHacking",\
-"spy chief":"russiaelectionHacking",\
-"state john kerry":"russiaElectionHacking",\
-"u intelligence":"russiaElectionHacking",\
-"affidavit":"russiaElectionHacking",\
-"agent":"russiaElectionHacking",\
-"collusion":"controversy",\
-"cyberthreats":"russiaElectionHacking",\
-"dershowitz":"russiaElectionHacking",\
-"disclosure":"russiaElectionHacking",\
-"document request":"russiaElectionHacking",\
-"dossier":"russiaElectionHacking",\
-"firing":"russiaElectionHacking",\
-"intelligence agency":"russiaElectionHacking",\
-"intelligence community":"russiaElectionHacking",\
-"intelligenceAgency":"russiaElectionHacking",\
-"interference":"russiaElectionHacking",\
-"investigation":"russiaElectionHacking",\
-"mr flynn":"russiaElectionHacking",\
-"probe":"russiaElectionHacking",\
-"russia investigation":"russiaElectionHacking",\
-"senate intelligence committee":"russiaElectionHacking",\
-"sergey i kislyak":"russiaElectionHacking",\
-"sergey v lavrov":"russiaElectionHacking",\
-"spying organisation":"russiaElectionHacking",\
-"st petersburg":"russiaElectionHacking",\
-"surveillance":"russiaElectionHacking",\
-"transcript":"russiaElectionHacking",\
-"u intelligence community":"russiaElectionHacking",\
-"aleksey pushkov":"europeanNation",\
-"affair":"controversy",\
-"anticorruption group":"controversy",\
-"business trump":"controversy",\
-"clapper laid bare":"controversy",\
-"disgrace":"controversy",\
-"disparagement":"controversy",\
-"encounter":"controversy",\
-"fitness column":"controversy",\
-"investigator":"controversy",\
-"lawyer mr trump":"controversy",\
-"leak":"controversy",\
-"money laundering":"controversy",\
-"ms clifford":"controversy",\
-"secret":"controversy",\
-"testimony":"controversy",\
-"solar":"energy",\
-"suniva":"energy",\
-"el salvador":"southAmericanNations",\
-"honduras":"southAmericanNations",\
-"buenos aire":"southAmericanNations",\
-"buenos aires":"southAmericanNations",\
-"argentine counterpart mauricio macri":"southAmericanNations",\
-"argentine journalist jorge lanata":"southAmericanNations",\
-"christiana figueres":"southAmericanNations",\
-"fidel castro":"southAmericanNations",\
-"mauricio macri":"southAmericanNations",\
-"automaker":"northSouthKorea",\
-"away south korea":"northSouthKorea",\
-"ben forney":"northSouthKorea",\
-"hyundai motor co":"northSouthKorea",\
-"korean peninsula problem":"northSouthKorea",\
-"minister joo hyunghwan":"northSouthKorea",\
-"president moon jaein":"northSouthKorea",\
-"president park geunhye":"northSouthKorea",\
-"seoul":"northSouthKorea",\
-"seoul":"northSouthKorea",\
-"south korea neighbor japan":"northSouthKorea",\
-"south korea soldier":"northSouthKorea",\
-"south korea trade minister":"northSouthKorea",\
-"south korean":"northSouthKorea",\
-"southKorea":"northSouthKorea",\
-"support research":"northSouthKorea",\
-"trading volume":"northSouthKorea",\
-"actions speak louder than words realm":"communication",\
-"antonin scalia":"supremeCourtJudge",\
-"appointee":"supremeCourtJudge",\
-"chamber rule":"supremeCourtJudge",\
-"confirmation vote":"supremeCourtJudge",\
-"filibuster":"supremeCourtJudge",\
-"gorsuch":"supremeCourtJudge",\
-"gorsuchs":"supremeCourtJudge",\
-"gorsuchs ability":"supremeCourtJudge",\
-"gorsuchs confirmation hearing":"supremeCourtJudge",\
-"gorsuchs nomination":"supremeCourtJudge",\
-"judge confirmation process":"supremeCourtJudge",\
-"judge james robart":"supremeCourtJudge",\
-"judge neil gorsuch":"supremeCourtJudge",\
-"judge robart":"supremeCourtJudge",\
-"judiciary":"supremeCourtJudge",\
-"justice":"supremeCourtJudge",\
-"justice anthony kennedy":"supremeCourtJudge",\
-"justice anthony m kennedy":"supremeCourtJudge",\
-"justice antonin scalia":"supremeCourtJudge",\
-"justice kennedy":"supremeCourtJudge",\
-"justice kennedy president trump":"supremeCourtJudge",\
-"justice ruth bader ginsburg":"supremeCourtJudge",\
-"justice scalia":"supremeCourtJudge",\
-"justice stephen breyer":"supremeCourtJudge",\
-"kennedy":"supremeCourtJudge",\
-"mr trump supreme court nominee":"supremeCourtJudge",\
-"nominee":"supremeCourtJudge",\
-"scalia vacancy":"supremeCourtJudge",\
-"scaramuccis appointment":"supremeCourtJudge",\
-"scaramuccis view":"supremeCourtJudge",\
-"senate fight":"supremeCourtJudge",\
-"senate floor procedure":"supremeCourtJudge",\
-"stephen g breyer":"supremeCourtJudge",\
-"steveScalise":"supremeCourtJudge",\
-"supreme court":"supremeCourtJudge",\
-"supreme court arm":"supremeCourtJudge",\
-"supreme court justice":"supremeCourtJudge",\
-"supreme court pick":"supremeCourtJudge",\
-"supreme court vacancy":"supremeCourtJudge",\
-"u supreme court":"supremeCourtJudge",\
-"us supreme court":"supremeCourtJudge",\
-"business tax cut":"taxes",\
-"capital gain tax":"taxes",\
-"century tax code":"taxes",\
-"deficit hardliner":"taxes",\
-"deficit hawk":"taxes",\
-"estate tax repeal":"taxes",\
-"exemption":"taxes",\
-"gain tax":"taxes",\
-"greg valliere":"taxes",\
-"hardworking american":"taxes",\
-"house plan":"taxes",\
-"income tax bracket":"taxes",\
-"income tax filing":"taxes",\
-"investment tax":"taxes",\
-"investor interest":"taxes",\
-"irs":"taxes",\
-"kyle pomerleau":"taxes",\
-"negotiation upwards":"taxes",\
-"pas something":"taxes",\
-"passage middle class tax relief":"taxes",\
-"ronald reagan":"taxes",\
-"rossnavarro tax credit":"taxes",\
-"slash tax":"taxes",\
-"smartassetcom":"taxes",\
-"state tax break":"taxes",\
-"tax":"taxes",\
-"tax benefit":"taxes",\
-"tax bill":"taxes",\
-"tax break":"taxes",\
-"tax burden":"taxes",\
-"tax code":"taxes",\
-"tax code complete":"taxes",\
-"tax code cost american million":"taxes",\
-"tax credit":"taxes",\
-"tax credit":"taxes",\
-"tax cut":"taxes",\
-"tax cut":"taxes",\
-"tax deferral":"taxes",\
-"tax didnt":"taxes",\
-"tax foundation":"taxes",\
-"tax incentive":"taxes",\
-"tax measure":"taxes",\
-"tax obligation":"taxes",\
-"tax overhaul":"taxes",\
-"tax plan":"taxes",\
-"tax policy center":"taxes",\
-"tax rate":"taxes",\
-"tax receipt":"taxes",\
-"tax record":"taxes",\
-"tax reform":"taxes",\
-"tax reform blueprint":"taxes",\
-"tax reform law":"taxes",\
-"tax reform plan":"taxes",\
-"tax relief":"taxes",\
-"tax return":"taxes",\
-"tax revenue":"taxes",\
-"tax system":"taxes",\
-"taxes":"taxes",\
-"taxpayer":"taxes",\
-"taxpayer buck":"taxes",\
-"taxpayer dollar":"taxes",\
-"taxpayer funding":"taxes",\
-"taxpayer money":"taxes",\
-"trillion":"taxes",\
-"u taxpayer":"taxes",\
-"united state tax":"taxes",\
-"us taxpayer":"taxes",\
-"computer simulation":"technology",\
-"computer system":"technology",\
-"cyber capability":"technology",\
-"cyber domain":"technology",\
-"cyber hacking":"technology",\
-"cyberattacks trump":"technology",\
-"cyberreview team":"technology",\
-"cybersabotage":"technology",\
-"cyberthreats thursday":"technology",\
-"data":"technology",\
-"emmett okeefe":"technology",\
-"estate technology startup":"technology",\
-"government technology":"technology",\
-"privacy advocate":"technology",\
-"privacy framework":"technology",\
-"tech giant apple":"technology",\
-"technology":"technology",\
-"technology company":"technology",\
-"vpn":"technology",\
-"web site":"technology",\
-"affiliate kia motor corp":"trade",\
-"aluminum import":"trade",\
-"auto industry":"trade",\
-"blowback":"trade",\
-"china trade policy":"trade",\
-"chinas trade policy":"trade",\
-"cohn":"trade",\
-"commissioner":"trade",\
-"companiesresulting":"trade",\
-"custom enforcement":"trade",\
-"damage lighthizer uncovers":"trade",\
-"disarray":"trade",\
-"economybut":"trade",\
-"export":"trade",\
-"export good":"trade",\
-"export restriction":"trade",\
-"export rule":"trade",\
-"ford motor co":"trade",\
-"fords decision":"trade",\
-"gdp":"economy",\
-"global affair":"trade",\
-"good deficit":"trade",\
-"government official":"trade",\
-"growth strategy":"trade",\
-"import":"trade",\
-"import quota":"trade",\
-"import restriction":"trade",\
-"international economics":"trade",\
-"investigation uncovers":"trade",\
-"investment decision":"trade",\
-"itc commissioner":"trade",\
-"jeremiad":"trade",\
-"koo zayong":"trade",\
-"korea automobile manufacturer association":"trade",\
-"korea trade minister":"trade",\
-"merchandise trade deficit":"trade",\
-"mexico economy ministry":"trade",\
-"mexico factory":"trade",\
-"model trade agreement":"trade",\
-"pacific pact":"trade",\
-"president trade vision":"trade",\
-"quota":"trade",\
-"quota restriction":"trade",\
-"robert lighthizer":"trade",\
-"san luis potosi":"trade",\
-"sanction":"trade",\
-"security perspective":"trade",\
-"security threat":"trade",\
-"singapore":"trade",\
-"surplus":"trade",\
-"tpp":"trade",\
-"trade":"trade",\
-"trade action":"trade",\
-"trade agenda":"trade",\
-"trade agreement":"trade",\
-"trade case":"trade",\
-"trade clinton":"trade",\
-"trade conflict":"trade",\
-"trade crackdown":"trade",\
-"trade deal":"trade",\
-"trade decision":"trade",\
-"trade expansion act":"trade",\
-"trade expert":"trade",\
-"trade fight":"trade",\
-"trade friction":"trade",\
-"trade group":"trade",\
-"trade meeting":"trade",\
-"trade negotiation":"trade",\
-"trade pact":"trade",\
-"trade partner":"trade",\
-"trade policy":"trade",\
-"trade practice":"trade",\
-"trade relation":"trade",\
-"trade relationship":"trade",\
-"trade step":"trade",\
-"trade surplus":"trade",\
-"trade tension":"trade",\
-"trade war":"trade",\
-"trading partner":"trade",\
-"trading system":"trade",\
-"treaty":"trade",\
-"trump adviser":"trade",\
-"us export":"trade",\
-"us international trade commission":"trade",\
-"us sanction":"trade",\
-"us trade":"trade",\
-"us trade data":"trade",\
-"us trade law":"trade",\
-"us trade representative":"trade",\
-"us trading partner":"trade",\
-"white house national trade council":"trade",\
-"white house trade official":"trade",\
-"world trade":"trade",\
-"world trade organization":"trade",\
-"wto":"trade",\
-"deficit":"trade",\
-"submarine":"trade",\
-"trade balance":"trade",\
-"trade deficit":"trade",\
-"us trade deficit":"trade",\
-"us trade deficit decline":"trade",\
-"us trade gap":"trade",\
-"commerce department report":"trade",\
-"gap":"trade",\
-"trade gap":"trade",\
-"trump campaign adviser":"trade",\
-"tariff":"trade",\
-"characteristic":"trait",\
-"competence":"trait",\
-"confidence":"trait",\
-"dominance":"trait",\
-"fitness":"trait",\
-"stability":"trait",\
-"adjudication":"travelBan",\
-"ban":"travelBan",\
-"bar ten":"travelBan",\
-"circuit court":"travelBan",\
-"country very carefully":"travelBan",\
-"solicitor gen jeffrey wall":"travelBan",\
-"suspension":"travelBan",\
-"travel ban":"travelBan",\
-"travel ban case":"travelBan",\
-"traveler":"travelBan",\
-"visa":"travelBan",\
-"worldwide review":"travelBan",\
-"additional aide":"trumpAdministration",\
-"administration":"trumpAdministration",\
-"administration hasnt":"trumpAdministration",\
-"administration intensifies negotiation":"trumpAdministration",\
-"administration lawyer":"trumpAdministration",\
-"administration official":"trumpAdministration",\
-"administration policy":"trumpAdministration",\
-"administration preparation":"trumpAdministration",\
-"administration response":"trumpAdministration",\
-"administration tuesday night":"trumpAdministration",\
-"administrator trump":"trumpAdministration",\
-"adviser":"trumpAdministration",\
-"aide":"trumpAdministration",\
-"aide briefed":"trumpAdministration",\
-"aide meeting":"trumpAdministration",\
-"attorney general":"government",\
-"cabinet":"trumpAdministration",\
-"cabinet member":"trumpAdministration",\
-"cabinet official":"trumpAdministration",\
-"cabinet pick":"trumpAdministration",\
-"cabinet secretary":"trumpAdministration",\
-"fatigue":"trumpAdministration",\
-"general mcmaster":"trumpAdministration",\
-"george papadopoulos":"trumpAdministration",\
-"homeland security secretary elaine duke":"trumpAdministration",\
-"homeland security secretary kirstjen nielsen":"trumpAdministration",\
-"hope hick":"trumpAdministration",\
-"incoming donald trump administration":"trumpAdministration",\
-"jared kushner":"trumpAdministration",\
-"jim mattiss":"trumpAdministration",\
-"kellyanne conway":"trumpAdministration",\
-"michael cohen":"trumpAdministration",\
-"michael short":"trumpAdministration",\
-"mike pence":"trumpAdministration",\
-"mr cohen":"trumpAdministration",\
-"mr kushner":"trumpAdministration",\
-"peter navarro":"trumpAdministration",\
-"press secretary":"trumpAdministration",\
-"priebus":"trumpAdministration",\
-"raj shah":"trumpAdministration",\
-"ryan zinke":"trumpAdministration",\
-"scaramucci":"trumpAdministration",\
-"sean spicer":"trumpAdministration",\
-"secretary john kelly":"trumpAdministration",\
-"security adviser michael flynn":"trumpAdministration",\
-"security secretary john kelly":"trumpAdministration",\
-"spicer":"trumpAdministration",\
-"steve bannon":"trumpAdministration",\
-"steven mnuchin":"trumpAdministration",\
-"tillerson":"trumpAdministration",\
-"trump administration official":"trumpAdministration",\
-"trumpAdministration":"trumpAdministration",\
-"trumpAdministration":"trumpAdministration",\
-"vice president":"trumpAdministration",\
-"vice presidentelect mike penny":"trumpAdministration",\
-"west wing":"trumpAdministration",\
-"white house":"trumpAdministration",\
-"white house official":"trumpAdministration",\
-"trump organization":"trumpBusiness",\
-"campaign":"presidentialCampaign",\
-"mr trump campaign":"presidentialCampaign",\
-"sarah huckabee sanders":"presidentialCampaign",\
-"trump campaign":"presidentialCampaign",\
-"blunt tweet":"trumpCommunication",\
-"bombast":"trumpCommunication",\
-"communication":"trumpCommunication",\
-"fcc rule":"trumpCommunication",\
-"intimidation effect":"trumpCommunication",\
-"james robart":"trumpCommunication",\
-"mr trump twitter message":"trumpCommunication",\
-"nfl tweet":"trumpCommunication",\
-"rhetoric":"trumpCommunication",\
-"speech":"trumpCommunication",\
-"trump speaking":"trumpCommunication",\
-"charity":"trumpBusiness",\
-"foundation":"trumpBusiness",\
-"trump foundation":"trumpBusiness",\
-"advocacy group":"trumpOpposition",\
-"antitrump":"trumpOpposition",\
-"asheville":"trumpOpposition",\
-"blasio":"trumpOpposition",\
-"caucus":"trumpOpposition",\
-"connecticut":"trumpOpposition",\
-"eric holder":"trumpOpposition",\
-"freedomcaucus":"trumpOpposition",\
-"opposition":"trumpOpposition",\
-"sparring partner":"trumpOpposition",\
-"speaker anthony rendon":"trumpOpposition",\
-"state address":"trumpOpposition",\
-"state attorney":"trumpOpposition",\
-"state legislature":"trumpOpposition",\
-"state legislature california":"trumpOpposition",\
-"state party email":"trumpOpposition",\
-"stronghold":"trumpOpposition",\
-"trump opposition movement":"trumpOpposition",\
-"villaraigosa":"trumpOpposition",\
-"trading abuse":"trumpBusiness",\
-"florida estate":"trumpBusiness",\
-"hotel":"trumpBusiness",\
-"property presidentelect donald trump":"trumpBusiness",\
-"tower":"trumpBusiness",\
-"trump international hotel":"trumpBusiness",\
-"trump taj mahal casino":"trumpBusiness",\
-"trump tower":"trumpBusiness",\
-"trump tower buenos aire":"trumpBusiness",\
-"trump vineyard estate":"trumpBusiness",\
-"chiefofstaff":"trumpAdministration",\
-"chiefofstaff john kelly":"trumpAdministration",\
-"rob porter":"trumpAdministration",\
-"confirmation process":"trumpAdministration",\
-"skybridge capital":"trumpAdministration",\
-"staff member":"trumpAdministration",\
-"staffing challenge":"trumpAdministration",\
-"staffing exodus":"trumpAdministration",\
-"tweet":"trumpCommunication",\
-"tweet saturday morning":"trumpCommunication",\
-"tweeting":"trumpCommunication",\
-"unitedStates":"unitedStates",\
-"arizona capital":"unitedStates",\
-"atlantic city":"unitedStates",\
-"calexico":"unitedStates",\
-"california berkeley":"unitedStates",\
-"city":"unitedStates",\
-"columbia":"unitedStates",\
-"dearborn":"unitedStates",\
-"new orleans":"unitedStates",\
-"new york city":"unitedStates",\
-"phoenix":"unitedStates",\
-"san diego":"unitedStates",\
-"san francisco":"unitedStates",\
-"seattle":"unitedStates",\
-"policy bank":"government",\
-"appeal":"supremeCourt",\
-"court":"supremeCourt",\
-"courtSystem":"travelBan",\
-"judge":"supremeCourt",\
-"ruling":"supremeCourt",\
-"alabama us senate":"government",\
-"american federalist system":"government",\
-"appropriations committee":"government",\
-"california democrats":"government",\
-"chicago council":"government",\
-"cia":"government",\
-"civic committee":"government",\
-"commerce department official":"government",\
-"commerce departments inspector general":"government",\
-"communication director":"government",\
-"congressional budget office":"government",\
-"congressional hispanic caucus":"government",\
-"conservation voters":"government",\
-"department authority":"government",\
-"justice department":"government",\
-"u official":"government",\
-"us census bureau":"government",\
-"us embassy":"government",\
-"us house":"government",\
-"us official":"government",\
-"us state department":"government",\
-"agriculture secretary sonny perdue":"usPolitician",\
-"alabama sen jeff sessions":"usPolitician",\
-"alaskas lisa murkowski":"usPolitician",\
-"amy spitalnick":"usPolitician",\
-"andrew cuomo":"usPolitician",\
-"antonio villaraigosa":"usPolitician",\
-"attorney general jeff sessions":"usPolitician",\
-"becerra":"usPolitician",\
-"betsy devos":"usPolitician",\
-"bigcity mayor":"usPolitician",\
-"bill frist":"usPolitician",\
-"billionaire education secretary":"usPolitician",\
-"boehner":"usPolitician",\
-"carmen yulin cruz":"usPolitician",\
-"carter page":"usPolitician",\
-"chris collins":"usPolitician",\
-"chuck":"usPolitician",\
-"chuck rosenberg":"usPolitician",\
-"congressional official":"usPolitician",\
-"congressman mike capuano":"usPolitician",\
-"connecticut democrat":"usPolitician",\
-"connecticut gov":"usPolitician",\
-"cornyn":"usPolitician",\
-"cuomo":"usPolitician",\
-"d massachusetts":"usPolitician",\
-"d new york":"usPolitician",\
-"dannel malloy":"usPolitician",\
-"dean heller":"usPolitician",\
-"delaware gov":"usPolitician",\
-"dhs inspector general":"usPolitician",\
-"dozen lawmaker":"usPolitician",\
-"dozen us official":"usPolitician",\
-"durbin":"usPolitician",\
-"economic advisers chairman kevin hassett":"usPolitician",\
-"education betsy devos":"usPolitician",\
-"eric cantor":"usPolitician",\
-"eric schneiderman":"usPolitician",\
-"former clinton administration treasury secretary lawrence summers":"usPolitician",\
-"governor":"government",\
-"heath shuler":"usPolitician",\
-"john mccain":"usPolitician",\
-"lt gov":"usPolitician",\
-"Marco Rubio":"usPolitician",\
-"marcoRubio":"usPolitician",\
-"marcoRubio":"usPolitician",\
-"mayor":"government",\
-"mcconnell":"usPolitician",\
-"michael flynn":"usPolitician",\
-"mick mulvaney":"usPolitician",\
-"mike lee":"usPolitician",\
-"mitch mcconnell":"usPolitician",\
-"nancyPelosi":"democrat",\
-"panetta":"usPolitician",\
-"politician":"government",\
-"reince priebus":"usPolitician",\
-"representative":"usPolitician",\
-"rex tillerson":"usPolitician",\
-"richard blumenthal":"usPolitician",\
-"rick perry":"usPolitician",\
-"rick scott":"usPolitician",\
-"rickPerry":"usPolitician",\
-"rickScott":"usPolitician",\
-"rickScott":"usPolitician",\
-"ryan":"usPolitician",\
-"sen jeff flake":"usPolitician",\
-"senate majority leader mitch mcconnell":"usPolitician",\
-"senate minority leader chuck schumer":"usPolitician",\
-"senator":"usPolitician",\
-"us president":"usPolitician",\
-"usPolitician":"usPolitician",\
-"alaska":"unitedStates",\
-"arizonas capital":"unitedStates",\
-"california":"unitedStates",\
-"delaware":"unitedStates",\
-"florida":"unitedStates",\
-"georgia":"unitedStates",\
-"hawaii":"unitedStates",\
-"maryland":"unitedStates",\
-"new york":"unitedStates",\
-"new york time":"unitedStates",\
-"north carolina":"unitedStates",\
-"north dakota":"unitedStates",\
-"ohio":"unitedStates",\
-"oregon":"unitedStates",\
-"state":"unitedStates",\
-"texas":"unitedStates",\
-"virginia":"unitedStates",\
-"washington":"unitedStates",\
-"berke bates":"violentCrime",\
-"bomber":"violentCrime",\
-"car attack":"violentCrime",\
-"heather heyer":"violentCrime",\
-"rape":"violentCrime",\
-"terrorism":"violentCrime",\
-"vehicle barrier":"violentCrime",\
-"victim":"violentCrime",\
-"violence":"violentCrime",\
-"vladimir putin":"russiaElectionHacking",\
-"estate tax":"taxes",\
-"wealth":"taxes",\
-"residence":"government",\
 
 
 #===============end pasted section=================================
@@ -2426,4 +1217,4 @@ concept_dict = {key.lower(): value for key, value in concept_dict.items()}
 
 #todo: build case-insensitive matching, and replace all .lower() calls
 
-pickle.dump(concept_dict, open(pickle_path + 'concept_dict.p', 'wb'))
+#pickle.dump(concept_dict, open(pickle_path + 'concept_dict.p', 'wb'))
