@@ -5,12 +5,31 @@
 
 import pandas as pd
 import numpy as np
-import itertools, nltk, re, os, docx, unicodedata, pickle
+import itertools, nltk, re, os, docx, unicodedata
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from sklearn.manifold import MDS
 from scipy.cluster.hierarchy import ward, dendrogram
+
+continue_exec = True #Do not change
+
+#========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
+num_clusters = 9 #how many clusters do you want?
+num_terms_in_cluster = 40 #how many of the top-terms within each cluster do you want to report?
+corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
+output_path = "C:/temp/NU/453/output/" #location you will output all files
+#========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
+
+try:
+    from filter_words import filter_words
+    from phrase_dict import phrase_dict
+    from ec_dict import ec_dict
+    from concept_dict import concept_dict
+    from weight_dict import weight_dict
+except:
+    continue_exec=False
+    print('Unable to load dictionary files. Ensure all supporting files exist.')
 
 #If you've never setup nltk previously, execute the following line
 #nltk.download()
@@ -20,28 +39,11 @@ from scipy.cluster.hierarchy import ward, dendrogram
 #   DSI-100 will overwrite DSI-10. Add logic to get full DSI name. Or just skip
 #   naming by the file, and simply assign your own number by order read in
 
-#how many clusters do you want?
-num_clusters = 9
-#how many of the top-terms within each cluster do you want to see?
-num_terms_in_cluster = 30
-
 def main():
-    corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
-    output_path = "C:/temp/NU/453/output/" #location you will output all files
-    pickle_path = "C:/temp/NU/453/pickle/" #where do you want to read-in the phrase / EC / filters, etc.
-
-    #use phrase_dict.py, ec_dict.py, concept_dict.py, and filter_words.py to create dictionaries
-    try:
-        phrase_dict = pickle.load(open(pickle_path + 'phrase_dict.p', 'rb'))
-        ec_dict = pickle.load(open(pickle_path + 'ec_dict.p', 'rb'))
-        filter_words = pickle.load(open(pickle_path + 'filter_words.p', 'rb'))
-        concept_dict = pickle.load(open(pickle_path + 'concept_dict.p', 'rb'))
-        weight_dict = pickle.load(open(pickle_path + 'weight_dict.p', 'rb'))
-    except IOError:
-        print('Error opening dictionary file, confirm directory and pickle files exist')
-        return
     
-    return make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict, weight_dict)
+    if continue_exec:
+        return make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_words, concept_dict, weight_dict)
+    else: print("Fault detected, halting execution")
 
 
 #===========================================================
@@ -131,7 +133,6 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     dist = 1 - cosine_similarity(tfidf_matrix)
     
     #determine k-means clustering
-    #num_clusters = 5
     km = KMeans(n_clusters=num_clusters)
     km.fit(tfidf_matrix)
     clusters = km.labels_.tolist()
@@ -244,7 +245,6 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
         top='off',         # ticks along the top edge are off
         labelbottom='off')
     plt.yticks(fontsize=14)
-    #plt.tight_layout() #show plot with tight layout
     plt.title('DSI Ward clustering dendrogram: ' + out_name)
     #plt.show()
     plt.savefig(output_path + out_name + '_dendrogram.png', bbox_inches='tight', dpi=72)
@@ -422,6 +422,7 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     return (masterdf_terms, masterdf_concepts, corpus_phrases)
     
 if __name__ == '__main__':
-    (terms, concepts, dsi_text) = main()
+    try: (terms, concepts, dsi_text) = main()
+    except: print('Unable to continue execution')
 
 
