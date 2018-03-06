@@ -21,9 +21,19 @@ num_concept_clusters = 9 #how many clusters for concepts?
 num_terms_in_cluster = 40 #how many of the top-terms within each cluster do you want to report?
 corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
 output_path = "C:/temp/NU/453/output/" #location you will output all files
+script_path = "C:/temp/NU/453/" #location where you have saved the collection of python files
 #========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
 
+
+#if you've previously executed the code, it won't re-import the dictionaries
+#   if you made changes to the dictionaries, then restart the kernel to reload
+
+#todo: change these dictionaries into formal modules, so that importlib.reload()
+#   can be used to refresh the import, and set the variables
+
+
 try:
+    os.chdir(script_path)
     from filter_words import filter_words
     from phrase_dict import phrase_dict
     from ec_dict import ec_dict
@@ -422,9 +432,13 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     
     #return the primary dataframes to allow exploration in the var browser
     return (masterdf_terms, masterdf_concepts, corpus_phrases)
-    
+
+#===========================================================
+#               main program to kick off execution
+#===========================================================   
 if __name__ == '__main__':
-    try: (terms, concepts, dsi_text) = main()
+    try:
+        (terms, concepts, dsi_text) = main()
     except: print('Unable to continue execution')
 
 
