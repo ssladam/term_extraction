@@ -9,6 +9,7 @@ import itertools, nltk, re, os, docx, unicodedata
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+plt.ioff()
 from sklearn.manifold import MDS
 from scipy.cluster.hierarchy import ward, dendrogram
 
