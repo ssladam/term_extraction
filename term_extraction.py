@@ -22,10 +22,14 @@ continue_exec = True #Do not change
 num_term_clusters = 12 #how many clusters do you want for terms?
 num_concept_clusters = 9 #how many clusters for concepts?
 num_terms_in_cluster = 40 #how many of the top-terms within each cluster do you want to report?
-corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
-output_path = "C:/temp/NU/453/output/" #location you will output all files
-script_path = "C:/temp/NU/453/" #location where you have saved the collection of python files
+corpus_path = "C:/temp/NU/453/CS2" #location where all corpus .docx files are stored
+output_path = "C:/temp/NU/453/output" #location you will output all files
+script_path = "C:/temp/NU/453" #location where you have saved the collection of python files
 #========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
+
+if corpus_path[-1:] != "/": corpus_path = corpus_path + "/"
+if output_path[-1:] != "/": output_path = output_path + "/"
+if script_path[-1:] != "/": script_path = script_path + "/"
 
 try:
     os.chdir(script_path)
@@ -149,13 +153,22 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     dist = 1 - cosine_similarity(tfidf_matrix)
     
     #determine k-means clustering
-    km = KMeans(n_clusters=num_clusters)
+    #km = KMeans(n_clusters=num_clusters)
+    #TIP: it would actually be better to use the ABOVE KMeans method. KMeans is best when
+    #   allowed a random start. You WILL see some DSI jump between clusters, and even
+    #   different terms reported more / less important. But you can use that as an investigation
+    #   tool. The DSI that are "jumping around" are not clearly in one cluster, or the other.
+    #   Use that as a clue for which terms / concepts to focus need more attention, to drive separation.
+    #   I have used the below so that the full team can have confidence we all see the same
+    #   results every time, given a common corpus, common dictionaries.
+    km = KMeans(n_clusters=num_clusters, init='k-means++', 
+            max_iter=100, n_init=1, verbose=0, random_state=3425)
     km.fit(tfidf_matrix)
     clusters = km.labels_.tolist()
     vocab_frame = pd.DataFrame(tfidf_matrix.columns)
     
     tfidf_matrix['cluster'] = clusters
-    tfidf_matrix['cluster'].value_counts() #how many DSI belong to each cluster?
+    #tfidf_matrix['cluster'].value_counts() #how many DSI belong to each cluster?
     
     #what are the top terms from each of the clusters?
 
