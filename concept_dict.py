@@ -1567,7 +1567,7 @@ def get_concepts():
 "away south korea":"northSouthKorea",\
 "ben forney":"northSouthKorea",\
 "bomb":"northSouthKorea",\
-"breach":"northsouthkorea",\
+"breach":"northSouthKorea",\
 "consistency":"northSouthKorea",\
 "defense jim mattis":"northSouthKorea",\
 "delury":"northSouthKorea",\
