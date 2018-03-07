@@ -11,6 +11,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
 from sklearn.manifold import MDS
 from scipy.cluster.hierarchy import ward, dendrogram
+from random import randint
 plt.ioff() #if you keep getting a blank pop-up figure window, run this manually in the console
 
 #If you've never setup nltk previously, execute the following line
@@ -135,7 +136,7 @@ def parse_article(dsi_text, phrase_dict, ec_dict, filter_words, grammar=r'KT: {(
 #===========================================================
 #               Helper function to cluster terms, concepts
 #===========================================================
-def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms_in_cluster=20):
+def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms_in_cluster=20, cluster_seed=3425):
     #todo: add logic to dynamically select optimal number of clusters
     #note: num_terms_in_cluster is only the number of terms to be REPORTED, the actual
     #   number of terms is the full collection of all terms
@@ -162,7 +163,7 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     #   I have used the below so that the full team can have confidence we all see the same
     #   results every time, given a common corpus, common dictionaries.
     km = KMeans(n_clusters=num_clusters, init='k-means++', 
-            max_iter=100, n_init=1, verbose=0, random_state=3425)
+            max_iter=100, n_init=1, verbose=0, random_state=cluster_seed)
     km.fit(tfidf_matrix)
     clusters = km.labels_.tolist()
     vocab_frame = pd.DataFrame(tfidf_matrix.columns)
@@ -174,7 +175,9 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
 
     cluster_terms = {}
     cluster_names = {}
-    text_file = open(output_path + out_name + '_clusters.txt', "w")
+    seed_name = "B"
+    if cluster_seed == 3425: seed_name = "A"
+    text_file = open(output_path + out_name + '_clusters.' + seed_name + '.txt', "w")
     #print("Top terms per cluster:\n")
     text_file.write("Top terms per cluster:\n")
     #sort cluster centers by proximity to centroid
@@ -257,7 +260,7 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     plt.title('DSI K-Means cluster assignment: ' + out_name)
     plt.margins(0.05, 0.1)
     #plt.show() #show the plot
-    plt.savefig(output_path + out_name + '_kmeans.png', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=72)
+    plt.savefig(output_path + out_name + '_kmeans.' + seed_name + '.png', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=72)
     plt.close('all') #even though we don't show the plot, you need to explicitly close to free the memory
     
     #the 2D map is done, now prepare a dendrogram to visualize how clustering splits
@@ -274,6 +277,11 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     plt.yticks(fontsize=14)
     plt.title('DSI Ward clustering dendrogram: ' + out_name)
     #plt.show()
+    #plt.savefig(output_path + out_name + '_dendrogram' + seed_name + '.png', bbox_inches='tight', dpi=72)
+    #Dendrogram is generated with ward distances on pre-computed values, it does not change based on KMeans seed
+    #   Therefore, don't write out an "A", and "B" version of the dendrogram
+    #   Todo: udpate dendrogram to better reflect the KMeans 2D map
+    #   Recommend you start here: https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/
     plt.savefig(output_path + out_name + '_dendrogram.png', bbox_inches='tight', dpi=72)
     plt.close('all') #clear plot from memory
 
@@ -437,8 +445,10 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     
     #perform clustering....
     magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster)
+    magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster, randint(3426,100000))
     #now cluster on concepts, instead of ECs
     magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster)
+    magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster, randint(3426,100000))
     
     #return the primary variables to allow exploration in the var browser
     return (masterdf_terms, masterdf_concepts, corpus_phrases)
