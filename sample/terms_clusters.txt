@@ -1,0 +1,73 @@
+Top terms per cluster:
+Cluster 0 words:
+china, import, north korea, beijing, deficit, xi jinping, europeanUnion, election, us company, export, us trade deficit, commerce department, trade gap, us trade data, holiday shopping season, trump campaign adviser, crude oil, commerce department report, commerce department highlight sheet, mexico, us export, us economy, world, trade, presidentDonaldTrump, tweet, sanction, us trade gap, confidence, paris agreement, chinese, otto warmbier, pyongyang, administration, twitter, trump administration official, diplomacy, campaign, washington, paris climate accord
+
+DSI in cluster 0:
+DSI-21, DSI-42, DSI-48, DSI-79, DSI-82
+
+Cluster 1 words:
+news, press, buzzfeed, news outlet, press conference, presidentElectDonaldTrump, journalism, journalist, university, pope, russia, administration, acosta, tweet, twitter, disgrace, presidentDonaldTrump, internet meme, fox news, cox medium institute, business person, intelligence agency, news item, dean, columbia journalism review, school, reporter, incoming president, afternoon broadcast fox news shep smith, witch hunt, medium outlet, grady newsource, election, correspondent, nazi comparison, news property, cnns report, allegation, document dump, georgia
+
+DSI in cluster 1:
+DSI-23
+
+Cluster 2 words:
+daca, immigrant, immigration, republican, democrat, deportation, worker, voter, cap, reporter, white house, childhood arrival program, policy, presidentDonaldTrump, backlash, paul ryan, mitch mcconnell, congress, us worker, border wall, border security, border security issue, something majority leader mitch mcconnell, senator lindsey graham, cornyn spoke, obama administration policy, daca permit, immigration reform proposal, cornyn, diversity visa lottery, border, obama, wall, gop, senate majority leader mitch mcconnell land, hillary clinton, gop conundrum, challenge senator, immigration tends, clinton voter
+
+DSI in cluster 2:
+DSI-52, DSI-63, DSI-70
+
+Cluster 3 words:
+north korea, rex tillerson, southKorea, weapon, world, missile, china, security, iran, unitedNations, sanction, beijing, force, washington, white house, general mcmaster, seoul, policy, election, presidentDonaldTrump, diplomacy, speech, kim jong un, state, pyongyang, ben forney, strike, administration official, kim, russia, kim jongun, thaad system, thaad, border, regime, japan, missile program, united nations, vision, poland
+
+DSI in cluster 3:
+DSI-38, DSI-51, DSI-66, DSI-80
+
+Cluster 4 words:
+regulation, executive order, obama, white house, climate change, energy, job creation, barackObama, administration, company, presidentDonaldTrump, american energy independence, trumpera energy framework, carbon emission, americafirst energy policy, repudiation, sean spicer, greenhouse gas emission, white house official, greenpeace usa, al gore, fuel industry stooge, energy policy, energy worker, usEnvironmentalProtectionAgency, energy regulation, power plant emission limit, annie leonard, energy production, planet, methane, obamaera policy, coal, coal power plant, obamaera, coal mining, worker, weapon, gore, american energy
+
+DSI in cluster 4:
+DSI-24
+
+Cluster 5 words:
+usEnvironmentalProtectionAgency, regulation, energy, administration, climate change, carbon emission, energy industry, paris agreement, climate, court, executive order, jobs, state, coal miner, paris climate accord, presidentDonaldTrump, unfccc, trump epa, paris agreementthe accord, columbia circuit, us environmental protection agency, comment periodwhich, competitive enterprise institute center, energy development, us relationship, interior department, interior rule, us emission target, obama regulation, energy developmentall action, dc court, congress approval, framework convention, energyand, coal lease, keystone xl pipeline, punishment, appeal, presidentElectDonaldTrump, warming
+
+DSI in cluster 5:
+DSI-20, DSI-28
+
+Cluster 6 words:
+spending bill, houseAppropriationCommittee, reconciliation, republican, appropriation, budget committee, appropriation bill, obamacare, healthcare, gop, budget blueprint, house appropriation committee, objection, medicare, barackObama, budget resolution deadline, immigration, congress budget process, house gop conference, incoming donald trump administration, shutdown, year budget resolution, budget resolution, funding package, spending package, democrat, tax reform, budget, vote, presidentDonaldTrump, trumpAdministration, new leak, enemy relationship, atlantic ocean, additional aide, bernstein research, ice agent, obamacare benchmark plan, disaster relief official, solarworld
+
+DSI in cluster 6:
+DSI-12
+
+Cluster 7 words:
+jobs, terryFlemings, irs, president order, dependability, officeofmanagementandbudget, voicemail, fleming experience, administration, memorandum, countrywere, state, damage, health insurance, government oversight, press conference, texas, presidentDonaldTrump, law firm, us credibility, ad, administrator trump, funding need, marketing, energy clean technology solar, gop conference meeting, welfare, economic adviser chairman kevin hassett, carbon emitter, election campaign, aberdeen, trump vineyard estate, border security issue, msnbc tv host mika brzezinski, korea trade minister, rob porter, julian assange, south korea trade minister, trump campaign infrastructure tax, hate group
+
+DSI in cluster 7:
+DSI-36
+
+Cluster 8 words:
+immigrant, daca, immigration, white house, haiti, wall, administration, congress, border, senator, barrier, presidentDonaldTrump, honduras, judge, immigration law, nbc news, wall street journal, associated press, visa lottery system, sudan, uscis, childhood arrival, deportation, democrat, california, arrest, city, mexico, border wall, barackObama, executive order, homeland security, secretary john kelly, central america, south sudan, u citizenship, unitedStates, border protection, us official, trump speaking
+
+DSI in cluster 8:
+DSI-46, DSI-67, DSI-77, DSI-85
+
+Cluster 9 words:
+republican, democrat, obamacare, gop, ron johnson, vote, paul ryan, voter, gorsuch, mitch mcconnell, congress, health care, election, mexico, paris agreement, freedomcaucus, medicaid, state, senate, campaign, presidentDonaldTrump, opposition, ted cruz, twitter, house republican, washington, court, borderWall, aide, border, border wall, wall, barrier, senator, russia, climate change, lee, administration, politico, north carolina
+
+DSI in cluster 9:
+DSI-18, DSI-35, DSI-39, DSI-41, DSI-43, DSI-49, DSI-91
+
+Cluster 10 words:
+globalization, business, gdp, business leader, world, china, backlash, company, us export, export, economybut, germany, brexit vote, ceo credibility, tariff, world trade, danger, export good, borderless world, deregulation, intervention, businesspeople, income inequality, trade war, edelman trust barometer, singapore, news coverage, multinationalization, newspaper, mexico, europeanUnion, election campaign, unitedStates, economy, presidentDonaldTrump, gop credit, ice agent, islandbuilding, enemy relationship, solarworld
+
+DSI in cluster 10:
+DSI-50
+
+Cluster 11 words:
+presidentDonaldTrump, jobs, russia, administration, white house, state, congress, election, policy, mexico, republican, democrat, company, campaign, china, barackObama, washington, regulation, homeland security, tax, wall, trade, court, business, iran, border, ban, foundation, world, investigation, worker, immigration, nafta, justice, vote, economist, presidentElectDonaldTrump, diplomat, twitter, border wall
+
+DSI in cluster 11:
+DSI-01, DSI-02, DSI-03, DSI-04, DSI-05, DSI-06, DSI-07, DSI-08, DSI-09, DSI-10, DSI-11, DSI-13, DSI-14, DSI-15, DSI-16, DSI-17, DSI-19, DSI-22, DSI-25, DSI-26, DSI-27, DSI-29, DSI-30, DSI-31, DSI-32, DSI-33, DSI-34, DSI-37, DSI-40, DSI-44, DSI-45, DSI-47, DSI-53, DSI-54, DSI-55, DSI-56, DSI-57, DSI-58, DSI-59, DSI-60, DSI-61, DSI-62, DSI-64, DSI-65, DSI-68, DSI-69, DSI-71, DSI-72, DSI-73, DSI-74, DSI-75, DSI-76, DSI-78, DSI-81, DSI-83, DSI-84, DSI-86, DSI-87, DSI-88, DSI-89, DSI-90
+

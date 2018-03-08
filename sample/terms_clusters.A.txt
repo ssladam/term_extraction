@@ -1,0 +1,73 @@
+Top terms per cluster:
+Cluster 0 words:
+north korea, china, iran, beijing, sanction, unitedNations, xi jinping, presidentDonaldTrump, security, speech, weapon, force, white house, general mcmaster, policy, united nations, diplomacy, southKorea, missile program, trade, administration, pyongyang, u leadership, bureaucracy, administration official, twitter, trumpism, tweet, kim jongun, washington, election, poland, muslim leader, north korea menace, audience wider, policy address, rogue nation, saudi arabia, security council, missile
+
+DSI in cluster 0:
+DSI-42, DSI-51, DSI-62, DSI-66
+
+Cluster 1 words:
+presidentDonaldTrump, jobs, administration, china, russia, mexico, congress, white house, policy, state, regulation, climate, election, company, obamacare, campaign, vote, barackObama, court, import, wall, business, gop, border, tax, ban, trade, washington, deficit, foundation, allegation, border wall, texas, worker, nafta, immigration, aide, north korea, iran, investigation
+
+DSI in cluster 1:
+DSI-01, DSI-03, DSI-04, DSI-06, DSI-07, DSI-08, DSI-09, DSI-10, DSI-12, DSI-14, DSI-15, DSI-16, DSI-17, DSI-18, DSI-19, DSI-20, DSI-21, DSI-23, DSI-24, DSI-25, DSI-28, DSI-29, DSI-30, DSI-31, DSI-32, DSI-33, DSI-34, DSI-35, DSI-36, DSI-37, DSI-39, DSI-40, DSI-41, DSI-43, DSI-44, DSI-45, DSI-47, DSI-49, DSI-50, DSI-53, DSI-54, DSI-55, DSI-56, DSI-57, DSI-58, DSI-60, DSI-65, DSI-68, DSI-69, DSI-71, DSI-72, DSI-73, DSI-74, DSI-75, DSI-76, DSI-78, DSI-79, DSI-81, DSI-82, DSI-83, DSI-84, DSI-86, DSI-87, DSI-88, DSI-89, DSI-90, DSI-91
+
+Cluster 2 words:
+immigrant, immigration, haiti, white house, daca, honduras, presidentDonaldTrump, judge, wall, immigration law, nbc news, senator, visa lottery system, sudan, uscis, border, arrest, border wall, city, barackObama, executive order, mexico, congress, homeland security, secretary john kelly, u citizenship, central america, south sudan, unitedStates, norway, trump speaking, africa, aide, new york, tweet, immigration system, contribution thousand, washington post, raj shah, immigration deal
+
+DSI in cluster 2:
+DSI-46, DSI-67, DSI-85
+
+Cluster 3 words:
+russia, diplomat, embassy, vladimir putin, washington, christopher steele, moscow, barackObama, fbi, arm race, tweet, hacking, presidentDonaldTrump, investigation, britain, intelligence agency, congress, election, intelligenceAgency, missile, twitter, uranium, china, sean spicer, warhead, weapons, allegation, russian, presidentElectDonaldTrump, fbiDirector, intelligence service mi6, justice, agent, kulagin, spying organisation, bbc, economist, intelligence, journalist, election operation
+
+DSI in cluster 3:
+DSI-02, DSI-11, DSI-26
+
+Cluster 4 words:
+north korea, rex tillerson, southKorea, russia, missile, china, beijing, washington, weapon, kim jong un, seoul, ben forney, state, pyongyang, sanction, kim, thaad system, thaad, force, allegation, election, policy, border, weapon program, delury, kim jongun, consistency, press conference, joint security area, north korea policy, dozen u official, chinese official, president park geunhye, national assembly, south korea soldier, northKorea, foreign minister yun byungse, u troop, north korea missile launch, intelligenceAgency
+
+DSI in cluster 4:
+DSI-38, DSI-80
+
+Cluster 5 words:
+violence, kkk, charlottesville, justice, jobs, bigotry, candidate, stock market, tax cut, car attack, dream, almighty god, trade policy, citizen, virginia state trooper, trade deal, virginia, hate group, law enforcement agency, law enforcement, worker, bigotry strike, berke bates, washingtonDC, attorney general jeff session, racism, unemployment, supremacist, bond, death fill, heather heyer, trooper jay cullen, fbi, condemnation, director christopher wray, business, company, presidentDonaldTrump, economy, unitedStates
+
+DSI in cluster 5:
+DSI-59
+
+Cluster 6 words:
+daca, immigration, immigrant, wall, deportation, congress, administration, worker, white house, border, voter, cap, reporter, presidentDonaldTrump, border security, childhood arrival program, policy, barrier, associated press, wall street journal, california, daca recipient, childhood arrival, backlash, paul ryan, mitch mcconnell, us worker, cornyn, border wall, obama administration policy, daca permit, something majority leader mitch mcconnell, senator lindsey graham, immigration reform proposal, cornyn spoke, border security issue, diversity visa lottery, obama, republican, fencing
+
+DSI in cluster 6:
+DSI-52, DSI-63, DSI-70, DSI-77
+
+Cluster 7 words:
+homeland security, state, attorney general, adjudication, worldwide review, security, immigrationAndNationalityAct, visa, security concern, libya, iran, terrorist, executive order, suspension, somalia, yemen, sudan, syria, publicsafety threat, welfare, usc, foreign terrorist entry into, presidentDonaldTrump, unitedStates, congressional budget office, nih, government funding, communication job, bloomberg, bill kristol, consumer permission, business confidence, carrier corp factory, job opportunity, justice stephen breyer, comcast, berke bates, america defense, marcher, united state position
+
+DSI in cluster 7:
+DSI-27
+
+Cluster 8 words:
+school choice, charter school, education, professor, state, school, memorandum, george washington university law school, trade, obama, obamas legacy, governor, vice presidentelect mike penny, immigration, executive power, web site, technology, harvard law school, rhetoric, barack obamas work, administration, douglas harris, educator, government fund, betsy devos, climate change, tulane university, presidentElectDonaldTrump, presidentDonaldTrump, control center, trump supporters1, liar, u supreme court, campaign pledge trump, coal power plant, surveillance, congressional budget office, lobbying ban, consumer permission, bill kristol
+
+DSI in cluster 8:
+DSI-05
+
+Cluster 9 words:
+north korea, china, xi jinping, tweet, diplomacy, chinese, trump administration official, trade, campaign, presidentDonaldTrump, weapon, twitter, rex tillerson, florida estate, aide, pyongyang, confidence, college student, diplomat, blunt tweet, dealmaker, defense jim mattis, mike pence, otto warmbier, coal shipment, state, washington, regime, administration, unitedStates, justice stephen breyer, bloomberg, bill kristol, consumer permission, congressional budget office, job opportunity, national security official, comcast, communication job, america defense
+
+DSI in cluster 9:
+DSI-48
+
+Cluster 10 words:
+russia, russiaElectionHacking, election, intelligenceAgency, interference, putin, russian, reince priebus, presidentDonaldTrump, allegation, hacking, vladimir putin, presidentElectDonaldTrump, hack, intelligence community, obama, north korea, book tour, meddling, tweet, clinton, collusion, cyber attack, china, moscow, barackObama, twitter, skepticism, disparagement, confidence, propaganda, fox news sunday, espionage, intrusion, nbc, campaign, senator lindsey graham, inauguration, vote, john mccain
+
+DSI in cluster 10:
+DSI-13, DSI-22, DSI-61
+
+Cluster 11 words:
+anthony scaramucci, reince priebus, white house, jobs, reporter, chiefofstaff, white house official, communication director, scaramuccis view, scaramuccis appointment, press secretary, sean spicer, white house press, white house official announcement, journalist, skybridge capital, fox news executive bill shine, company, communication job, white house chiefofstaff, white house communication director, leak, sean hannity, election, hannity, administration, objection, citizen, catastrophe, michael short, west wing, white house communication staff, comms team, presidentDonaldTrump, press, chancellor angela merkel, surveillance, consumer permission, liar, u supreme court
+
+DSI in cluster 11:
+DSI-64
+
