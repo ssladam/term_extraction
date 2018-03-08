@@ -6,11 +6,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import itertools, nltk, re, os, docx, unicodedata, importlib
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
 from sklearn.manifold import MDS
-from scipy.cluster.hierarchy import ward, dendrogram
+from scipy.cluster.hierarchy import ward, dendrogram, cophenet, linkage
+from scipy.spatial.distance import pdist
 from random import randint
 plt.ioff() #if you keep getting a blank pop-up figure window, run this manually in the console
 
@@ -23,11 +25,12 @@ continue_exec = True #Do not change
 num_term_clusters = 12 #how many clusters do you want for terms?
 num_concept_clusters = 9 #how many clusters for concepts?
 num_terms_in_cluster = 40 #how many of the top-terms within each cluster do you want to report?
-corpus_path = "C:/temp/NU/453/CS2" #location where all corpus .docx files are stored
-output_path = "C:/temp/NU/453/output" #location you will output all files
-script_path = "C:/temp/NU/453" #location where you have saved the collection of python files
+corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
+output_path = "C:/temp/NU/453/output/" #location you will output all files
+script_path = "C:/temp/NU/453/" #location where you have saved the collection of python files
 #========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
 
+#Did you forget to put the backslash at the end of your input folders?
 if corpus_path[-1:] != "/": corpus_path = corpus_path + "/"
 if output_path[-1:] != "/": output_path = output_path + "/"
 if script_path[-1:] != "/": script_path = script_path + "/"
@@ -52,6 +55,10 @@ except:
 #   Currently hard-coded to read [0:6]. This will break once DSI passes 100.
 #   DSI-100 will overwrite DSI-10. Add logic to get full DSI name. Or just skip
 #   naming by the file, and simply assign your own number by order read in.
+
+#todo: currently the code rebuilds the full corpus material every iteration.
+#   Recommend rebuilding code to allow tweakikng concepts and weighting dynamically
+#   Likely just pickle out your materials, and have a 2nd program to handle that work
 
 def main():
     phrases = phrase_dict.get_phrases()
@@ -136,6 +143,43 @@ def parse_article(dsi_text, phrase_dict, ec_dict, filter_words, grammar=r'KT: {(
 #===========================================================
 #               Helper function to cluster terms, concepts
 #===========================================================
+
+#=========== What is the optimal number of clusters to select?=====================
+def cluster_cutoff_selection(tmatrix, title='unknown', max_cluster=20):
+    Z = linkage(tmatrix, 'ward')
+    #You want c to be as close to 1 as possible...
+    c, coph_dists = cophenet(Z, pdist(tmatrix))
+    
+    #Yet another dendrogram....  commented out, since managed by magic_cluster()
+    #   Feel to tinker with this one, to see which approach you prefer   
+    # plt.title('Hierarchical Clustering Dendrogram')
+    # plt.xlabel('sample index')
+    # plt.ylabel('distance')
+    # dendrogram(Z, orientation="right", labels=list(tmatrix.index))
+    # plt.show()
+    
+    fig, ax = plt.subplots(figsize=(9, 5)) # set size
+    ax.margins(0.05)
+    ax.tick_params(axis= 'y', which='both', left='off', top='off', labelleft='off')
+    plt.ticklabel_format(style='plain',axis='x',useOffset=False)
+    for axis in [ax.xaxis, ax.yaxis]:
+        axis.set_major_locator(ticker.MaxNLocator(integer=True))
+    
+    last = Z[(-1*max_cluster - 1):, 2]
+    last_rev = last[::-1]
+    idxs = np.arange(1, len(last) + 1)
+    ax.plot(idxs, last_rev, label="elbow", linewidth=2)
+    lgd = ax.legend(numpoints=1,  loc=0)
+    acceleration = np.diff(last, 2)  # 2nd derivative of the distances
+    acceleration_rev = acceleration[::-1]
+    ax.plot(idxs[:-2] + 1, acceleration_rev, label="inconsistency", linewidth=2)
+    ax.legend(numpoints=1,  loc=0)
+    plt.title(title + ' Cluster Cut-off Selection')
+    #plt.show()
+    plt.savefig(output_path + title + '_cluster_cutoff.png', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=72)
+    plt.close('all') #even though we don't show the plot, you need to explicitly close to free the memory
+    
+#======================= Build the matrices to establish clusters=====================
 def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms_in_cluster=20, cluster_seed=3425):
     #todo: add logic to dynamically select optimal number of clusters
     #note: num_terms_in_cluster is only the number of terms to be REPORTED, the actual
@@ -284,6 +328,8 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     #   Recommend you start here: https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/
     plt.savefig(output_path + out_name + '_dendrogram.png', bbox_inches='tight', dpi=72)
     plt.close('all') #clear plot from memory
+    
+    return tfidf_matrix
 
 #===========================================================
 #               True main program
@@ -444,14 +490,18 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     del i
     
     #perform clustering....
-    magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster)
+    concept_tfmatrix = magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster)
     magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster, randint(3426,100000))
+    cluster_cutoff_selection(concept_tfmatrix, 'Concepts', 20)
     #now cluster on concepts, instead of ECs
-    magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster)
+    term_tfmatrix = magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster)
     magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster, randint(3426,100000))
+    cluster_cutoff_selection(concept_tfmatrix, 'Terms', 20)
     
     #return the primary variables to allow exploration in the var browser
-    return (masterdf_terms, masterdf_concepts, corpus_phrases)
+    return (masterdf_terms, masterdf_concepts, corpus_phrases, term_tfmatrix, concept_tfmatrix)
+
+   
 
 #===========================================================
 #               main program to kick off execution
@@ -459,7 +509,5 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
 if __name__ == '__main__':
     try:
         #Let's return the primary variables, to allow exploration in the variable browser
-        (terms_matrix, concepts_matrix, dsi_text) = main()
+        (terms_matrix, concepts_matrix, dsi_text, t_tmatrix, c_tmatrix) = main()
     except: print('Unable to continue execution')
-
-
