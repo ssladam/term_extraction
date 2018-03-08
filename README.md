@@ -9,3 +9,5 @@ Before running term_extraction.py, you *must* edit the global variables corpus_p
 You also have the option to customize the number of clusters to be formed, as well as the number of terms you want to be reported for each cluster.
 
 Use the excel file to aid in quickly creating / updating the various dictionaries to help categorize terms, set ECs, etc.
+
+Note on output: since KMeans starts with a randomized vector it means that cluster assignment can change for any "marginal" DSI. For that reason, I output two cluster maps, for both terms matrix, and cluster matrix. The "A" map is set with a fixed seed, so that you can compare the changes you make to the EC / Concepts / Weighting dictionaries on a fixed set. The "B" output is a randomized seed, intended to all you to compare A vs. B, so you can identify which DSI are borderline. Any DSI that jump between clusters should be investigated as likely needing improved EC mapping, more concept separation, or improved term weighting.
