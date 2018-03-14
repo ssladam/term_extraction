@@ -11,6 +11,7 @@ import itertools, nltk, re, os, docx, unicodedata, importlib
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
 from sklearn.manifold import MDS
+#from sklearn import metrics
 from scipy.cluster.hierarchy import ward, dendrogram, cophenet, linkage
 from scipy.spatial.distance import pdist
 from random import randint
@@ -490,13 +491,14 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
     del i
     
     #perform clustering....
-    concept_tfmatrix = magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster)
+    term_tfmatrix = magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster)
     magic_cluster(masterdf_terms, output_path, 'terms', num_term_clusters, num_terms_in_cluster, randint(3426,100000))
-    cluster_cutoff_selection(concept_tfmatrix, 'Concepts', 20)
+    cluster_cutoff_selection(term_tfmatrix, 'Terms', 20)
     #now cluster on concepts, instead of ECs
-    term_tfmatrix = magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster)
+    concept_tfmatrix = magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster)
     magic_cluster(masterdf_concepts, output_path, 'concepts', num_concept_clusters, num_terms_in_cluster, randint(3426,100000))
-    cluster_cutoff_selection(concept_tfmatrix, 'Terms', 20)
+    cluster_cutoff_selection(concept_tfmatrix, 'Concepts', 20)
+    
     
     #return the primary variables to allow exploration in the var browser
     return (masterdf_terms, masterdf_concepts, corpus_phrases, term_tfmatrix, concept_tfmatrix)
@@ -511,3 +513,7 @@ if __name__ == '__main__':
         #Let's return the primary variables, to allow exploration in the variable browser
         (terms_matrix, concepts_matrix, dsi_text, t_tmatrix, c_tmatrix) = main()
     except: print('Unable to continue execution')
+
+
+
+
