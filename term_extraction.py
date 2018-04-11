@@ -24,7 +24,7 @@ continue_exec = True #Do not change
 
 #========GLOBAL VARIABLES YOU CAN CUSTOMIZE TO TWEAK BEHAVIOR============
 num_term_clusters = 12 #how many clusters do you want for terms?
-num_concept_clusters = 9 #how many clusters for concepts?
+num_concept_clusters = 12 #how many clusters for concepts?
 num_terms_in_cluster = 40 #how many of the top-terms within each cluster do you want to report?
 corpus_path = "C:/temp/NU/453/CS2/" #location where all corpus .docx files are stored
 output_path = "C:/temp/NU/453/output/" #location you will output all files
@@ -105,13 +105,18 @@ def extract_candidate_chunks(text, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*
     candidates = [' '.join(nltk.stem.WordNetLemmatizer().lemmatize(word.lower().strip()) for word, pos, chunk in group)
         for key, group in itertools.groupby(all_chunks, lambda_unpack(lambda word, pos, chunk: chunk != 'O')) if key]
     
-    #We had left standard punctuation to aid in sentence chunking. Now delete all intra-word punctuation. "f.b.i. --> "fbi"
+    #I had left standard punctuation to aid in sentence chunking. Now delete all intra-word punctuation. "f.b.i. --> "fbi"
     for idx in range(len(candidates)):
         candidates[idx] = re.sub(r"[!\"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~]", '', candidates[idx])
+        candidates[idx] = ' '.join(candidates[idx].split())
     #Did not use string.punctuation, since we need to escape the [brackets] for re.sub
     
-    return [cand.strip() for cand in candidates if cand not in stop_words]
+    #return [cand.strip() for cand in candidates if cand not in stop_words]
+    #return [" ".join(cand.split()) for cand in candidates if cand not in stop_words]
     #strip again, because filtering punctuation above may re-introduce floating spaces, "% people" --> " people"
+    #   now I use join/split, because we need to dig out intra-string whitespace as well
+    
+    return [cand for cand in candidates if cand not in stop_words]
 
 #==========Take a single long string of text and convert it into terms / phrases========
 def parse_article(dsi_text, phrase_dict, ec_dict, filter_words, grammar=r'KT: {(<NN.*>+)? <NN.*>+}'):
@@ -265,11 +270,18 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     #cluster_colors = {0: '#1b9e77', 1: '#d95f02', 2: '#7570b3', 3: '#e7298a', 4: '#66a61e'}
     #un-comment the below section if you want to manually name the clusters
     #   Be certain the dictionary is the same length as your declared number of clusters
-    # cluster_names = {0: 'Immigration and border control', 
-    #                 1: 'American governmental policy', 
-    #                 2: 'Russian interference', 
-    #                 3: 'International trade', 
-    #                 4: 'Tax reform'}
+    # cluster_names = {0: 'Foreign policy / Korean tensions', 
+    #                 1: 'General administration commentary', 
+    #                 2: 'Russian influence & relations', 
+    #                 3: 'International trade relations', 
+    #                 4: 'Economy',
+    #                 5: 'Energy & environmental policy',
+    #                 6: 'Education policy',
+    #                 7: 'Immigration debate',
+    #                 8: 'Tax reform',
+    #                 9: 'UNKNOWN',
+    #                 10: 'UNKNOWN',
+    #                 11: 'UNKNOWN'}
     
     #create data frame that has the result of the MDS plus the cluster numbers and titles
     mappedDF = pd.DataFrame(dict(x=xs, y=ys, label=clusters, title=list(tfidf_matrix.index))) 
@@ -301,11 +313,12 @@ def magic_cluster(input_matrix, output_path, out_name, num_clusters=5, num_terms
     #lgd = ax.legend(numpoints=1,  loc=0)
     #add label in x,y position with the label as the DSI#
     for i in range(len(mappedDF)):
-        ax.text(mappedDF.ix[i]['x'], mappedDF.ix[i]['y'], mappedDF.ix[i]['title'], size=8)  
+        #ax.text(mappedDF.ix[i]['x'], mappedDF.ix[i]['y'], mappedDF.ix[i]['title'], size=8)
+        ax.text(mappedDF.iloc[i]['x'], mappedDF.iloc[i]['y'], mappedDF.iloc[i]['title'], size=8)
     plt.title('DSI K-Means cluster assignment: ' + out_name)
     plt.margins(0.05, 0.1)
     #plt.show() #show the plot
-    plt.savefig(output_path + out_name + '_kmeans.' + seed_name + '.png', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=72)
+    plt.savefig(output_path + out_name + '_kmeans.' + seed_name + '.png', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=200)
     plt.close('all') #even though we don't show the plot, you need to explicitly close to free the memory
     
     #the 2D map is done, now prepare a dendrogram to visualize how clustering splits
@@ -429,7 +442,10 @@ def make_magic_happen(corpus_path, output_path, phrase_dict, ec_dict, filter_wor
         #  I want to avoid doing it with another 'for' loop, which would be an easy fix
         if(indexSr.str.match(key,case=False).any()):
             try: masterdf_terms.at[masterdf_terms.index[indexSr[indexSr==key].index[0]], 'concept'] = value
-            except: print("Key matched in concept search, but does not exist in term index: \""+key+"\"")
+            except:
+                #print("Key matched in concept search, but does not exist in term index: \""+key+"\"")
+                continue
+                
     del indexSr
     
     #calcualte tf_idf statistics on the FULL SET
