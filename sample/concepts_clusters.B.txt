@@ -1,55 +1,73 @@
 Top terms per cluster:
 Cluster 0 words:
-northSouthKorea, china, foreignPolicy, trumpAdministration, usPolitician, trade, arms, trumpCommunication, europeanNation, unitedStates, conflict, middleEasternNations, borderSecurity, presidentDonaldTrump, education, policy, communication, presidentialElection, asianNations, military, presidentialCampaign, media, government, controversy, immigration, barackObama, nuclear, trait, finance, americanBusiness, environmental, healthcare, technology, economy, trumpBusiness, trumpOpposition, russiaElectionHacking, republican, nationalSecurity, UNKNOWN
+northSouthKorea, trade, foreignPolicy, middleEasternNations, economy, trumpCommunication, trumpAdministration, conflict, borderSecurity, policy, presidentDonaldTrump, business, china, immigration, nuclear, government, media, europeanNation, arms, communication, americanBusiness, unitedStates, centralAmericanNations, presidentialCampaign, climateChange, presidentialElection, asianNations, finance, budget, energy, barackObama, jobs, technology, military, religion, russiaElectionHacking, democrat, violentCrime, trumpBusiness, trait
 
 DSI in cluster 0:
-DSI-38, DSI-42, DSI-48, DSI-51, DSI-66, DSI-80
+DSI-37, DSI-51, DSI-62
 
 Cluster 1 words:
-europeanNation, russiaElectionHacking, fbi, foreignPolicy, climateChange, trumpAdministration, presidentialCampaign, media, arms, controversy, presidentDonaldTrump, unitedStates, communication, democrat, usPolitician, republican, environmentalPolicy, government, northSouthKorea, nuclear, presidentialElection, conflict, trade, trait, middleEasternNations, healthcare, trumpCommunication, hillaryClinton, policy, centralAmericanNations, violentCrime, energy, china, business, lawEnforcement, supremeCourt, UNKNOWN, asianNations, domesticPolicy, borderWall
-
-DSI in cluster 1:
-DSI-02, DSI-41, DSI-53, DSI-56, DSI-58, DSI-73, DSI-83
-
-Cluster 2 words:
-supremeCourtJudge, supremeCourt, travelBan, borderSecurity, unitedStates, immigration, government, trumpAdministration, conflict, controversy, middleEasternNations, presidentDonaldTrump, media, usPolitician, presidentialElection, presidentdonaldTrump, nationalSecurity, trumpCommunication, democrat, trumpOpposition, republican, communication, economy, violentCrime, barackObama, presidentialCampaign, education, foreignPolicy, religion, racialProvocation, policy, UNKNOWN, naturalDisaster, arms, borderWall, jobs, environmental, asianNations, climatechange, domesticPolicy
-
-DSI in cluster 2:
-DSI-10, DSI-27, DSI-34, DSI-39, DSI-44, DSI-55
-
-Cluster 3 words:
-healthcare, republican, presidentialElection, hillaryClinton, government, finance, trumpAdministration, climateChange, taxes, media, unitedStates, usPolitician, trumpBusiness, economy, energy, presidentDonaldTrump, domesticPolicy, barackObama, business, trade, policy, trumpOpposition, presidentialCampaign, middleEasternNations, environmentalPolicy, communication, military, UNKNOWN, supremeCourtJudge, conflict, education, democrat, controversy, daca, climatechange, china, centralAmericanNations, budget, borderWall, borderSecurity
-
-DSI in cluster 3:
-DSI-25, DSI-40, DSI-43, DSI-49
-
-Cluster 4 words:
-trumpAdministration, borderWall, government, media, unitedStates, controversy, racialProvocation, economy, immigration, borderSecurity, naturalDisaster, usPolitician, presidentialElection, centralAmericanNations, conflict, middleEasternNations, taxes, business, presidentDonaldTrump, budget, republican, communication, americanBusiness, arms, trumpBusiness, policy, presidentialCampaign, trade, russiaElectionHacking, healthcare, trumpCommunication, finance, northSouthKorea, foreignPolicy, violentCrime, barackObama, trumpOpposition, technology, europeanNation, domesticPolicy
-
-DSI in cluster 4:
-DSI-03, DSI-06, DSI-12, DSI-14, DSI-15, DSI-16, DSI-17, DSI-18, DSI-23, DSI-29, DSI-30, DSI-33, DSI-35, DSI-45, DSI-47, DSI-54, DSI-57, DSI-59, DSI-62, DSI-64, DSI-65, DSI-69, DSI-71, DSI-74, DSI-75, DSI-76, DSI-77, DSI-81, DSI-86, DSI-87, DSI-89, DSI-91
-
-Cluster 5 words:
-trade, economy, taxes, education, americanBusiness, china, jobs, business, northSouthKorea, policy, trumpAdministration, centralAmericanNations, finance, unitedStates, government, energy, secretary, presidentDonaldTrump, presidentialElection, conflict, immigration, foreignPolicy, barackObama, communication, healthcare, presidentialCampaign, media, asianNations, republican, technology, budget, domesticPolicy, trait, europeanNation, borderSecurity, environmental, trumpCommunication, presidentdonaldTrump, trumpBusiness, borderWall
-
-DSI in cluster 5:
-DSI-04, DSI-05, DSI-07, DSI-08, DSI-09, DSI-31, DSI-32, DSI-36, DSI-37, DSI-50, DSI-60, DSI-68, DSI-72, DSI-79, DSI-82, DSI-84, DSI-90
-
-Cluster 6 words:
-energy, environmentalPolicy, climateChange, environmental, trumpAdministration, unitedStates, china, policy, business, economy, barackObama, presidentdonaldTrump, usPolitician, foreignPolicy, supremeCourt, government, presidentDonaldTrump, presidentialCampaign, finance, media, americanBusiness, jobs, travelBan, technology, naturalDisaster, conflict, russiaElectionHacking, trade, hillaryClinton, budget, southAmericanNations, climatechange, arms, democrat, education, military, presidentialElection, europeanNation, trait, trumpCommunication
-
-DSI in cluster 6:
-DSI-19, DSI-20, DSI-21, DSI-24, DSI-28, DSI-78, DSI-88
-
-Cluster 7 words:
 immigration, daca, trumpAdministration, centralAmericanNations, economy, unitedStates, media, government, conflict, borderSecurity, jobs, borderWall, usPolitician, presidentialElection, barackObama, presidentDonaldTrump, violentCrime, republican, presidentialCampaign, supremeCourt, healthcare, religion, travelBan, policy, education, southAmericanNations, controversy, naturalDisaster, middleEasternNations, trumpCommunication, hillaryClinton, business, presidentdonaldTrump, russiaElectionHacking, trumpBusiness, domesticPolicy, europeanNation, racialProvocation, trumpOpposition, americanBusiness
 
-DSI in cluster 7:
+DSI in cluster 1:
 DSI-01, DSI-46, DSI-52, DSI-63, DSI-67, DSI-70, DSI-85
 
+Cluster 2 words:
+healthcare, climateChange, europeanNation, environmentalPolicy, energy, media, foreignPolicy, republican, china, unitedStates, presidentialElection, trumpAdministration, policy, presidentDonaldTrump, government, arms, economy, usPolitician, barackObama, environmental, controversy, northSouthKorea, nuclear, middleEasternNations, trade, communication, conflict, taxes, presidentialCampaign, supremeCourt, trait, presidentdonaldTrump, russiaElectionHacking, trumpCommunication, education, business, domesticPolicy, trumpOpposition, centralAmericanNations, violentCrime
+
+DSI in cluster 2:
+DSI-02, DSI-20, DSI-21, DSI-23, DSI-25, DSI-28, DSI-41, DSI-43, DSI-49, DSI-53, DSI-56
+
+Cluster 3 words:
+northSouthKorea, china, foreignPolicy, usPolitician, trumpAdministration, trade, arms, unitedStates, europeanNation, trumpCommunication, education, conflict, communication, policy, asianNations, military, presidentialCampaign, media, presidentDonaldTrump, presidentialElection, government, controversy, barackObama, trait, borderSecurity, americanBusiness, finance, environmental, immigration, healthcare, technology, economy, trumpBusiness, trumpOpposition, russiaElectionHacking, nuclear, nationalSecurity, middleEasternNations, republican, budget
+
+DSI in cluster 3:
+DSI-38, DSI-42, DSI-48, DSI-66, DSI-80
+
+Cluster 4 words:
+trumpAdministration, russiaElectionHacking, fbi, usPolitician, americanBusiness, government, media, europeanNation, controversy, communication, conflict, economy, presidentDonaldTrump, presidentialCampaign, secretary, presidentialElection, business, unitedStates, supremeCourt, trumpCommunication, hillaryClinton, immigration, policy, supremeCourtJudge, trade, barackObama, trumpBusiness, trait, taxes, finance, technology, foreignPolicy, republican, jobs, middleEasternNations, naturalDisaster, education, climateChange, military, religion
+
+DSI in cluster 4:
+DSI-58, DSI-64, DSI-73, DSI-75, DSI-76, DSI-81
+
+Cluster 5 words:
+borderWall, borderSecurity, government, trumpAdministration, immigration, unitedStates, centralAmericanNations, daca, taxes, media, policy, usPolitician, presidentialCampaign, republican, environmentalPolicy, democrat, environmental, communication, trade, presidentDonaldTrump, healthcare, business, conflict, racialProvocation, economy, presidentdonaldTrump, nationalSecurity, violentCrime, foreignPolicy, lawEnforcement, barackObama, trumpOpposition, military, trumpBusiness, supremeCourt, finance, education, climateChange, controversy, technology
+
+DSI in cluster 5:
+DSI-15, DSI-18, DSI-30, DSI-77, DSI-89
+
+Cluster 6 words:
+europeanNation, russiaElectionHacking, media, foreignPolicy, controversy, presidentialElection, fbi, government, unitedStates, presidentialCampaign, barackObama, democrat, conflict, usPolitician, americanBusiness, hillaryClinton, presidentDonaldTrump, communication, presidentdonaldTrump, trumpCommunication, trumpAdministration, republican, economy, northSouthKorea, trade, china, technology, trait, military, supremeCourtJudge, policy, taxes, healthcare, business, immigration, energy, education, supremeCourt, asianNations, climatechange
+
+DSI in cluster 6:
+DSI-11, DSI-13, DSI-22, DSI-26, DSI-61, DSI-83
+
+Cluster 7 words:
+supremeCourtJudge, supremeCourt, controversy, travelBan, borderSecurity, trumpAdministration, unitedStates, immigration, media, government, presidentialElection, conflict, presidentDonaldTrump, middleEasternNations, usPolitician, presidentdonaldTrump, nationalSecurity, trumpCommunication, democrat, trumpOpposition, republican, presidentialCampaign, americanBusiness, communication, economy, violentCrime, barackObama, trumpBusiness, education, foreignPolicy, religion, racialProvocation, policy, naturalDisaster, arms, energy, healthcare, climateChange, daca, asianNations
+
+DSI in cluster 7:
+DSI-10, DSI-27, DSI-34, DSI-39, DSI-44, DSI-55, DSI-87
+
 Cluster 8 words:
-europeanNation, russiaElectionHacking, foreignPolicy, media, presidentialElection, controversy, unitedStates, government, barackObama, fbi, usPolitician, americanBusiness, russiaelectionHacking, conflict, presidentialCampaign, hillaryClinton, presidentDonaldTrump, presidentdonaldTrump, trumpCommunication, trumpAdministration, economy, northSouthKorea, trade, china, technology, communication, trait, military, democrat, supremeCourtJudge, policy, taxes, business, healthcare, UNKNOWN, republican, climateChange, education, secretary, borderWall
+racialProvocation, violentCrime, republican, presidentialElection, trumpAdministration, unitedStates, controversy, taxes, economy, presidentDonaldTrump, supremeCourtJudge, lawEnforcement, immigration, trade, trumpCommunication, presidentialCampaign, military, conflict, business, government, media, finance, communication, trait, democrat, americanBusiness, jobs, fbi, religion, domesticPolicy, europeanNation, centralAmericanNations, russiaElectionHacking, daca, climateChange, trumpOpposition, environmental, china, budget, borderWall
 
 DSI in cluster 8:
-DSI-11, DSI-13, DSI-22, DSI-26, DSI-61
+DSI-59, DSI-65, DSI-91
+
+Cluster 9 words:
+economy, energy, unitedStates, education, trumpAdministration, government, business, taxes, policy, media, trade, naturalDisaster, finance, americanBusiness, healthcare, jobs, budget, environmentalPolicy, conflict, centralAmericanNations, usPolitician, middleEasternNations, presidentialElection, barackObama, immigration, trumpBusiness, arms, environmental, presidentDonaldTrump, presidentialCampaign, communication, domesticPolicy, technology, republican, borderWall, controversy, trumpOpposition, trumpCommunication, hillaryClinton, russiaElectionHacking
+
+DSI in cluster 9:
+DSI-03, DSI-05, DSI-06, DSI-08, DSI-09, DSI-12, DSI-14, DSI-16, DSI-17, DSI-19, DSI-24, DSI-29, DSI-32, DSI-33, DSI-35, DSI-36, DSI-40, DSI-45, DSI-47, DSI-50, DSI-54, DSI-57, DSI-68, DSI-69, DSI-71, DSI-74, DSI-78, DSI-86, DSI-88, DSI-90
+
+Cluster 10 words:
+trade, economy, china, trumpAdministration, centralAmericanNations, secretary, northSouthKorea, business, americanBusiness, energy, presidentialElection, foreignPolicy, policy, asianNations, unitedStates, government, presidentDonaldTrump, communication, jobs, europeanNation, borderSecurity, taxes, immigration, republican, technology, presidentialCampaign, media, conflict, domesticPolicy, northsouthkorea, environmental, democrat, education, presidentdonaldTrump, trait, russiaElectionHacking, usPolitician, arms, supremeCourt, supremeCourtJudge
+
+DSI in cluster 10:
+DSI-07, DSI-31, DSI-72, DSI-79, DSI-82, DSI-84
+
+Cluster 11 words:
+taxes, economy, americanBusiness, jobs, business, republican, government, trumpAdministration, finance, presidentDonaldTrump, unitedStates, immigration, trumpBusiness, healthcare, democrat, china, energy, foreignPolicy, arms, asianNations, barackObama, fbi, fakeNews, europeanNation, environmentalPolicy, environmental, education, climateChange, borderSecurity, domesticPolicy, borderWall, daca, controversy, budget, communication, centralAmericanNations, climatechange, conflict, violentCrime, hillaryClinton
+
+DSI in cluster 11:
+DSI-04, DSI-60
 
